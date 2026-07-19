@@ -1,0 +1,13 @@
+export const productRegex = {
+  name: /^[\p{L}\p{N}\s\-&()'",.]{3,100}$/u,
+  shortDescription: /^.{10,200}$/s,
+  description: /^.{20,5000}$/s,
+  price: /^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/,
+  discountPrice: /^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/,
+  stock: /^(?:0|[1-9]\d{0,5})$/,
+  sku: /^[A-Za-z0-9_-]{3,50}$/,
+  category: /^[\p{L}\p{N}\s&-]{2,50}$/u,
+  subcategory: /^[\p{L}\p{N}\s&-]{2,50}$/u,
+  brand: /^[\p{L}\p{N}\s&-]{2,50}$/u,
+  tags: /^[\p{L}\p{N}\s-]{2,30}$/u,
+};

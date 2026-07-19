@@ -1,0 +1,411 @@
+/* start Global */
+
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+@layer base {
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Chrome, Edge, Safari */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+/* IE & Edge القديم */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+}
+
+:root {
+  /* ===========================================
+      BACKGROUNDS (Light Mode - درجات ثلجية مريحة جداً للعين)
+  ========================================== */
+  --bg-main: #f8fafc;     
+  --bg-sidebar: #ffffff;  
+  --bg-navbar: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+
+  --bg-hover: #f1f5f9;    
+  --bg-active: #e2e8f0;
+
+
+  --Background-Circle-color-1: #8176af; 
+  --Background-Circle-color-2: #fda4af; 
+  --Background-Circle-color-3: #818cf8; 
+  
+  --Background-Circle-opacity-1: 0.25; 
+  --Background-Circle-opacity-2: 0.20;
+  --Background-Circle-opacity-3: 0.20;
+  
+  /* ===========================================
+      PRIMARY & ACCENT COLORS (البنفسجي المات الساحر من التصميم)
+  ========================================== */
+  --primary: #8176af;        /* الدرجة المريحة الظاهرة في التصميم */
+  --primary-hover: #6d6299;  /* درجة أغمق قليلاً للهوفر */
+  --primary-active: #5a5084; /* درجة أنشط وأعمق عند الضغط */
+  --primary-light: rgba(129, 118, 175, 0.08);
+
+  --secondary: #64748b;   
+
+  --accent: #a399cc;         /* الأكسنت مستوحى من درجات الإضاءة الفاتحة في الجريدينت */
+  --accent-hover: #8176af;
+  --accent-active: #6d6299;
+
+  /* ===========================================
+      TEXT
+  ========================================== */
+  --text-primary: #0f172a;   
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-disabled: #94a3b8;
+  --text-placeholder: #94a3b8;
+  --text-white: #ffffff;
+
+  /* ===========================================
+      BORDER
+  ========================================== */
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --border-focus: #8176af;
+  --divider: #e2e8f0;
+
+  /* ===========================================
+      STATUS (متناسقة مع البنفسجي المات)
+  ========================================== */
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.06);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.06);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.06);
+  --info: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.06);
+
+  /* الأبعاد والـ Shadows ثابتة لتأمين الهيكل الفني الداخلي للتصميم كما هي */
+  --shadow-xs-value: 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-sm-value: 0 4px 10px rgba(15, 23, 42, 0.03);
+  --shadow-md-value: 0 8px 24px rgba(15, 23, 42, 0.05);
+  --shadow-lg-value: 0 20px 40px rgba(15, 23, 42, 0.06);
+  --shadow-primary-value: 0 0 0 1px rgba(129, 118, 175, 0.06), 0 0 18px rgba(129, 118, 175, 0.08);
+
+  --radius-sm-value: 8px;
+  --radius-md-value: 12px;
+  --radius-lg-value: 18px;
+  --radius-xl-value: 24px;
+  --radius-full-value: 9999px;
+
+  --space-xs-value: 4px;
+  --space-sm-value: 8px;
+  --space-md-value: 16px;
+  --space-lg-value: 24px;
+  --space-xl-value: 32px;
+  --space-2xl-value: 48px;
+  --space-3xl-value: 64px;
+  --space-4xl-value: 72px;
+  --space-5xl-value: 96px;
+
+  --container-padding: 32px;
+  --card-padding: 24px;
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+
+  --z-dropdown-value: 1050;
+  --z-sticky-value: 1100;
+  --z-modal-value: 2000;
+  --z-toast-value: 3000;
+}
+
+:root.dark {
+  /* ===========================================
+      BACKGROUNDS (Dark Mode - الرمادي البركاني العميق المسحوب من يمين الصورة)
+  ========================================== */
+  --bg-main: #0c0e17;     /* اللون الغامق جداً المائل للبنفسجي اللطيف من خلفية الفورم */
+  --bg-sidebar: #121522;  
+  --bg-navbar: #121522;
+  --bg-surface: #171b2b;
+  --bg-card: rgba(18, 21, 34, 0.7); 
+
+  --bg-hover: #1f243a;
+  --bg-active: #2a314f;
+
+
+  /* 🌌 كرات الخلفية - معادلة السطوع المتزن (واضحة ومش فاقعة) */
+  --Background-Circle-color-1: #8176af; /* البنفسجي المات الصريح من التصميم */
+  --Background-Circle-color-2: #f43f5e; /* الروز المضيء اللي بيكسر عتمة التصميم */
+  --Background-Circle-color-3: #9285c7; /* البنفسجي الفاتح المضيء */
+  
+  /* 💡 السر هنا: الشفافية دقيقة جداً (الألوان واضحة بس متدارية خلف الستار) */
+  --Background-Circle-opacity-1: 0.15; 
+  --Background-Circle-opacity-2: 0.12;
+  --Background-Circle-opacity-3: 0.12;
+  /* ===========================================
+      PRIMARY & ACCENT COLORS (Dark Mode)
+  ========================================== */
+  --primary: #9d92cd;        /* درجة البنفسجي المات المضيئة لتناسب الخلفيات الداكنة */
+  --primary-hover: #b4aae0;
+  --primary-active: #cbbff2;
+  --primary-light: rgba(157, 146, 205, 0.08);
+
+  --secondary: #94a3b8;
+
+  --accent: #cbbff2;  
+  --accent-hover: #ded5ff;
+  --accent-active: #eee8ff;
+
+  /* ===========================================
+      TEXT
+  ========================================== */
+  --text-primary: #f1f5f9;   
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-disabled: #475569;
+  --text-placeholder: #475569;
+
+  /* ===========================================
+      BORDER
+  ========================================== */
+  --border: #1e2538;
+  --border-light: #232b42;
+  --border-focus: #9d92cd;
+  --divider: #1e2538;
+
+  /* ===========================================
+      STATUS
+  ========================================== */
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.10);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.10);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.10);
+  --info: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.10);
+
+  /* ===========================================
+      SHADOWS
+  ========================================== */
+  --shadow-xs-value: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm-value: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md-value: 0 8px 28px rgba(0, 0, 0, 0.4);
+  --shadow-lg-value: 0 20px 45px rgba(0, 0, 0, 0.45);
+  --shadow-primary-value: 0 0 0 1px rgba(157, 146, 205, 0.1), 0 0 18px rgba(157, 146, 205, 0.12);
+}
+
+
+@theme {
+  /* ===========================================
+      BACKGROUNDS
+  =========================================== */
+
+  --color-bg-main: var(--bg-main);
+  --color-bg-sidebar: var(--bg-sidebar);
+  --color-bg-navbar: var(--bg-navbar);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-card: var(--bg-card);
+  --color-bg-hover: var(--bg-hover);
+  --color-bg-active: var(--bg-active);
+
+  --Background-Circle-color-1 : var(--Background-Circle-color-1);
+  --Background-Circle-color-2 : var(--Background-Circle-color-2);
+  --Background-Circle-color-3 : var(--Background-Circle-color-3);
+  --Background-Circle-opacity-1 : var(--Background-Circle-opacity-1);
+  --Background-Circle-opacity-2 : var(--Background-Circle-opacity-2);
+  --Background-Circle-opacity-3 : var(--Background-Circle-opacity-3);
+  /* ===========================================
+      BRAND COLORS
+  =========================================== */
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-light: var(--primary-light);
+
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+
+  /* ===========================================
+      TEXT
+  =========================================== */
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-disabled: var(--text-disabled);
+  --color-text-white: var(--text-white);
+
+  /* ===========================================
+      BORDER
+  =========================================== */
+
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-divider: var(--divider);
+
+  /* ===========================================
+      STATUS
+  =========================================== */
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+
+  /* ===========================================
+      SHADOWS
+  =========================================== */
+
+  --shadow-xs: var(--shadow-xs-value);
+  --shadow-sm: var(--shadow-sm-value);
+  --shadow-md: var(--shadow-md-value);
+  --shadow-lg: var(--shadow-lg-value);
+  --shadow-primary: var(--shadow-primary-value);
+
+  /* ===========================================
+      BORDER RADIUS
+  =========================================== */
+
+  --radius-sm: var(--radius-sm-value);
+  --radius-md: var(--radius-md-value);
+  --radius-lg: var(--radius-lg-value);
+  --radius-xl: var(--radius-xl-value);
+  --radius-full: var(--radius-full-value);
+
+  /* ===========================================
+      SPACING
+  =========================================== */
+
+  --spacing-xs: var(--space-xs-value);
+  --spacing-sm: var(--space-sm-value);
+  --spacing-md: var(--space-md-value);
+  --spacing-lg: var(--space-lg-value);
+  --spacing-xl: var(--space-xl-value);
+  --spacing-2xl: var(--space-2xl-value);
+  --spacing-3xl: var(--space-3xl-value);
+  --spacing-4xl: var(--space-4xl-value);
+  --spacing-5xl: var(--space-5xl-value);
+
+  --spacing-container: var(--container-padding);
+  --spacing-card: var(--card-padding);
+
+  /* ===========================================
+      Z INDEX
+  =========================================== */
+
+  --z-index-dropdown: var(--z-dropdown-value);
+  --z-index-sticky: var(--z-sticky-value);
+  --z-index-modal: var(--z-modal-value);
+  --z-index-toast: var(--z-toast-value);
+}
+
+/* ===========================================
+      GLOBAL
+=========================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+
+  background-color: var(--bg-main);
+
+  color: var(--text-primary);
+}
+
+ul {
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+@keyframes corner-pulse-green {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+    filter: blur(110px);
+  }
+  50% {
+    transform: translate(30px, 20px) scale(1.12);
+    filter: blur(125px);
+  }
+}
+
+@keyframes corner-pulse-red {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+    filter: blur(110px);
+  }
+  50% {
+    transform: translate(-30px, -20px) scale(1.12);
+    filter: blur(125px);
+  }
+}
+
+@keyframes triple-path-blue {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(50vw, -10vh) scale(1.15);
+  }
+  66% {
+    transform: translate(55vw, -50vh) scale(1.3);
+  }
+}
+
+.animate-corner-green {
+  animation: corner-pulse-green 12s infinite ease-in-out;
+}
+
+.animate-corner-red {
+  animation: corner-pulse-red 14s infinite ease-in-out;
+}
+
+.animate-triple-blue {
+  animation: triple-path-blue 24s infinite ease-in-out;
+}
+
+
+
+
+
+
+
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

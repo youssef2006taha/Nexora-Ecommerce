@@ -1,0 +1,564 @@
+هنبدا بحاجه بسيطه
+ال dashboard ، ودا كويس تقريبا
+بس هنراجع عليه علي السريع
+
+DashboardPage.jsx : الملف الساسي
+
+import React, { useEffect, useState } from "react";
+import api from "../../api/axios";
+import DashboardLoader from "../../components/UI/DashboardLoader";
+import HeroCard from "./sections/HeroCard";
+import StatsGrid from "./sections/StatsGrid";
+import OrderStatusCard from "./sections/OrderStatus";
+import TopProducts from "./sections/TopProducts";
+import RecentOrders from "./sections/RecentOrders";
+
+const DashboardPage = () => {
+  
+  const [dashboard, setDashboard] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const response = await api.get("/orders/admin/dashboard");
+
+        console.log("Dashboard API Response:", response);
+
+        setDashboard(
+          response.data ||
+          response.dashboard ||
+          response
+        );
+      } catch (error) {
+        console.error("Dashboard Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
+  if (loading) {
+    return <DashboardLoader />;
+  }
+
+  if (!dashboard) {
+    return (
+      <div className="text-center py-10 text-red-500">
+        Failed to load dashboard data
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto w-full bg-[#f8fafc]/40 dark:bg-[#0f172a] min-h-screen">
+      <HeroCard />
+
+      <StatsGrid dashboard={dashboard} />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+        <OrderStatusCard dashboard={dashboard} />
+        <TopProducts dashboard={dashboard} />
+      </div>
+
+      <RecentOrders dashboard={dashboard} />
+    </div>
+  );
+};
+
+export default React.memo(DashboardPage);
+
+----------------------------
+sections/HeroCard.jsx :
+import React from "react";
+
+function HeroCard() {
+  return (
+    <div className="bg-white dark:bg-slate-900 shadow-xs p-6 md:p-8 rounded-[24px] border border-slate-100 dark:border-slate-800 transition-all duration-300">
+      <p className="uppercase tracking-widest text-[11px] font-bold text-cyan-400">      
+        Admin Overview
+      </p>
+
+      <h1 className="text-[24px] md:text-[26px] font-bold tracking-tight mt-1 text-slate-900 dark:text-white">
+        Real-time commerce health
+      </h1>
+
+      <p className="mt-1.5 text-[13px] leading-relaxed text-slate-400 dark:text-slate-400">
+        Monitor your storefront with AI-style clarity and live API metrics.
+      </p>
+    </div>
+  );
+}
+
+export default React.memo(HeroCard);
+-------------------------------------------
+sections/OrderStatus.jsx :
+
+import React from "react";
+
+function OrderStatusCard({ dashboard }) {
+  const statuses = [
+    {
+      label: "PENDING",
+      count: dashboard?.orders?.pending ?? 0,
+      bg: "bg-[#fffbeb] dark:bg-amber-950/20",
+      text: "text-[#d97706] dark:text-amber-400",
+      border: "border-[#fef3c7] dark:border-amber-900/30",
+    },
+    {
+      label: "PROCESSING",
+      count: dashboard?.orders?.processing ?? 0,
+      bg: "bg-[#f0f9ff] dark:bg-sky-950/20",
+      text: "text-[#0284c7] dark:text-sky-400",
+      border: "border-[#e0f2fe] dark:border-sky-900/30",
+    },
+    {
+      label: "CONFIRMED",
+      count: dashboard?.orders?.confirmed ?? 0,
+      bg: "bg-[#f0f9ff] dark:bg-sky-950/20",
+      text: "text-[#0284c7] dark:text-sky-400",
+      border: "border-[#e0f2fe] dark:border-sky-900/30",
+    },
+    {
+      label: "SHIPPED",
+      count: dashboard?.orders?.shipped ?? 0,
+      bg: "bg-[#f5f3ff] dark:bg-purple-950/20",
+      text: "text-[#7c3aed] dark:text-purple-400",
+      border: "border-[#ede9fe] dark:border-purple-900/30",
+    },
+    {
+      label: "DELIVERED",
+      count: dashboard?.orders?.delivered ?? 0,
+      bg: "bg-[#f0fdf4] dark:bg-teal-950/20",
+      text: "text-[#16a34a] dark:text-teal-400",
+      border: "border-[#dcfce7] dark:border-teal-900/30",
+    },
+    {
+      label: "CANCELLED",
+      count: dashboard?.orders?.cancelled ?? 0,
+      bg: "bg-[#fff1f2] dark:bg-rose-950/20",
+      text: "text-[#e11d48] dark:text-rose-400",
+      border: "border-[#ffe4e6] dark:border-rose-900/30",
+    },
+  ];
+
+  return (
+    <div className="bg-white border border-slate-100 rounded-[24px] p-6 md:p-8 dark:bg-slate-900 dark:border-slate-800 w-full"
+      style={{
+        boxShadow: "var(--shadow-card)",
+      }}
+    >
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-[11px] uppercase tracking-widest text-cyan-400 font-bold">
+          Order Status
+        </span>
+
+        <span className="text-[10px] font-bold px-2.5 py-1 bg-emerald-50 text-emerald-500 dark:bg-emerald-950/30 dark:text-emerald-400 rounded-md">
+          Updated from API
+        </span>
+      </div>
+
+      <h2 className="text-[22px] font-bold text-slate-900 dark:text-white mb-6">
+        Live fulfillment breakdown
+      </h2>
+
+      <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
+        {statuses.map((status) => (
+          <div
+            key={status.label}
+            className={`
+              p-4 rounded-[20px] border
+              ${status.border}
+              ${status.bg}
+              flex flex-col justify-between
+              min-h-[105px]
+              transition-all duration-300
+              hover:-translate-y-1
+            `}
+          >
+            <span className={`
+                text-[10px]
+                font-bold
+                tracking-widest
+                uppercase
+                opacity-80
+                ${status.text}
+              `}
+            >
+              {status.label}
+            </span>
+
+            <span className={`text-[32px] font-bold tracking-tight leading-none ${status.text}`}>
+              {status.count}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default React.memo(OrderStatusCard);
+
+-------------------------------------
+
+sections/RecentOrders.jsx :
+
+import React from "react";
+
+function RecentOrders({ dashboard = {} }) {
+  const orders = Array.isArray(dashboard.recentOrders) ? dashboard.recentOrders : [];
+
+  const statusColors = {
+    pending:
+      "bg-[#f0fdf4] text-[#16a34a] dark:bg-emerald-950/30 dark:text-emerald-400", // matching the pending color layout in image
+    processing:
+      "bg-[#f0f9ff] text-[#0284c7] dark:bg-sky-950/30 dark:text-sky-400",
+    confirmed:
+      "bg-[#f0fdf4] text-[#16a34a] dark:bg-emerald-950/30 dark:text-emerald-400",
+    shipped:
+      "bg-[#f0fdf4] text-[#16a34a] dark:bg-emerald-950/30 dark:text-emerald-400", // matching the layout color in image
+    delivered:
+      "bg-[#f0fdf4] text-[#16a34a] dark:bg-emerald-950/30 dark:text-emerald-400",
+    cancelled:
+      "bg-[#f0fdf4] text-[#16a34a] dark:bg-emerald-950/30 dark:text-emerald-400",
+  };
+
+  return (
+    <div className="mt-6 w-full rounded-[24px] border border-slate-100 bg-white p-6 md:p-8 dark:border-slate-800 dark:bg-slate-900"
+      style={{
+        boxShadow: "var(--shadow-card)",
+      }}
+    >
+      <div className="mb-1 flex items-center justify-between">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-cyan-400">
+          Recent Orders
+        </span>
+
+        <span className="rounded-md bg-[#ecfeff] px-2.5 py-1 text-[10px] font-bold text-cyan-500 dark:bg-slate-800 dark:text-slate-400">
+          {orders.length} orders
+        </span>
+      </div>
+
+      <h2 className="mb-6 text-[22px] font-bold text-slate-900 dark:text-white">
+        Latest customer activity
+      </h2>
+
+      <div className="space-y-3">
+        {orders.length > 0 ? (
+          orders.map((order, index) => (
+            <div
+              key={order._id || `${order.createdAt || "order"}-${index}`}
+              className="flex w-full flex-col justify-between gap-3 rounded-[20px] border border-slate-100 bg-slate-50/30 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50 dark:border-slate-800/60 dark:bg-slate-800/20 dark:hover:bg-slate-800/40 sm:flex-row sm:items-center"
+            >
+              <div className="flex flex-col">
+                <span className="text-[13px] font-bold text-slate-800 dark:text-white tracking-tight">
+                  {order.user?.username || order.shippingAddress?.fullName || "Unknown User"}
+                </span>
+
+                <span className="mt-1 text-[11px] font-medium text-slate-400 dark:text-slate-500">
+                  {order.items?.[0]?.name || "Unknown Product"}
+
+                  <span className="mx-1 text-slate-300 dark:text-slate-600">•</span>
+
+                  {order.createdAt
+                    ? new Date(order.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })
+                    : "No Date"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-4 sm:justify-end">
+                <span
+                  className={`rounded-md px-2.5 py-1 text-[10px] font-bold ${statusColors[String(order.status || "pending").toLowerCase()] || "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"}`}
+                >
+                  {String(order.status || "Pending").toLowerCase()}
+                </span>
+
+                <span className="text-[13px] font-medium text-slate-500 dark:text-slate-300 min-w-[65px] text-right">
+                  ${Number(order.totalPrice || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="py-10 text-center text-slate-400 dark:text-slate-500">
+            No recent orders available
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default React.memo(RecentOrders);
+
+--------------------------------------------
+sections/StatCard.jsx :
+
+import React from "react";
+
+const getColorClasses = (colorName) => {
+  const map = {
+    emerald: {
+      border: "border-emerald-500",
+      iconBg: "bg-emerald-500",
+    },
+    orange: {
+      border: "border-orange-500",
+      iconBg: "bg-orange-500",
+    },
+    pink: {
+      border: "border-rose-500",
+      iconBg: "bg-rose-500",
+    },
+    cyan: {
+      border: "border-cyan-500",
+      iconBg: "bg-cyan-500",
+    },
+    violet: {
+      border: "border-purple-500",
+      iconBg: "bg-purple-500",
+    },
+    slate: {
+      border: "border-slate-600",
+      iconBg: "bg-slate-600",
+    },
+    blue: {
+      border: "border-blue-500",
+      iconBg: "bg-blue-500",
+    },
+  };
+
+  return map[colorName] || map.emerald;
+};
+
+function StatCard({
+  title,
+  value,
+  subtitle,
+  color = "emerald",
+  icon: Icon,
+}) {
+  const colors = getColorClasses(color);
+
+  return (
+    <div
+      className={`
+        group
+        bg-white
+        dark:bg-slate-900
+        rounded-[24px]
+        p-6
+        border-t-4 ${colors.border}
+        shadow-xs
+        transition-all duration-300
+        hover:-translate-y-1
+        w-full
+      `}
+      style={{
+        boxShadow: "var(--shadow-card)",
+      }}
+    >
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="text-[12px] font-bold text-slate-400 dark:text-slate-500 tracking-wide">
+          {title}
+        </h3>
+
+        <div className={`
+            w-11 h-11 rounded-[14px]
+            ${colors.iconBg}
+            flex items-center justify-center
+            shadow-xs
+            transition-all duration-300
+            group-hover:scale-105 `}
+        >
+          {Icon && (
+            <Icon
+              size={20}
+              className="text-white"
+            />
+          )}
+        </div>
+      </div>
+
+      <h2 className="text-[28px] font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+        {value}
+      </h2>
+
+      <p className="text-[11px] font-medium mt-1 text-slate-400 dark:text-slate-500">
+        {subtitle}
+      </p>
+
+      <div className="mt-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent dark:via-slate-700 rounded-full"></div>
+      </div>
+    </div>
+  );
+}
+
+export default React.memo(StatCard);
+
+---------------------
+
+sections/StatsGrid.jsx :
+
+import React from "react";
+import StatCard from "./StatCard";
+
+import {
+  ShoppingCart,
+  Clock3,
+  DollarSign,
+  CalendarDays,
+  Star,
+  Users,
+} from "lucide-react";
+
+const formatCurrency = (value) => {
+  const number = Number(value || 0);
+  return `$${number.toLocaleString()}`;
+};
+
+function StatsGrid({ dashboard = {} }) {
+  const orders = dashboard.orders || {};
+  const revenue = dashboard.revenue || {};
+  const topProducts = Array.isArray(dashboard.topProducts) ? dashboard.topProducts : [];
+  const topProduct = topProducts[0] || {};
+
+  return (
+    <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+      <StatCard
+        title="Total Orders"
+        value={Number(orders.total || 0)}
+        subtitle="All orders received"
+        color="emerald"
+        icon={ShoppingCart}
+      />
+
+      <StatCard
+        title="Pending Orders"
+        value={Number(orders.pending || 0)}
+        subtitle="Awaiting action"
+        color="orange"
+        icon={Clock3}
+      />
+
+      <StatCard
+        title="Revenue"
+        value={formatCurrency(revenue.total)}
+        subtitle="Total gross revenue"
+        color="pink"
+        icon={DollarSign}
+      />
+
+      <StatCard
+        title="This Month"
+        value={formatCurrency(revenue.thisMonth)}
+        subtitle="Monthly sales target"
+        color="cyan"
+        icon={CalendarDays}
+      />
+
+      <StatCard
+        title="Top Product"
+        value={topProduct.name || "No Product"}
+        subtitle={`${Number(topProduct.totalSold || 0)} Sold`}
+        color="violet"
+        icon={Star}
+      />
+
+      <StatCard
+        title="Users"
+        value={Number(dashboard.totalCustomers || 0)}
+        subtitle="Registered customers"
+        color="slate"
+        icon={Users}
+      />
+    </div>
+  );
+}
+
+export default React.memo(StatsGrid);
+------------------------
+sections/TopProducts.jsx :
+
+import React from "react";
+
+function TopProducts({ dashboard = {} }) {
+  const products = Array.isArray(dashboard.topProducts) ? dashboard.topProducts : [];
+
+  return (
+    <div
+      className="w-full rounded-[24px] border border-slate-100 bg-white p-6 md:p-8 dark:border-slate-800 dark:bg-slate-900"
+      style={{
+        boxShadow: "var(--shadow-card)",
+      }}
+    >
+      <div className="mb-1">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-cyan-400">
+          Top Products
+        </span>
+      </div>
+
+      <h2 className="mb-6 text-[22px] font-bold text-slate-900 dark:text-white">
+        Best Sellers
+      </h2>
+
+      <div className="space-y-3">
+        {products.length > 0 ? (
+          products.map((product, index) => (
+            <div
+              key={product._id || `${product.name}-${index}`}
+              className="flex w-full items-center justify-between rounded-[20px] border border-slate-100 bg-slate-50/30 p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50 dark:border-slate-800/60 dark:bg-slate-800/20 dark:hover:bg-slate-800/40"
+            >
+              <div className="flex items-center gap-3.5">
+                <img
+                  src={product.image || "https://via.placeholder.com/96"}
+                  alt={product.name || "Product"}
+                  className="h-14 w-14 shrink-0 rounded-[14px] border border-slate-100 bg-white object-cover dark:border-slate-700 dark:bg-slate-800"
+                />
+
+                <div>
+                  <h4 className="line-clamp-1 text-[13px] font-bold text-slate-800 dark:text-white tracking-tight">
+                    {product.name || "Unnamed Product"}
+                  </h4>
+
+                  <p className="mt-1 text-[11px] font-medium text-slate-400 dark:text-slate-500">
+                    {Number(product.totalSold || 0)} units sold
+                    <span className="mx-1 text-slate-300 dark:text-slate-600">•</span>
+                    ${Number(product.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="py-10 text-center text-slate-400 dark:text-slate-500">
+            No products available
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default React.memo(TopProducts);
+
+
+
+
+--------------------
+
+حصيح
+نسيت اقولك
+متشغلش بالك بمشاكل ال ui والشكل ومتصلحهاش
+اهم حاجه مشاكل اللوجيك
+
+
+بس تقدر تقولي في اخر كل رساله ايه اللي ممكن تعديله في الشكل واقتراحات
