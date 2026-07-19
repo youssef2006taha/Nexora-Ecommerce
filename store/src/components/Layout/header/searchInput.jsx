@@ -36,7 +36,7 @@ const SearchInput = () => {
                     : (
                         <button
                             onClick={handleSearch}
-                            className="rounded-full p-2 text-black  border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500 font-semibold transition"
+                            className=" hidden md:block rounded-full p-2 text-black  border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500 font-semibold transition dark:text-slate-300 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-gray-800"
                         >
                           <IoSearch />
                         </button >

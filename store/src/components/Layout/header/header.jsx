@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import Logo from '../../../assets/hero.png';
+import Logo from '../../../assets/logo1.png'
 import SearchInput from "./searchInput";
-import { IoMoonOutline } from "react-icons/io5";
+import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import { FaRegHeart, FaRegUser } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import Sidebar from "./sidebar";
 
 const linksList = [
   {
@@ -33,6 +34,8 @@ const linksList = [
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const [wishlistItemsCount, setWishlistItemsCount] = useState(3);
+  const [cartItemsCount, setCartItemsCount] = useState(2);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -51,24 +54,26 @@ const Header = () => {
   }
 
   return (
-    <header className="flex items-center justify-between py-2 px-30 shadow-sm dark:bg-black">
-      <div className="h-x20 w-25">
+    <header className="flex items-center justify-between py-2 px-3 md:15 lg:px-30 shadow-sm dark:bg-slate-900/95  dark:text-white">
+      <Link
+        to={'/home'}
+        className="w-20 p-1 md:w-25">
         <img
           src={Logo}
           alt="Logo"
           className="w-full"
         />
-      </div>
+      </Link>
 
-      <div className="px-3 py-2 flex items-center gap-4  rounded-4xl shadow">
+      <div className=" hidden  px-3 py-2 md:flex items-center gap-4 dark:bg-slate-900/90 rounded-4xl shadow">
         {linksList.map((link) => (
           <NavLink
             key={link.id}
             to={link.link}
             className={({ isActive }) =>
-              `text-sm px-4 py-2 rounded-full transition-colors duration-300 capitalize shadow-md ${isActive
-                ? "bg-indigo-600 text-white"
-                : "text-gray-700 hover:bg-gray-200"
+              `text-sm px-4 py-2 rounded-full dark:text-slate-200 transition-colors duration-300 capitalize shadow-md ${isActive
+                ? "bg-indigo-600 text-white "
+                : "text-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800"
               }`
             }
           >
@@ -81,32 +86,47 @@ const Header = () => {
 
         <button
           onClick={handleChangeTheme}
-          className="rounded-full p-2 text-black border border-slate-200 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition"
+          className="rounded-full p-2 text-black border border-slate-200 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition dark:text-slate-300 dark:bg-slate-900 dark:border-slate-800  dark:hover:bg-gray-800"
         >
-          <IoMoonOutline />
+          {darkMode
+            ? <IoMoonOutline />
+            :<IoSunnyOutline />
+        }
         </button >
 
         <Link
           to={'/wishlist'}
-          className="rounded-full p-2 text-black border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition"
+          className="relative rounded-full p-2 text-black border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition dark:text-slate-300 dark:bg-slate-900 dark:border-slate-800  dark:hover:bg-gray-800"
         >
+          <span
+          className="absolute -top-2 text-xs -right-1 text-white  px-1.5 flex items-center justify-center rounded-full bg-indigo-500"
+          > 
+          {wishlistItemsCount}
+           </span>
           <FaRegHeart />
         </Link>
 
         <Link
           to={'/cart'}
-          className="rounded-full p-2 text-black  border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition"
+          className="relative rounded-full p-2 text-black  border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition dark:text-slate-300 dark:bg-slate-900 dark:border-slate-800  dark:hover:bg-gray-800"
         >
+             <span
+          className="absolute -top-2 text-xs -right-1 text-white  px-1.5 flex items-center justify-center rounded-full bg-indigo-500"
+          > 
+          {cartItemsCount}
+           </span>
           <MdOutlineShoppingCart />
         </Link>
 
         <Link
-          to={'/profile'}
-          className="flex items-center gap-1 rounded-full p-2 text-black  border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition"
+          to={'/cart'}
+          className="hidden md:flex items-center gap-1 rounded-full p-2 text-black  border border-slate-300 shadow bg-slate-50 hover:bg-white hover:text-indigo-500  transition dark:text-slate-300 dark:bg-slate-900 dark:border-slate-800  dark:hover:bg-gray-800"
         >
           <FaRegUser />
           user
         </Link>
+
+        <Sidebar />
       </div>
     </header>
   );

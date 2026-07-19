@@ -19,6 +19,7 @@ function OrderDetails() {
     const { id } = useParams();
 
     const [product, setProduct] = useState(null);
+    const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -34,11 +35,15 @@ function OrderDetails() {
             setError("");
 
             const { data } = await axios.get(
-                `${API_BASE}/products/${id}`
+                `${API_BASE}/orders/my/${id}`,
+                {
+                    headers: authHeaders(),
+                }
             );
 
             if (data.success) {
                 setProduct(data.product);
+                setOrder(data.order);
             } else {
                 setError(data.message || "Product not found");
             }

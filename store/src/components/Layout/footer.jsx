@@ -3,7 +3,7 @@ import { Zap, Globe, MessageCircle, Heart } from "lucide-react";
 export default function Footer() {
   return (
     <footer
-      className="relative left-1/2 -translate-x-1/2 w-screen"
+      className="relative left-1/2 -translate-x-1/2 w-screen "
       style={{
         backgroundColor: "var(--bg-card)",
         borderTop: "1px solid var(--border-color)",
