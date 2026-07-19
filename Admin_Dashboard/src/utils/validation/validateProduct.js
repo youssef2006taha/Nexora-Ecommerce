@@ -1,4 +1,4 @@
-import { productRegex as regex } from "./productRegex";
+import { regex } from "../regex";
 
 export const validateProduct = (formData, isEditMode = false) => {
   const errors = {};
@@ -8,8 +8,7 @@ export const validateProduct = (formData, isEditMode = false) => {
   }
 
   if (!regex.shortDescription.test(formData.shortDescription.trim())) {
-    errors.shortDescription =
-      "Short description must be 10-200 characters.";
+    errors.shortDescription = "Short description must be 10-200 characters.";
   }
 
   if (!regex.description.test(formData.description.trim())) {
