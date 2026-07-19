@@ -1,5 +1,9 @@
-export const productRegex = {
+export const regex = {
   name: /^[\p{L}\p{N}\s\-&()'",.]{3,100}$/u,
+  username: /^[a-zA-Z0-9_\p{L}\s]{3,30}$/u,
+  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  password: /^\S{6,}$/,
+  phone: /^01[0125]\d{8}$/,
   shortDescription: /^.{10,200}$/s,
   description: /^.{20,5000}$/s,
   price: /^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/,

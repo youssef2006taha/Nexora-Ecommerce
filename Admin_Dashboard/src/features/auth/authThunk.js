@@ -4,11 +4,19 @@ import axios from "axios";
 export const login = createAsyncThunk(
   "auth/login",
   async (loginData, thunkAPI) => {
-    console.log(loginData)
     try {
-      const res = await axios.post("https://e-commerce-api-3wara.vercel.app/auth/login", loginData);
+      const res = await axios.post(
+        "https://e-commerce-api-3wara.vercel.app/auth/login",
+        loginData,
+      );
 
       const { user, token } = res.data;
+
+      if (user.role !== "admin") {
+        return thunkAPI.rejectWithValue(
+          "Access denied. This dashboard is available for administrators only.",
+        );
+      }
 
       localStorage.setItem("token", token);
 
@@ -17,7 +25,9 @@ export const login = createAsyncThunk(
         token,
       };
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Login failed.",
+      );
     }
   },
 );
