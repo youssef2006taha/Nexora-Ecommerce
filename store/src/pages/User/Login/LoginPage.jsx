@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import Label from "../../../components/UI/Label";
 import Input from "../../../components/UI/Input";
@@ -14,6 +14,8 @@ import { showToast } from "../../../features/Toast/toastSlice.js";
 export default function Login() {
   const loginDispatch = useDispatch();
   const toastDispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { loading } = useSelector((store) => store.auth);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({
@@ -41,7 +43,9 @@ export default function Login() {
         }),
       );
 
-      // navigate("/dashboard", { replace: true });
+      const from = location.state?.from || "/";
+
+      navigate(from, { replace: true });
     } catch (error) {
       if (error === "Invalid email or password") {
         setErrors((prev) => ({
