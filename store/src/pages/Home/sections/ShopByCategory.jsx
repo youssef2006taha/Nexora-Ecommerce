@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { categories } from './data/categories'
+import { TbArrowUpRight } from 'react-icons/tb'
 
 export default function ShopByCategory() {
   const navigate = useNavigate()
@@ -15,8 +16,9 @@ export default function ShopByCategory() {
         <div className="mx-auto h-[420px] max-w-3xl bg-blue-600/10 blur-[100px]" />
       </div>
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center">
+      <div className="mx-auto w-full w-full px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mb-12 flex flex-col items-center text-center">
+          <span className="mb-3 h-1 w-10 rounded-full bg-blue-500" />
           <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl dark:text-white">
             Shop by Category
           </h2>
@@ -25,7 +27,7 @@ export default function ShopByCategory() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-5">
           {categories.map(({ id, name, products, icon: Icon }) => (
             <button
               key={id}
@@ -40,13 +42,20 @@ export default function ShopByCategory() {
               {/* soft glow that appears behind the icon on hover, dark mode only */}
               <span className="pointer-events-none absolute -top-6 h-24 w-24 rounded-full bg-blue-500/0 blur-2xl transition-colors duration-300 group-hover:bg-blue-500/20 hidden dark:block" />
 
-              <span className="relative mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-600 ring-1 ring-inset ring-blue-100 transition-all duration-300 group-hover:bg-blue-100 dark:bg-gradient-to-br dark:from-blue-500/20 dark:to-blue-500/5 dark:text-blue-400 dark:ring-1 dark:ring-inset dark:ring-blue-400/20 dark:group-hover:from-blue-500/30 dark:group-hover:to-blue-500/10 dark:group-hover:text-blue-300">
+              {/* arrow affordance, top right, fades/slides in on hover */}
+              <span className="absolute right-4 top-4 flex h-7 w-7 -translate-y-1 items-center justify-center rounded-full bg-slate-50 text-slate-400 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 dark:bg-white/5 dark:text-slate-500">
+                <TbArrowUpRight className="h-4 w-4" />
+              </span>
+
+              <span className="relative mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-600 ring-1 ring-inset ring-blue-100 transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-100 dark:bg-gradient-to-br dark:from-blue-500/20 dark:to-blue-500/5 dark:text-blue-400 dark:ring-1 dark:ring-inset dark:ring-blue-400/20 dark:group-hover:from-blue-500/30 dark:group-hover:to-blue-500/10 dark:group-hover:text-blue-300">
                 <Icon className="h-7 w-7" strokeWidth={1.75} />
               </span>
+
               <span className="relative text-lg font-semibold text-slate-900 dark:text-white">
                 {name}
               </span>
-              <span className="relative mt-1 text-sm text-slate-500 dark:text-slate-400">
+
+              <span className="relative mt-2 inline-flex items-center rounded-full bg-slate-50 px-2.5 py-0.5 text-xs font-medium text-slate-500 dark:bg-white/5 dark:text-slate-400">
                 {products} products
               </span>
             </button>
