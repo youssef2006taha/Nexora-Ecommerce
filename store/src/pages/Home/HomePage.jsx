@@ -1,6 +1,5 @@
 import React from "react";
 import api from "../../api/axios";
-import useAuth from "../../context/AuthContext";
 import HowItWorks from "./sections/HowItWorks";
 import Newsletter from "./sections/Newsletter";
 import FeaturedProducts from "./sections/FeaturedProducts";
