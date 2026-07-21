@@ -3,6 +3,7 @@ import { login } from "./Thunks/authThunk";
 import { getCurrentUser } from "./Thunks/getCurrentUserThunk";
 import { sendOTPThunk } from "./Thunks/SendOTPThunk";
 import { verifyResetOTPThunk } from "./Thunks/verifyResetOTPThunk";
+import { sendRegisterOTP } from "./Thunks/sendRegisterOTP.js";
 
 const initialState = {
   user: null,
@@ -12,6 +13,7 @@ const initialState = {
   email: "",
   message: "",
   isAuthenticated: false,
+  newUserData: {},
 };
 
 const authSlice = createSlice({
@@ -76,8 +78,9 @@ const authSlice = createSlice({
         state.loading = false;
         state.email = action.payload.email;
       })
-      .addCase(sendOTPThunk.rejected, (state) => {
+      .addCase(sendOTPThunk.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload.message;
       })
 
       // ================= Verify Reset OTP =================
@@ -90,6 +93,20 @@ const authSlice = createSlice({
       })
       .addCase(verifyResetOTPThunk.rejected, (state) => {
         state.loading = false;
+      })
+
+      // ================= Register - Send OTP =================
+      .addCase(sendRegisterOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(sendRegisterOTP.fulfilled, (state, action) => {
+        state.loading = false;
+        state.newUserData = action.payload.data;
+      })
+      .addCase(sendRegisterOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
       });
   },
 });

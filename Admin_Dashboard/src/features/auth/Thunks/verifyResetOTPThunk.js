@@ -12,7 +12,7 @@ export const verifyResetOTPThunk = createAsyncThunk(
           email,
           otp,
           newPassword,
-        },
+        },  
       );
       console.log(response.data);
       return response.data;

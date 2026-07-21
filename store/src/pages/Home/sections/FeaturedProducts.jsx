@@ -124,25 +124,11 @@ return (
       </Link>
     </div>
 
-    {/* Products */}
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <ProductCard
-            key={product._id}
-            product={{
-                id: product._id,
-                name: product.name,
-                price: product.price,
-                image: product.images?.[0]?.url,
-                category: product.category,
-                rating: product.averageRating,
-                reviewsCount: product.numReviews,
-                inStock: product.stock > 0,
-                discount: product.discountPrice,
-            }}
-            isWishlisted={wishlistIds.includes(product._id)}
-            onAddToCart={handleAddToCart}
-            onToggleWishlist={handleToggleWishlist}
+          key={product._id}
+          product={product}
         />
         ))}
     </div>
