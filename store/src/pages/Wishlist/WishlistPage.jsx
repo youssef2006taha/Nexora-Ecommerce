@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
-import ProductCart from "../../components/UI/ProductCart";
+import ProductCart from "../../components/UI/ProductCard";
 
 const WishlistPage = () => {
   const navigate = useNavigate();

@@ -340,3 +340,30 @@ ul {
 }
 
 
+
+
+
+
+
+
+
+
+.container-noT { /* xsm */
+    padding: 0 15px;
+    margin: 0 auto;
+}
+@media (min-width: 768px) { /* sm */
+    .container-noT {
+    width: 750px;
+    }
+}
+@media (min-width: 992px) { /* md */
+    .container-noT {
+    width: 970px;
+    }
+}
+@media (min-width: 1200px) { /* lg */
+    .container-noT {
+    width: 1170px;
+    }
+}

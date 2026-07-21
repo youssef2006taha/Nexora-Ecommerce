@@ -10,8 +10,7 @@ export default function ShopByCategory() {
   }
 
   return (
-    <section className="relative overflow-hidden">
-      {/* soft radial glow behind the heading, dark mode only */}
+    <section className="py-10 relative overflow-hidden" id='CategorySec'>
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden h-full dark:block">
         <div className="mx-auto h-[420px] max-w-3xl bg-blue-600/10 blur-[100px]" />
       </div>
@@ -37,12 +36,9 @@ export default function ShopByCategory() {
                 dark:border-white/[0.08] dark:bg-slate-900/60 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset] dark:backdrop-blur-sm
                 dark:hover:-translate-y-1.5 dark:hover:border-blue-400/30 dark:hover:bg-slate-800/80 dark:hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.35)]"
             >
-              {/* subtle top highlight line, dark mode only */}
               <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent hidden dark:block" />
-              {/* soft glow that appears behind the icon on hover, dark mode only */}
               <span className="pointer-events-none absolute -top-6 h-24 w-24 rounded-full bg-blue-500/0 blur-2xl transition-colors duration-300 group-hover:bg-blue-500/20 hidden dark:block" />
 
-              {/* arrow affordance, top right, fades/slides in on hover */}
               <span className="absolute right-4 top-4 flex h-7 w-7 -translate-y-1 items-center justify-center rounded-full bg-slate-50 text-slate-400 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 dark:bg-white/5 dark:text-slate-500">
                 <TbArrowUpRight className="h-4 w-4" />
               </span>

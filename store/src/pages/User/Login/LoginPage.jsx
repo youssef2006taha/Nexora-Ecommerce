@@ -1,191 +1,99 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import SignInForm from "./SignInForm";
 
-import Label from "../../../components/UI/Label";
-import Input from "../../../components/UI/Input";
-import Password from "../../../components/UI/Password";
-import Button from "../../../components/UI/Button";
-
-import { loginValidation } from "../../../utils/validation/loginValidation";
-import { login } from "../../../features/auth/Thunks/authThunk.js";
-import { showToast } from "../../../features/Toast/toastSlice.js";
-
-export default function Login() {
-  const loginDispatch = useDispatch();
-  const toastDispatch = useDispatch();
+const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { loading } = useSelector((store) => store.auth);
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-    general: "",
-  });
-
-  const loginHandler = async (e) => {
-    e.preventDefault();
-
-    const validationErrors = loginValidation(formData);
-
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length > 0) return;
-
-    try {
-      await loginDispatch(login(formData)).unwrap();
-
-      toastDispatch(
-        showToast({
-          message: "Signed in successfully.",
-          severity: "success",
-        }),
-      );
-
-      const from = location.state?.from || "/";
-
-      navigate(from, { replace: true });
-    } catch (error) {
-      if (error === "Invalid email or password") {
-        setErrors((prev) => ({
-          ...prev,
-          general: "Invalid email or password.",
-        }));
-      } else {
-        toastDispatch(
-          showToast({
-            message: error || "Failed to sign in.",
-            severity: "error",
-          }),
-        );
-      }
-    }
-  };
 
   return (
-    <div className="!h-[calc(100vh-64px)] flex items-center justify-center px-4 py-0 overflow-hidden">
-      <form className="w-full max-w-[36rem] rounded-2xl border border-border bg-bg-card p-8 shadow">
-        {/* Header */}
-        <div className="mb-6 sm:mb-8 text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-active via-primary to-primary-hover bg-clip-text text-transparent">
-            Welcome Back
-          </h1>
-
-          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-text-muted/90">
-            Sign in to continue to your account.
-          </p>
-        </div>
-
-        {/* Email */}
-        <div className="flex flex-col gap-2 mb-5">
-          <Label value="Email" htmlFor="email" required />
-
-          <div className="relative">
-            <Input
-              type="text"
-              id="email"
-              required={true}
-              value={formData.email}
-              onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value });
-                (errors.email || errors.general) &&
-                  setErrors({ ...errors, email: "", general: "" });
-              }}
-              placeholder="Enter your email"
-              icon
-              startIcon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5"
-                >
-                  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                </svg>
+    <div className="min-h-screen lg:h-screen flex items-center justify-center px-6 py-10 lg:p-12 overflow-hidden">
+      <div className="w-full lg:max-w-6xl rounded-2xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-[1fr_1.2fr] lg:grid-cols-2 max-sm:gap-6 shadow-[0_0_4px] shadow-primary-hover/20 border border-border">
+        {/* Left Side */}
+        <div className="h-auto md:h-full relative flex flex-col justify-center p-6 max-md:py-18 md:p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent relative">
+          <div className="absolute top-5 left-5">
+            <button
+              type="button"
+              onClick={() =>
+                location.state?.from
+                  ? navigate(location.state.from)
+                  : navigate("/")
               }
-            />
-            {errors.email && (
-              <p className="absolute right-0 text-xs text-red-400 min-h-[20px] mt-1.5">
-                {errors.email || ""}
+              className="group inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-2.5 sm:px-3.5 py-1 backdrop-blur-sm transition-all duration-200 hover:bg-primary/50 dark:hover:bg-primary/40 hover:text-white cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-3 sm:size-4 transition-transform duration-200 group-hover:-translate-x-1"
+              >
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+              </svg>
+
+              <span className="text-[10px] sm:text-sm">Back</span>
+            </button>
+          </div>
+
+          <span className="w-fit px-2 py-1 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-[12px] lg:text-xs font-semibold text-primary bg-primary/10 border border-primary/20">
+            Easy shopping starts here
+          </span>
+
+          <h2 className="mt-8 text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-text-primary">
+            Shop smarter,
+            <br />
+            <span className="bg-gradient-to-r from-primary to-primary-hover bg-clip-text text-transparent">
+              live better.
+            </span>
+          </h2>
+
+          <p className="mt-4 md:mt-6 text-[13px] md:text-sm lg:text-base leading-relaxed text-text-muted bg">
+            Discover thousands of products with a smooth and secure shopping
+            experience built for you.
+          </p>
+
+          <div className="mt-8 md:mt-10 flex gap-3">
+            <div className="size-10 lg:size-12 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-shopping-cart-icon lucide-shopping-cart size-4.5 lg:size-5"
+              >
+                <circle cx="8" cy="21" r="1" />
+                <circle cx="19" cy="21" r="1" />
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+              </svg>
+            </div>
+
+            <div>
+              <p className="font-semibold text-text-primary text-[14px] md:text-sm lg:text-base">
+                Fast & Easy Shopping
               </p>
-            )}
+              <p className="text-[12px] md:text-xs lg:text-sm mt-1 lg:mt-0 text-text-muted">
+                Everything you need in one place
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Password */}
-        <div className="flex flex-col gap-2">
-          <Label value="Password" htmlFor="password" required />
-
-          <div className="relative">
-            <Password
-              id="password"
-              value={formData.password}
-              onChange={(e) => {
-                setFormData({ ...formData, password: e.target.value });
-                (errors.password || errors.general) &&
-                  setErrors({ ...errors, password: "", general: "" });
-              }}
-              placeholder="Enter your password"
-              startIcon
-            />
-            {errors.password && (
-              <p className="absolute right-0 text-xs text-red-400 min-h-[20px] mt-1.5">
-                {errors.password || ""}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Forgot Password */}
-        <div className="mt-5 flex items-center relative">
-          <Link
-            to="/forgot-password"
-            className="text-xs sm:text-sm font-medium text-primary transition-colors hover:text-primary-hover"
-          >
-            Forgot Password?
-          </Link>
-          {errors.general && (
-            <p className="absolute right-0 text-xs text-red-400 min-h-[20px] mt-1.5">
-              {errors.general || ""}
-            </p>
-          )}
-        </div>
-
-        {/* Button */}
-        <div className="mt-5">
-          <Button
-            type="submit"
-            text="Sign In"
-            loading={loading}
-            loadingText="Signing In"
-            variant="primary"
-            className="!w-full"
-            onClick={loginHandler}
-          />
-        </div>
-
-        {/* Divider */}
-        <div className="my-5 h-px bg-border" />
-
-        {/* Footer */}
-        <p className="text-center text-xs sm:text-sm text-text-muted">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="font-semibold text-primary transition-colors hover:text-primary-hover"
-          >
-            Sign up
-          </Link>
-        </p>
-      </form>
+        {/* Form Side */}
+        <SignInForm />
+      </div>
     </div>
   );
-}
+};
+
+export default React.memo(Login);

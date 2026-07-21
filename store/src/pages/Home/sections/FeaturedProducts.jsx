@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../../api/axios";
-import ProductCard from "../../../components/UI/ProductCart";
+import ProductCard from "../../../components/UI/ProductCard";
 
 const FeaturedProducts = () => 
 {

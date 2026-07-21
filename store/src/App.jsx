@@ -28,7 +28,6 @@ function App() {
 
   useEffect(() => {
     themeDispatch(setTheme(theme));
-    /* eslint-disable react-hooks/exhaustive-deps */
   }, []);
 
   return (
@@ -39,18 +38,18 @@ function App() {
             <Route index element={<Navigate to="/home" replace />} />
             <Route path="home" element={<HomePage />} />
             <Route path="shop" element={<ShopPage />} />
+            <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<OrdersPage />} />
             <Route path="wishlist" element={<WishlistPage />} />
-            <Route path="cart" element={<Cart />} />
             <Route path="profile" element={<ProfilePage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
-            <Route path="forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="verify-otp" element={<VerifyRegisterOTPPage />} />
-            <Route path="reset-password" element={<VerifyResetOTPPage />} />
           </Route>
         </Route>
 
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="verify-otp" element={<VerifyRegisterOTPPage />} />
+        <Route path="reset-password" element={<VerifyResetOTPPage />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
 
