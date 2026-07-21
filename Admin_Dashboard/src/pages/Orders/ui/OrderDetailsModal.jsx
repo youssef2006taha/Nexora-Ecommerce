@@ -3,23 +3,22 @@ import { createPortal } from 'react-dom';
 import api from '../../../api/axios';
 
 const OrderDetailsModal = ({ order, onClose, onUpdate }) => {
-  const [status, setStatus] = useState(order?.status || 'pending');
-  const [adminNote, setAdminNote] = useState('');
+const [status, setStatus] = useState(order?.status || 'pending');
+  const [adminNote, setAdminNote] = useState(order?.adminNote || '');
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    if (order) {
-      document.addEventListener("keydown", handleEsc);
-      document.body.style.overflow = "hidden";
+    if (order?._id) {
+      api.get(`/orders/admin/${order._id}`)
+        .then(res => {
+          if (res.order) {
+            setAdminNote(res.order.adminNote || '');
+            setStatus(res.order.status || 'pending');
+          }
+        })
+        .catch(console.error);
     }
-    return () => {
-      document.removeEventListener("keydown", handleEsc);
-      document.body.style.overflow = "auto";
-    };
-  }, [order, onClose]);
+  }, [order?._id]);
 
   if (!order) return null;
 
@@ -44,7 +43,7 @@ const OrderDetailsModal = ({ order, onClose, onUpdate }) => {
   const shipping = 50;  
   const tax = subtotal * 0.14;  
 
-  return createPortal(
+  return(
     <div 
       className="fixed inset-0 z-modal flex justify-end bg-text-primary/30 dark:bg-black/60 backdrop-blur-sm transition-all duration-300"
       onClick={onClose}
@@ -204,8 +203,7 @@ const OrderDetailsModal = ({ order, onClose, onUpdate }) => {
 
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
 
