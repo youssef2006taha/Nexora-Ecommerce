@@ -45,7 +45,6 @@ function MainCard({
       style={{ boxShadow: "var(--shadow-xs-value)" }}
     >
       
-      {/* 🎯 زيادة وضوح الدائرة الملونة في الـ light mode لمنح خلفية زجاجية غنية */}
       <div className="absolute top-[-50px] right-[-50px] pointer-events-none z-0 opacity-50 dark:opacity-60">
         <BackgroundCircle
           size={260}
@@ -56,7 +55,6 @@ function MainCard({
         />
       </div>
 
-      {/* 🎯 تعديل الشفافية والـ blend mode ليكون واضح ومثالي في الـ Light والـ Dark معاً */}
       <div className="absolute inset-0 pointer-events-none z-10 opacity-[0.35] dark:opacity-15 mix-blend-normal dark:mix-blend-overlay">
         {HERO_BACKGROUNDS.map((bgUrl, index) => {
           const isCurrent = index === currentIdx;
@@ -77,7 +75,6 @@ function MainCard({
         })}
       </div>
 
-      {/* 🎯 تدرج لوني يضمن اندماج الصور مع لون الكارت الرئيسي ويعزل النصوص للقراءة */}
       <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/75 dark:via-bg-card/70 to-bg-card/20 dark:to-transparent pointer-events-none z-20" />
 
       <div className="relative z-30 flex flex-col md:flex-row md:items-center justify-between gap-6">
