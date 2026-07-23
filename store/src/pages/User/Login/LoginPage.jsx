@@ -11,35 +11,31 @@ const Login = () => {
       <div className="w-full lg:max-w-6xl rounded-2xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-[1fr_1.2fr] lg:grid-cols-2 max-sm:gap-6 shadow-[0_0_4px] shadow-primary-hover/20 border border-border">
         {/* Left Side */}
         <div className="h-auto md:h-full relative flex flex-col justify-center p-6 max-md:py-18 md:p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent relative">
-          <div className="absolute top-5 left-5">
-            <button
-              type="button"
-              onClick={() =>
-                location.state?.from
-                  ? navigate(location.state.from)
-                  : navigate("/")
-              }
-              className="group inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-2.5 sm:px-3.5 py-1 backdrop-blur-sm transition-all duration-200 hover:bg-primary/50 dark:hover:bg-primary/40 hover:text-white cursor-pointer"
+          <button
+            type="button"
+            onClick={() =>
+              location.state?.from
+                ? navigate(location.state.from)
+                : navigate("/")
+            }
+            className="group absolute top-6 left-6 z-20 inline-flex items-center gap-2 cursor-pointer text-text-primary hover:text-primary"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="size-3.5 md:size-4 transition-transform duration-200 group-hover:-translate-x-1"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="size-3 sm:size-4 transition-transform duration-200 group-hover:-translate-x-1"
-              >
-                <path d="m12 19-7-7 7-7" />
-                <path d="M19 12H5" />
-              </svg>
+              <path d="m12 19-7-7 7-7" />
+              <path d="M19 12H5" />
+            </svg>
 
-              <span className="text-[10px] sm:text-sm">Back</span>
-            </button>
-          </div>
+            <span className="text-[12px] md:text-sm">Back</span>
+          </button>
 
           <span className="w-fit px-2 py-1 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-[12px] lg:text-xs font-semibold text-primary bg-primary/10 border border-primary/20">
             Easy shopping starts here

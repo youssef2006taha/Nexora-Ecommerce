@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import ProductCard from "../../components/UI/ProductCard";
+import ProductCard from "../../components/UI/ProductCartUpdate";
+import FilterSidebar from "./sections/FilterSidebar";
 
 function ShopPage() {
   const [products, setProducts] = useState([]);
@@ -20,8 +21,9 @@ function ShopPage() {
 
   async function loadProducts() {
     try {
-      const response = await api.get("/products");
-      setProducts(response.data?.products || response.products || []);
+      // api.get already unwraps res.data — don't call .data again
+      const data = await api.get("/products");
+      setProducts(data?.products || []);
     } catch (error) {
       console.error(error);
     }
@@ -32,9 +34,7 @@ function ShopPage() {
     ...new Set(
       products
         .map((p) =>
-          typeof p.category === "object"
-            ? p.category?.name
-            : p.category
+          typeof p.category === "object" ? p.category?.name : p.category
         )
         .filter(Boolean)
     ),
@@ -48,251 +48,118 @@ function ShopPage() {
           ? product.category?.name
           : product.category;
 
-      const price =
-        product.discountPrice || product.price;
+      const price = product.discountPrice || product.price;
 
       const searchMatch = product.name
         ?.toLowerCase()
         .includes(search.toLowerCase());
 
-      const categoryMatch =
-        category === "" ||
-        productCategory === category;
+      const categoryMatch = category === "" || productCategory === category;
 
-      const minMatch =
-        minPrice === "" ||
-        price >= Number(minPrice);
+      const minMatch = minPrice === "" || price >= Number(minPrice);
 
-      const maxMatch =
-        maxPrice === "" ||
-        price <= Number(maxPrice);
+      const maxMatch = maxPrice === "" || price <= Number(maxPrice);
 
-      return (
-        searchMatch &&
-        categoryMatch &&
-        minMatch &&
-        maxMatch
-      );
+      return searchMatch && categoryMatch && minMatch && maxMatch;
     })
     .sort((a, b) => {
-      const priceA =
-        a.discountPrice || a.price;
-
-      const priceB =
-        b.discountPrice || b.price;
+      const priceA = a.discountPrice || a.price;
+      const priceB = b.discountPrice || b.price;
 
       switch (sortBy) {
         case "low":
           return priceA - priceB;
-
         case "high":
           return priceB - priceA;
-
         case "az":
           return a.name.localeCompare(b.name);
-
         case "za":
           return b.name.localeCompare(a.name);
-
         default:
           return 0;
       }
     });
 
+  function handleClearFilters() {
+    setSearch("");
+    setCategory("");
+    setMinPrice("");
+    setMaxPrice("");
+    setSortBy("default");
+  }
+
   return (
-
- <div className="min-h-screen bg-[#f8f9fb] p-6">
-
-  {/* Search */}
-  <div className="mb-6">
-    <input
-      type="text"
-      placeholder="Search products..."
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-200"
-    />
-  </div>
-
-  <div className="flex gap-6">
-
-    {/* Sidebar */}
-    <aside className="hidden md:block w-72 rounded-2xl bg-white border border-gray-200 p-5 h-fit shadow-sm">
-
-      <h2 className="text-lg font-semibold mb-6">
-        Filters
-      </h2>
-
-      {/* Categories */}
-      <div className="mb-8">
-
-        <h3 className="font-semibold mb-3">
-          Categories
-        </h3>
-
-        <div className="space-y-3">
-
-          <label className="flex items-center gap-2">
-
-            <input
-              type="radio"
-              value=""
-              checked={category === ""}
-              onChange={(e) => setCategory(e.target.value)}
-            />
-
-            All Categories
-
-          </label>
-
-          {categories.map((cat) => (
-
-            <label
-              key={cat}
-              className="flex items-center gap-2"
-            >
-
-              <input
-                type="radio"
-                value={cat}
-                checked={category === cat}
-                onChange={(e) =>
-                  setCategory(e.target.value)
-                }
-              />
-
-              {cat}
-
-            </label>
-
-          ))}
-
-        </div>
-
+    <div className="min-h-screen bg-bg-main p-6">
+      {/* Search */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full rounded-lg border border-border bg-bg-card px-4 py-3 text-text-primary placeholder:text-text-placeholder outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary-light"
+        />
       </div>
 
-      {/* Price */}
+      <div className="flex gap-6">
+        <FilterSidebar
+          categories={categories}
+          category={category}
+          setCategory={setCategory}
+          minPrice={minPrice}
+          setMinPrice={setMinPrice}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          onClearFilters={handleClearFilters}
+        />
 
-      <div className="mb-8">
+        {/* Products */}
+        <main className="flex-1">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-text-primary">Shop</h1>
+            <span className="text-text-muted">
+              {filteredProducts.length} Products
+            </span>
+          </div>
 
-        <h3 className="font-semibold mb-3">
-          Price Range
-        </h3>
-
-        <div className="flex gap-2">
-
-          <input
-            type="number"
-            placeholder="Min"
-            value={minPrice}
-            onChange={(e)=>setMinPrice(e.target.value)}
-            className="w-full border rounded-lg p-2"
-          />
-
-          <input
-            type="number"
-            placeholder="Max"
-            value={maxPrice}
-            onChange={(e)=>setMaxPrice(e.target.value)}
-            className="w-full border rounded-lg p-2"
-          />
-
-        </div>
-
+          {filteredProducts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-bg-card py-20 text-center">
+              <p className="text-text-primary font-semibold mb-1">
+                No products match your filters
+              </p>
+              <p className="text-text-muted text-sm">
+                Try adjusting your search or clearing filters.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  product={{
+                    id: product._id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.images?.[0]?.url,
+                    category:
+                      typeof product.category === "object"
+                        ? product.category?.name
+                        : product.category,
+                    rating: product.averageRating,
+                    reviewsCount: product.numReviews,
+                    inStock: product.stock > 0,
+                    discount: product.discountPrice,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </main>
       </div>
-
-      {/* Sort */}
-
-      <div className="mb-8">
-
-        <h3 className="font-semibold mb-3">
-          Sort By
-        </h3>
-
-        <select
-          value={sortBy}
-          onChange={(e)=>setSortBy(e.target.value)}
-          className="w-full border rounded-lg p-3"
-        >
-
-          <option value="default">
-            Default
-          </option>
-
-          <option value="low">
-            Price Low → High
-          </option>
-
-          <option value="high">
-            Price High → Low
-          </option>
-
-          <option value="az">
-            Name A-Z
-          </option>
-
-          <option value="za">
-            Name Z-A
-          </option>
-
-        </select>
-
-      </div>
-
-      <button
-        onClick={()=>{
-          setSearch("");
-          setCategory("");
-          setMinPrice("");
-          setMaxPrice("");
-          setSortBy("default");
-        }}
-        className="w-full bg-violet-600 text-white rounded-xl py-3 hover:bg-violet-700"
-      >
-
-        Clear All Filters
-
-      </button>
-
-    </aside>
-
-    {/* Products */}
-
-    <main className="flex-1">
-
-      <div className="flex justify-between items-center mb-6">
-
-        <h1 className="text-2xl font-bold">
-          Shop
-        </h1>
-
-        <span className="text-gray-500">
-
-          {filteredProducts.length} Products
-
-        </span>
-
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-        {filteredProducts.map((product)=>(
-
-          <ProductCard
-            key={product._id}
-            product={product}
-          />
-
-        ))}
-
-      </div>
-
-    </main>
-
-  </div>
-
-</div>
-);
+    </div>
+  );
 }
 
 export default ShopPage;

@@ -99,7 +99,7 @@ const VerifyResetOTPPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[calc(100vh-64px)] bg-bg-main overflow-hidden px-6">
+    <div className="flex justify-center items-center h-screen bg-bg-main overflow-hidden px-6">
       <div className="flex flex-col gap-6 border border-secondary/10 dark:border-secondary/15 bg-bg-card p-8 rounded-4xl shadow">
         {/* Header */}
         <div className="text-center">

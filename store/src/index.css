@@ -32,42 +32,41 @@
   /* ===========================================
       BACKGROUNDS (Light Mode - درجات ثلجية مريحة جداً للعين)
   ========================================== */
-  --bg-main: #f8fafc;     
-  --bg-sidebar: #ffffff;  
+  --bg-main: #f8fafc;
+  --bg-sidebar: #ffffff;
   --bg-navbar: #ffffff;
   --bg-surface: #ffffff;
   --bg-card: #ffffff;
 
-  --bg-hover: #f1f5f9;    
+  --bg-hover: #f1f5f9;
   --bg-active: #e2e8f0;
 
+  --Background-Circle-color-1: #8176af;
+  --Background-Circle-color-2: #fda4af;
+  --Background-Circle-color-3: #818cf8;
 
-  --Background-Circle-color-1: #8176af; 
-  --Background-Circle-color-2: #fda4af; 
-  --Background-Circle-color-3: #818cf8; 
-  
-  --Background-Circle-opacity-1: 0.25; 
-  --Background-Circle-opacity-2: 0.20;
-  --Background-Circle-opacity-3: 0.20;
-  
+  --Background-Circle-opacity-1: 0.25;
+  --Background-Circle-opacity-2: 0.2;
+  --Background-Circle-opacity-3: 0.2;
+
   /* ===========================================
       PRIMARY & ACCENT COLORS (البنفسجي المات الساحر من التصميم)
   ========================================== */
-  --primary: #8176af;        /* الدرجة المريحة الظاهرة في التصميم */
-  --primary-hover: #6d6299;  /* درجة أغمق قليلاً للهوفر */
+  --primary: #8176af; /* الدرجة المريحة الظاهرة في التصميم */
+  --primary-hover: #6d6299; /* درجة أغمق قليلاً للهوفر */
   --primary-active: #5a5084; /* درجة أنشط وأعمق عند الضغط */
   --primary-light: rgba(129, 118, 175, 0.08);
 
-  --secondary: #64748b;   
+  --secondary: #64748b;
 
-  --accent: #a399cc;         /* الأكسنت مستوحى من درجات الإضاءة الفاتحة في الجريدينت */
+  --accent: #a399cc; /* الأكسنت مستوحى من درجات الإضاءة الفاتحة في الجريدينت */
   --accent-hover: #8176af;
   --accent-active: #6d6299;
 
   /* ===========================================
       TEXT
   ========================================== */
-  --text-primary: #0f172a;   
+  --text-primary: #0f172a;
   --text-secondary: #334155;
   --text-muted: #64748b;
   --text-disabled: #94a3b8;
@@ -99,7 +98,8 @@
   --shadow-sm-value: 0 4px 10px rgba(15, 23, 42, 0.03);
   --shadow-md-value: 0 8px 24px rgba(15, 23, 42, 0.05);
   --shadow-lg-value: 0 20px 40px rgba(15, 23, 42, 0.06);
-  --shadow-primary-value: 0 0 0 1px rgba(129, 118, 175, 0.06), 0 0 18px rgba(129, 118, 175, 0.08);
+  --shadow-primary-value:
+    0 0 0 1px rgba(129, 118, 175, 0.06), 0 0 18px rgba(129, 118, 175, 0.08);
 
   --radius-sm-value: 8px;
   --radius-md-value: 12px;
@@ -134,43 +134,42 @@
   /* ===========================================
       BACKGROUNDS (Dark Mode - الرمادي البركاني العميق المسحوب من يمين الصورة)
   ========================================== */
-  --bg-main: #0c0e17;     /* اللون الغامق جداً المائل للبنفسجي اللطيف من خلفية الفورم */
-  --bg-sidebar: #121522;  
+  --bg-main: #0c0e17; /* اللون الغامق جداً المائل للبنفسجي اللطيف من خلفية الفورم */
+  --bg-sidebar: #121522;
   --bg-navbar: #121522;
   --bg-surface: #171b2b;
-  --bg-card: rgba(18, 21, 34, 0.7); 
+  --bg-card: rgba(18, 21, 34, 0.7);
 
   --bg-hover: #1f243a;
   --bg-active: #2a314f;
-
 
   /* 🌌 كرات الخلفية - معادلة السطوع المتزن (واضحة ومش فاقعة) */
   --Background-Circle-color-1: #8176af; /* البنفسجي المات الصريح من التصميم */
   --Background-Circle-color-2: #f43f5e; /* الروز المضيء اللي بيكسر عتمة التصميم */
   --Background-Circle-color-3: #9285c7; /* البنفسجي الفاتح المضيء */
-  
+
   /* 💡 السر هنا: الشفافية دقيقة جداً (الألوان واضحة بس متدارية خلف الستار) */
-  --Background-Circle-opacity-1: 0.15; 
+  --Background-Circle-opacity-1: 0.15;
   --Background-Circle-opacity-2: 0.12;
   --Background-Circle-opacity-3: 0.12;
   /* ===========================================
       PRIMARY & ACCENT COLORS (Dark Mode)
   ========================================== */
-  --primary: #9d92cd;        /* درجة البنفسجي المات المضيئة لتناسب الخلفيات الداكنة */
+  --primary: #9d92cd; /* درجة البنفسجي المات المضيئة لتناسب الخلفيات الداكنة */
   --primary-hover: #b4aae0;
   --primary-active: #cbbff2;
   --primary-light: rgba(157, 146, 205, 0.08);
 
   --secondary: #94a3b8;
 
-  --accent: #cbbff2;  
+  --accent: #cbbff2;
   --accent-hover: #ded5ff;
   --accent-active: #eee8ff;
 
   /* ===========================================
       TEXT
   ========================================== */
-  --text-primary: #f1f5f9;   
+  --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
   --text-disabled: #475569;
@@ -188,13 +187,13 @@
       STATUS
   ========================================== */
   --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.10);
+  --success-bg: rgba(16, 185, 129, 0.1);
   --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.10);
+  --warning-bg: rgba(245, 158, 11, 0.1);
   --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.10);
+  --danger-bg: rgba(239, 68, 68, 0.1);
   --info: #3b82f6;
-  --info-bg: rgba(59, 130, 246, 0.10);
+  --info-bg: rgba(59, 130, 246, 0.1);
 
   /* ===========================================
       SHADOWS
@@ -203,9 +202,9 @@
   --shadow-sm-value: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-md-value: 0 8px 28px rgba(0, 0, 0, 0.4);
   --shadow-lg-value: 0 20px 45px rgba(0, 0, 0, 0.45);
-  --shadow-primary-value: 0 0 0 1px rgba(157, 146, 205, 0.1), 0 0 18px rgba(157, 146, 205, 0.12);
+  --shadow-primary-value:
+    0 0 0 1px rgba(157, 146, 205, 0.1), 0 0 18px rgba(157, 146, 205, 0.12);
 }
-
 
 @theme {
   /* ===========================================
@@ -220,12 +219,12 @@
   --color-bg-hover: var(--bg-hover);
   --color-bg-active: var(--bg-active);
 
-  --Background-Circle-color-1 : var(--Background-Circle-color-1);
-  --Background-Circle-color-2 : var(--Background-Circle-color-2);
-  --Background-Circle-color-3 : var(--Background-Circle-color-3);
-  --Background-Circle-opacity-1 : var(--Background-Circle-opacity-1);
-  --Background-Circle-opacity-2 : var(--Background-Circle-opacity-2);
-  --Background-Circle-opacity-3 : var(--Background-Circle-opacity-3);
+  --Background-Circle-color-1: var(--Background-Circle-color-1);
+  --Background-Circle-color-2: var(--Background-Circle-color-2);
+  --Background-Circle-color-3: var(--Background-Circle-color-3);
+  --Background-Circle-opacity-1: var(--Background-Circle-opacity-1);
+  --Background-Circle-opacity-2: var(--Background-Circle-opacity-2);
+  --Background-Circle-opacity-3: var(--Background-Circle-opacity-3);
   /* ===========================================
       BRAND COLORS
   =========================================== */
@@ -317,6 +316,17 @@
   --z-index-sticky: var(--z-sticky-value);
   --z-index-modal: var(--z-modal-value);
   --z-index-toast: var(--z-toast-value);
+
+  /* ===========================================
+      Z Breakpoints
+  =========================================== */
+
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
 }
 
 /* ===========================================

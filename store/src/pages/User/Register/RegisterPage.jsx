@@ -1,341 +1,174 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import RegisterForm from "./RegisterForm";
 
-import Label from "../../../components/UI/Label";
-import Input from "../../../components/UI/Input";
-import Password from "../../../components/UI/Password";
-import Button from "../../../components/UI/Button";
-
-import { registerValidation } from "../../../utils/validation/registerValidation";
-import { sendRegisterOTP } from "../../../features/auth/Thunks/sendRegisterOTP";
-import { showToast } from "../../../features/Toast/toastSlice";
-
-export default function Register() {
-  const authDispatch = useDispatch();
-  const toastDispatch = useDispatch();
-
+const Register = () => {
   const navigate = useNavigate();
-
-  const { loading } = useSelector((state) => state.auth);
-
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const [errors, setErrors] = useState({
-    username: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-    general: "",
-  });
-
-  const registerHandler = async (e) => {
-    e.preventDefault();
-
-    const validationErrors = registerValidation(formData);
-
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length > 0) return;
-
-    try {
-      await authDispatch(
-        sendRegisterOTP({
-          username: formData.username,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password,
-        }),
-      ).unwrap();
-
-      navigate("/verify-otp");
-    } catch (error) {
-      if (error === "Email already exists") {
-        setErrors((prev) => ({
-          ...prev,
-          general: "Email already exists.",
-        }));
-      } else {
-        toastDispatch(
-          showToast({
-            message: error || "Failed to create account.",
-            severity: "error",
-          }),
-        );
-      }
-    }
-  };
-
+  const location = useLocation();
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-6">
-      <form
-        onSubmit={registerHandler}
-        className="w-full max-w-[36rem] rounded-2xl border border-border bg-bg-card p-8 shadow"
-      >
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-active via-primary to-primary-hover bg-clip-text text-transparent">
-            Create Account
-          </h1>
-
-          <p className="mt-2 text-sm text-text-muted/90">
-            Create your account to start shopping.
-          </p>
-        </div>
-
-        {/* Full Name */}
-        <div className="flex flex-col gap-2 mb-5">
-          <Label value="Full Name" htmlFor="name" required />
-
-          <div className="relative">
-            <Input
-              type="text"
-              id="name"
-              required
-              value={formData.name}
-              onChange={(e) => {
-                setFormData({ ...formData, username: e.target.value });
-
-                (errors.username || errors.general) &&
-                  setErrors({
-                    ...errors,
-                    username: "",
-                    general: "",
-                  });
-              }}
-              placeholder="Enter your full name"
-              icon
-              startIcon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5"
-                >
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              }
-            />
-
-            {errors.username && (
-              <p className="absolute right-0 mt-1.5 min-h-[20px] text-xs text-red-400">
-                {errors.username}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Email */}
-        <div className="flex flex-col gap-2 mb-5">
-          <Label value="Email" htmlFor="email" required />
-
-          <div className="relative">
-            <Input
-              type="email"
-              id="email"
-              required
-              value={formData.email}
-              onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value });
-
-                (errors.email || errors.general) &&
-                  setErrors({
-                    ...errors,
-                    email: "",
-                    general: "",
-                  });
-              }}
-              placeholder="Enter your email"
-              icon
-              startIcon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5"
-                >
-                  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                </svg>
-              }
-            />
-
-            {errors.email && (
-              <p className="absolute right-0 mt-1.5 min-h-[20px] text-xs text-red-400">
-                {errors.email}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Phone */}
-        <div className="flex flex-col gap-2 mb-5">
-          <Label value="Phone" htmlFor="phone" required />
-
-          <div className="relative">
-            <Input
-              type="text"
-              id="phone"
-              required
-              value={formData.phone}
-              onChange={(e) => {
-                setFormData({ ...formData, phone: e.target.value });
-
-                (errors.phone || errors.general) &&
-                  setErrors({
-                    ...errors,
-                    phone: "",
-                    general: "",
-                  });
-              }}
-              placeholder="Enter your phone number"
-              icon
-              startIcon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-phone-icon lucide-phone size-5"
-                >
-                  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
-                </svg>
-              }
-            />
-
-            {errors.phone && (
-              <p className="absolute right-0 mt-1.5 min-h-[20px] text-xs text-red-400">
-                {errors.phone}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Password */}
-        <div className="flex flex-col gap-2 mb-5">
-          <Label value="Password" htmlFor="password" required />
-
-          <div className="relative">
-            <Password
-              id="password"
-              value={formData.password}
-              onChange={(e) => {
-                setFormData({
-                  ...formData,
-                  password: e.target.value,
-                });
-
-                (errors.password || errors.general) &&
-                  setErrors({
-                    ...errors,
-                    password: "",
-                    general: "",
-                  });
-              }}
-              placeholder="Enter your password"
-              startIcon
-            />
-
-            {errors.password && (
-              <p className="absolute right-0 mt-1.5 min-h-[20px] text-xs text-red-400">
-                {errors.password}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Confirm Password */}
-        <div className="flex flex-col gap-2">
-          <Label value="Confirm Password" htmlFor="confirmPassword" required />
-
-          <div className="relative">
-            <Password
-              id="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={(e) => {
-                setFormData({
-                  ...formData,
-                  confirmPassword: e.target.value,
-                });
-
-                (errors.confirmPassword || errors.general) &&
-                  setErrors({
-                    ...errors,
-                    confirmPassword: "",
-                    general: "",
-                  });
-              }}
-              placeholder="Confirm your password"
-              startIcon
-            />
-
-            {errors.confirmPassword && (
-              <p className="absolute right-0 mt-1.5 min-h-[20px] text-xs text-red-400">
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* General Error */}
-        <div className="mt-5 flex items-center justify-end min-h-[20px]">
-          {errors.general && (
-            <p className="text-xs text-red-400">{errors.general}</p>
-          )}
-        </div>
-
-        {/* Submit Button */}
-        <div className="mt-2">
-          <Button
-            type="submit"
-            text="Create Account"
-            loading={loading}
-            loadingText="Creating Account"
-            variant="primary"
-            className="!w-full"
-            onClick={registerHandler}
-          />
-        </div>
-
-        {/* Divider */}
-        <div className="my-6 h-px bg-border" />
-
-        {/* Footer */}
-        <p className="text-center text-xs sm:text-sm text-text-muted">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-semibold text-primary transition-colors hover:text-primary-hover"
+    <div className="min-h-screen flex items-center justify-center px-6 py-10 lg:p-12 overflow-hidden">
+      <div className="w-full lg:max-w-6xl rounded-2xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-[1fr_1.2fr] lg:grid-cols-2 max-sm:gap-6 shadow-[0_0_4px] shadow-primary-hover/20 border border-border">
+        {/* Left Side */}
+        <div className="min-h-[92vh] md:h-full relative flex flex-col p-6 md:p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent">
+          <button
+            type="button"
+            onClick={() =>
+              location.state?.from
+                ? navigate(location.state.from)
+                : navigate("/")
+            }
+            className="group absolute top-6 left-6 z-20 inline-flex items-center gap-2 cursor-pointer text-text-primary hover:text-primary"
           >
-            Sign In
-          </Link>
-        </p>
-      </form>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="size-3.5 md:size-4 transition-transform duration-200 group-hover:-translate-x-1"
+            >
+              <path d="m12 19-7-7 7-7" />
+              <path d="M19 12H5" />
+            </svg>
+
+            <span className="text-[12px] md:text-sm">Back</span>
+          </button>
+
+          {/* Background Blur */}
+          <div className="absolute -top-28 -right-24 size-72 rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute -bottom-32 -left-24 size-80 rounded-full bg-primary/10 blur-3xl" />
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col grow">
+            <h2 className="mt-8 text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-text-primary">
+              Shop smarter,
+              <br />
+              <span className="bg-gradient-to-r from-primary to-primary-hover bg-clip-text text-transparent">
+                live better.
+              </span>
+            </h2>
+
+            <p className="mt-4 md:mt-6 text-[13px] md:text-sm lg:text-base leading-relaxed text-text-muted bg">
+              Discover thousands of products with a smooth and secure shopping
+              experience built for you.
+            </p>
+
+            <div className="min-h-36 my-8 bg-[url('/public/signup.png')] bg-contain bg-center bg-no-repeat grow" />
+          </div>
+
+          {/* Stats */}
+          <div className="relative z-10 grid max-xs:grid-cols-2 xs:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 justify-items-stretch gap-2 sm:gap-4">
+            <div className="rounded-2xl bg-bg-card hover:bg-primary/1 border border-border p-3 text-center shadow">
+              <div className="mb-3 mx-auto flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-package-icon lucide-package size-4"
+                >
+                  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
+                  <path d="M12 22V12" />
+                  <polyline points="3.29 7 12 12 20.71 7" />
+                  <path d="m7.5 4.27 9 5.15" />
+                </svg>
+              </div>
+
+              <h4 className="text-sm font-bold">15K+</h4>
+
+              <p className="mt-1 text-[9px] text-text-muted">Products</p>
+            </div>
+
+            <div className="rounded-2xl bg-bg-card hover:bg-primary/1 border border-border p-3 text-center shadow">
+              <div className="mb-3 mx-auto flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-star-icon lucide-star size-4"
+                >
+                  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+                </svg>
+              </div>
+
+              <h4 className="text-sm font-bold">4.9</h4>
+
+              <p className="mt-1 text-[9px] text-text-muted">Rating</p>
+            </div>
+
+            <div className="rounded-2xl bg-bg-card hover:bg-primary/1 border border-border p-3 text-center shadow">
+              <div className="mb-3 mx-auto flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-truck-icon lucide-truck size-4"
+                >
+                  <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
+                  <path d="M15 18H9" />
+                  <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" />
+                  <circle cx="17" cy="18" r="2" />
+                  <circle cx="7" cy="18" r="2" />
+                </svg>
+              </div>
+
+              <h4 className="text-sm font-bold">Fast</h4>
+
+              <p className="mt-1 text-[9px] text-text-muted">Delivery</p>
+            </div>
+
+            <div className="rounded-2xl bg-bg-card hover:bg-primary/1 border border-border p-3 text-center shadow">
+              <div className="mb-3 mx-auto flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-shield-half-icon lucide-shield-half size-4"
+                >
+                  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                  <path d="M12 22V2" />
+                </svg>
+              </div>
+
+              <h4 className="text-sm font-bold">100%</h4>
+
+              <p className="mt-1 text-[9px] text-text-muted">Secure</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Form Side */}
+       <div className="relative z-10">
+         <RegisterForm />
+       </div>
+      </div>
     </div>
   );
-}
+};
+
+export default React.memo(Register);

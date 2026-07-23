@@ -20,19 +20,20 @@ const linksList = [
 
 const Header = () => {
   const [wishlistItemsCount, setWishlistItemsCount] = useState(0);
-  const [cartItemsCount, setCartItemsCount] = useState(0);
+  // const [cartItemsCount, setCartItemsCount] = useState(0);
   const { theme } = useSelector((store) => store.theme);
+  const { totalQuantity } = useSelector((store) => store.cart);
   const themeDispatch = useDispatch();
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const cartRes = await api.get("carts");
-        setCartItemsCount(cartRes.data?.itemCount || cartRes?.itemCount || 0);
+        // const cartRes = await api.get("carts");
+        // setCartItemsCount(cartRes.data?.itemCount || cartRes?.itemCount || 0);
 
         const wishlistRes = await api.get("Wishlists/my");
         setWishlistItemsCount(
-          wishlistRes.data?.totalProducts || wishlistRes?.totalProducts || 0
+          wishlistRes.data?.totalProducts || wishlistRes?.totalProducts || 0,
         );
       } catch (e) {
         console.error("Error fetching header data:", e);
@@ -58,7 +59,7 @@ const Header = () => {
             key={link.id}
             to={link.link}
             className={({ isActive }) =>
-              `text-sm px-4 py-2 rounded-full text-text-primary transition-colors duration-300 capitalize shadow-md ${
+              `text-sm px-4 py-2 rounded-full text-text-primary transition-colors duration-300 capitalize shadow-md whitespace-nowrap${
                 isActive
                   ? "bg-bg-active/70 text-text-primary"
                   : "text-text-primary hover:bg-bg-hover"
@@ -99,9 +100,9 @@ const Header = () => {
           aria-label="Cart"
           className="relative rounded-full p-2 text-text-primary border border-border shadow bg-bg-surface hover:bg-bg-hover hover:text-primary transition"
         >
-          {cartItemsCount > 0 && (
+          {totalQuantity > 0 && (
             <span className="absolute -top-2 text-xs -right-1 text-white px-1.5 flex items-center justify-center rounded-full bg-indigo-500">
-              {cartItemsCount}
+              {totalQuantity}
             </span>
           )}
           <MdOutlineShoppingCart />

@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
 import { getCurrentUser } from "./features/auth/Thunks/getCurrentUserThunk";
+import { GetMyCartThunk } from "./features/cart/Thunks/GetMyCartThunk";
 import AuthLoader from "./components/UI/AuthLoader";
 
 export default function AuthInitializer() {
   const dispatch = useDispatch();
+  const cartDispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
 
@@ -18,6 +20,7 @@ export default function AuthInitializer() {
 
       try {
         await dispatch(getCurrentUser()).unwrap();
+        await cartDispatch(GetMyCartThunk()).unwrap();
       } catch (error) {
         console.error(error);
       } finally {
@@ -28,7 +31,8 @@ export default function AuthInitializer() {
     if (token && !user) {
       fetchUser();
     }
-  }, [token, user, dispatch]);
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, []);
 
   if (loading) {
     return <AuthLoader />;

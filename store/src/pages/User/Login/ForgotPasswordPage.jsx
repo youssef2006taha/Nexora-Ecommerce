@@ -40,7 +40,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] flex justify-center items-center bg-bg-main overflow-hidden px-6">
+    <div className="h-screen flex justify-center items-center bg-bg-main overflow-hidden px-6">
       <div className="flex flex-col gap-6 border border-secondary/10 dark:border-secondary/15 bg-bg-card px-5 py-8 sm:p-10 rounded-4xl shadow min-w-[320px] sm:min-w-[400px]">
         {/* Icon */}
         <div className="flex justify-center">
@@ -141,7 +141,7 @@ const ForgotPasswordPage = () => {
           Remember your password?{" "}
           <button
             onClick={() => Navigate("/login", { replace: true })}
-            className="text-primary hover:text-primary-hover font-medium transition-colors"
+            className="text-primary hover:text-primary-hover font-medium transition-colors cursor-pointer"
           >
             Login
           </button>
