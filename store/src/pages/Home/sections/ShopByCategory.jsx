@@ -13,7 +13,6 @@ import { TbArrowUpRight } from "react-icons/tb";
 
 const API_BASE = "https://e-commerce-api-3wara.vercel.app";
 
-// Map category names to icons
 const categoryIcons = {
   electronics: FaLaptop,
   mobiles: FaMobileAlt,
@@ -37,10 +36,7 @@ export default function ShopByCategory() {
     const getCategories = async () => {
       try {
         const res = await axios.get(`${API_BASE}/products`, {
-          params: {
-            page: 1,
-            limit: 100,
-          },
+          params: { page: 1, limit: 100 },
         });
 
         if (res.data.success) {
@@ -52,8 +48,7 @@ export default function ShopByCategory() {
             if (!grouped[category]) {
               grouped[category] = {
                 id: category,
-                name:
-                  category.charAt(0).toUpperCase() + category.slice(1),
+                name: category.charAt(0).toUpperCase() + category.slice(1),
                 products: 0,
               };
             }
@@ -76,34 +71,45 @@ export default function ShopByCategory() {
   if (loading) {
     return (
       <section className="py-20 text-center">
-        <h2 className="text-lg font-semibold">Loading Categories...</h2>
+        <h2
+          className="text-lg font-semibold animate-pulse"
+          style={{ color: "var(--text-muted)" }}
+        >
+          Loading Categories...
+        </h2>
       </section>
     );
   }
 
   return (
-    <section
-      className="relative overflow-hidden py-10"
-      id="CategorySec"
-    >
+    <section className="relative overflow-hidden py-10" id="CategorySec">
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-full">
-        <div className="mx-auto h-[420px] max-w-3xl bg-primary/10 blur-[100px]" />
+        <div
+          className="mx-auto h-[420px] max-w-3xl blur-[120px] opacity-20"
+          style={{ backgroundColor: "var(--primary)" }}
+        />
       </div>
 
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mb-12 flex flex-col items-center text-center">
-          <span className="mb-3 h-1 w-10 rounded-full bg-primary" />
+          <span
+            className="mb-3 h-1 w-10 rounded-full"
+            style={{ backgroundColor: "var(--primary)" }}
+          />
 
-          <h2 className="text-3xl font-bold text-text-primary sm:text-4xl">
+          <h2
+            className="text-3xl font-extrabold sm:text-4xl tracking-tight"
+            style={{ color: "var(--text-primary)" }}
+          >
             Shop by Category
           </h2>
 
-          <p className="mt-2 text-text-muted">
+          <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
             Browse our wide range of categories
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
           {categories.map(({ id, name, products }) => {
             const Icon = categoryIcons[id] || categoryIcons.default;
 
@@ -112,25 +118,56 @@ export default function ShopByCategory() {
                 key={id}
                 type="button"
                 onClick={() => goToCategory(id)}
-                className="group relative flex flex-col items-center overflow-hidden rounded-lg border border-border bg-bg-card px-6 py-10 text-center shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="group relative flex flex-col items-center overflow-hidden rounded-2xl border px-6 py-10 text-center transition-all duration-300 hover:-translate-y-1 focus:outline-none"
+                style={{
+                  backgroundColor: "var(--bg-card)",
+                  borderColor: "var(--border)",
+                  boxShadow: "var(--shadow-xs-value)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--primary)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-md-value)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-xs-value)";
+                }}
               >
-                <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light to-transparent" />
-
-                <span className="pointer-events-none absolute -top-6 h-24 w-24 rounded-full bg-primary/0 blur-2xl transition-colors duration-300 group-hover:bg-primary/20" />
-
-                <span className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-full bg-bg-hover text-text-muted opacity-0 transition-all duration-300 group-hover:opacity-100">
+                <span
+                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100"
+                  style={{
+                    backgroundColor: "var(--bg-hover)",
+                    color: "var(--primary)",
+                  }}
+                >
                   <TbArrowUpRight className="h-4 w-4" />
                 </span>
 
-                <span className="relative mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-primary-light text-primary ring-1 ring-inset ring-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/20">
+                <span
+                  className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:scale-110"
+                  style={{
+                    backgroundColor: "var(--primary-light)",
+                    color: "var(--primary)",
+                    border: "1px solid var(--border-light)",
+                  }}
+                >
                   <Icon className="h-7 w-7" />
                 </span>
 
-                <span className="relative text-lg font-semibold text-text-primary">
+                <span
+                  className="relative text-lg font-bold transition-colors"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   {name}
                 </span>
 
-                <span className="relative mt-2 inline-flex items-center rounded-full bg-bg-hover px-2.5 py-0.5 text-xs font-medium text-text-muted">
+                <span
+                  className="relative mt-2 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+                  style={{
+                    backgroundColor: "var(--bg-hover)",
+                    color: "var(--text-muted)",
+                  }}
+                >
                   {products} products
                 </span>
               </button>

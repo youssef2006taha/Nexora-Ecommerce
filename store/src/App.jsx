@@ -18,6 +18,7 @@ import VerifyResetOTPPage from "./pages/User/Login/VerifyResetOTPPage";
 import VerifyRegisterOTPPage from "./pages/User/Login/VerifyRegisterOTPPage";
 import RegisterPage from "./pages/User/Register/RegisterPage";
 import Cart from "./pages/Cart/CartPage";
+import ProtectedRoute from "./components/Layout/ProtectedRoute";
 
 // Toast
 import Toast from "../src/components/UI/toast/Toast";
@@ -29,6 +30,7 @@ function App() {
 
   useEffect(() => {
     themeDispatch(setTheme(theme));
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, []);
 
   return (
@@ -41,9 +43,11 @@ function App() {
             <Route path="shop" element={<ShopPage />} />
             <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<OrdersPage />} />
-                    <Route path="orders/:id" element={<OrderDetailsPage />} />
+            <Route path="orders/:id" element={<OrderDetailsPage />} />
             <Route path="wishlist" element={<WishlistPage />} />
-            <Route path="profile" element={<ProfilePage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="profile" element={<ProfilePage />} />
+            </Route>
           </Route>
         </Route>
 

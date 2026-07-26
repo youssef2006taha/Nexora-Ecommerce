@@ -54,33 +54,69 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="container-noT">
-      <div className="w-full mx-auto py-4">
-        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-7 tracking-tight">
+    <div className="container-noT min-h-[70vh]">
+      <div className="w-full mx-auto py-8">
+        <h1
+          className="text-3xl font-extrabold mb-7 tracking-tight"
+          style={{ color: "var(--text-primary)" }}
+        >
           My Orders
         </h1>
 
+        {/* Loading */}
         {loading && (
           <div className="space-y-4">
             {[1, 2, 3].map((n) => (
               <div
                 key={n}
-                className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 animate-pulse"
+                className="rounded-2xl p-6 animate-pulse border"
+                style={{
+                  backgroundColor: "var(--bg-card)",
+                  borderColor: "var(--border)",
+                  boxShadow: "var(--shadow-xs-value)",
+                }}
               >
                 <div className="flex justify-between items-center mb-3">
-                  <div className="h-5 bg-slate-200 dark:bg-slate-800 rounded w-28" />
-                  <div className="h-5 bg-slate-200 dark:bg-slate-800 rounded-full w-20" />
+                  <div
+                    className="h-5 rounded-lg w-28"
+                    style={{ backgroundColor: "var(--bg-hover)" }}
+                  />
+                  <div
+                    className="h-5 rounded-full w-20"
+                    style={{ backgroundColor: "var(--primary-light)" }}
+                  />
                 </div>
-                <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-32 mb-2" />
-                <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-20" />
+                <div
+                  className="h-3.5 rounded-md w-32 mb-2.5"
+                  style={{ backgroundColor: "var(--bg-hover)" }}
+                />
+                <div
+                  className="h-3 rounded-md w-20"
+                  style={{ backgroundColor: "var(--bg-hover)" }}
+                />
               </div>
             ))}
           </div>
         )}
 
+        {/* Unauthorized State */}
         {!loading && isUnauthorized && (
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-12 text-center shadow-sm max-w-lg mx-auto">
-            <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-500 dark:text-indigo-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div
+            className="border rounded-3xl p-10 text-center max-w-lg mx-auto transition-all"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
+              boxShadow: "var(--shadow-sm-value)",
+            }}
+          >
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border"
+              style={{
+                backgroundColor: "var(--primary-light)",
+                color: "var(--primary)",
+                borderColor: "var(--border-light)",
+              }}
+            >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -90,36 +126,74 @@ const OrdersPage = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            <h3
+              className="text-xl font-bold mb-2"
+              style={{ color: "var(--text-primary)" }}
+            >
               Sign In Required
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+            <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
               Please sign in to view your orders.
             </p>
             <button
               onClick={() => navigate("/login")}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-colors"
+              className="w-full py-3 font-semibold rounded-xl text-sm transition-all duration-200 active:scale-95 shadow-sm"
+              style={{
+                backgroundColor: "var(--primary)",
+                color: "#ffffff",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "var(--primary-hover)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "var(--primary)")
+              }
             >
               Sign In
             </button>
           </div>
         )}
 
+        {/* Error State */}
         {!loading && error && (
-          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 p-6 rounded-2xl text-center">
-            <p className="text-red-600 dark:text-red-400 font-medium mb-4">{error}</p>
+          <div
+            className="border p-6 rounded-2xl text-center"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--danger)",
+            }}
+          >
+            <p className="font-medium mb-4" style={{ color: "var(--danger)" }}>
+              {error}
+            </p>
             <button
               onClick={() => fetchOrders(1, false)}
-              className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl text-sm transition-colors"
+              className="px-5 py-2.5 text-white font-medium rounded-xl text-sm transition-all active:scale-95 shadow-sm"
+              style={{ backgroundColor: "var(--danger)" }}
             >
               Try Again
             </button>
           </div>
         )}
 
+        {/* Empty State */}
         {!loading && !isUnauthorized && !error && orders.length === 0 && (
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-12 text-center shadow-sm">
-            <div className="w-14 h-14 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-500 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div
+            className="border rounded-2xl p-12 text-center transition-all"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
+              boxShadow: "var(--shadow-xs-value)",
+            }}
+          >
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 border"
+              style={{
+                backgroundColor: "var(--primary-light)",
+                color: "var(--primary)",
+                borderColor: "var(--border-light)",
+              }}
+            >
               <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -129,21 +203,32 @@ const OrdersPage = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-1">
+            <h3
+              className="text-lg font-bold mb-1"
+              style={{ color: "var(--text-primary)" }}
+            >
               No orders yet
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+            <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
               You haven't placed any orders yet.
             </p>
             <Link
               to="/shop"
-              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-colors"
+              className="inline-block px-6 py-3 font-semibold rounded-xl text-sm transition-all duration-200 active:scale-95 shadow-sm text-white"
+              style={{ backgroundColor: "var(--primary)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "var(--primary-hover)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "var(--primary)")
+              }
             >
               Start Shopping
             </Link>
           </div>
         )}
 
+        {/* Orders List & Load More */}
         {!loading && !isUnauthorized && !error && orders.length > 0 && (
           <>
             <div className="space-y-4">
@@ -156,7 +241,19 @@ const OrdersPage = () => {
                 <button
                   onClick={handleLoadMore}
                   disabled={loadingMore}
-                  className="px-6 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-semibold rounded-xl text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm disabled:opacity-50"
+                  className="px-6 py-3 border font-semibold rounded-xl text-sm transition-all duration-200 active:scale-95 disabled:opacity-50"
+                  style={{
+                    backgroundColor: "var(--bg-card)",
+                    borderColor: "var(--border)",
+                    color: "var(--text-primary)",
+                    boxShadow: "var(--shadow-xs-value)",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!loadingMore) e.currentTarget.style.backgroundColor = "var(--bg-hover)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!loadingMore) e.currentTarget.style.backgroundColor = "var(--bg-card)";
+                  }}
                 >
                   {loadingMore ? "Loading..." : "Load More Orders"}
                 </button>

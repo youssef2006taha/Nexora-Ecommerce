@@ -13,7 +13,14 @@ const OrderProgressStepper = ({ status, embedded = false }) => {
 
   if (cur === "cancelled") {
     return (
-      <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 p-5 rounded-2xl mb-5 flex items-center gap-3">
+      <div
+        className="p-5 rounded-2xl mb-5 flex items-center gap-3 border transition-colors"
+        style={{
+          backgroundColor: "var(--danger-light)",
+          borderColor: "var(--danger)",
+          color: "var(--danger)",
+        }}
+      >
         <svg className="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -27,7 +34,14 @@ const OrderProgressStepper = ({ status, embedded = false }) => {
 
   if (cur === "returned") {
     return (
-      <div className="bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900 text-orange-700 dark:text-orange-300 p-5 rounded-2xl mb-5 flex items-center gap-3">
+      <div
+        className="p-5 rounded-2xl mb-5 flex items-center gap-3 border transition-colors"
+        style={{
+          backgroundColor: "var(--warning-light)",
+          borderColor: "var(--warning)",
+          color: "var(--warning)",
+        }}
+      >
         <svg className="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
@@ -45,20 +59,29 @@ const OrderProgressStepper = ({ status, embedded = false }) => {
   }
 
   const activeIdx = Math.max(0, STEPS.findIndex((s) => s.key === cur));
+  
+  // حساب النسبة المئوية الدقيقة للخط المكتمل
+  const progressPercent = (activeIdx / (STEPS.length - 1)) * 100;
 
   const stepper = (
     <div className="relative flex items-start justify-between">
-      {/* Gray background line */}
+      {/* Background Track Line: Starts at center of 1st step (10%) & ends at center of last step (90%) */}
       <div
-        className="absolute top-3.5 h-0.5 bg-slate-300 dark:bg-slate-700"
-        style={{ left: "14px", right: "14px" }}
-      />
-      {/* Indigo active line */}
-      <div
-        className="absolute top-3.5 h-0.5 bg-indigo-600 dark:bg-indigo-500 transition-all duration-300"
+        className="absolute top-3.5 -translate-y-1/2 h-0.5"
         style={{
-          left: "14px",
-          width: activeIdx === 0 ? "0px" : `calc(${(activeIdx / (STEPS.length - 1)) * 100}% - 14px)`,
+          left: `${100 / (STEPS.length * 2)}%`,
+          right: `${100 / (STEPS.length * 2)}%`,
+          backgroundColor: "var(--border-light)",
+        }}
+      />
+
+      {/* Active Progress Line: Fills precisely to the center of active step */}
+      <div
+        className="absolute top-3.5 -translate-y-1/2 h-0.5 transition-all duration-300"
+        style={{
+          left: `${100 / (STEPS.length * 2)}%`,
+          backgroundColor: "var(--primary)",
+          width: `calc(${progressPercent}% * ${(STEPS.length - 1) / STEPS.length})`,
         }}
       />
 
@@ -68,28 +91,31 @@ const OrderProgressStepper = ({ status, embedded = false }) => {
         return (
           <div key={step.key} className="relative z-10 flex flex-col items-center" style={{ flex: 1 }}>
             <div
-              className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
-                done
-                  ? "bg-indigo-600 dark:bg-indigo-500 text-white"
-                  : "bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500"
-              }`}
+              className="w-7 h-7 rounded-full flex items-center justify-center transition-all shrink-0"
+              style={{
+                backgroundColor: done ? "var(--primary)" : "var(--bg-hover)",
+                color: done ? "#ffffff" : "var(--text-muted)",
+                border: done ? "none" : "1px solid var(--border)",
+              }}
             >
               {done ? (
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </svg>
               ) : (
-                <div className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600" />
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: "var(--text-muted)" }}
+                />
               )}
             </div>
             <span
-              className={`mt-2 text-xs font-semibold text-center ${
-                isCur
-                  ? "text-indigo-600 dark:text-indigo-400 font-bold"
-                  : done
-                  ? "text-indigo-600 dark:text-indigo-400"
-                  : "text-slate-400 dark:text-slate-500"
+              className={`mt-2 text-xs text-center transition-colors ${
+                isCur || done ? "font-bold" : "font-semibold"
               }`}
+              style={{
+                color: done ? "var(--primary)" : "var(--text-muted)",
+              }}
             >
               {step.label}
             </span>
@@ -102,8 +128,20 @@ const OrderProgressStepper = ({ status, embedded = false }) => {
   if (embedded) return stepper;
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 mb-5 shadow-xs">
-      <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-7">Order Progress</h3>
+    <div
+      className="border rounded-2xl p-6 mb-5 transition-colors"
+      style={{
+        backgroundColor: "var(--bg-card)",
+        borderColor: "var(--border)",
+        boxShadow: "var(--shadow-xs-value)",
+      }}
+    >
+      <h3
+        className="text-base font-bold mb-7"
+        style={{ color: "var(--text-primary)" }}
+      >
+        Order Progress
+      </h3>
       {stepper}
     </div>
   );

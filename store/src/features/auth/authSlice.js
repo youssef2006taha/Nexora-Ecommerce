@@ -4,6 +4,7 @@ import { getCurrentUser } from "./Thunks/getCurrentUserThunk";
 import { sendOTPThunk } from "./Thunks/SendOTPThunk";
 import { verifyResetOTPThunk } from "./Thunks/verifyResetOTPThunk";
 import { sendRegisterOTP } from "./Thunks/sendRegisterOTP.js";
+import { UpdateUserProfileThunk } from "./Thunks/updateUserProfileThunk.js";
 
 const initialState = {
   user: null,
@@ -107,6 +108,20 @@ const authSlice = createSlice({
       .addCase(sendRegisterOTP.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
+      })
+
+      // ================= Update Profile =================
+      .addCase(UpdateUserProfileThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(UpdateUserProfileThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(UpdateUserProfileThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

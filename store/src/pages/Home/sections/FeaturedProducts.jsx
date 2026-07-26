@@ -73,10 +73,13 @@ const FeaturedProducts = () => {
       <section className="container-noT py-16">
         <div className="mb-10 flex items-center justify-between">
           <div>
-            <h2 className="text-3xl font-bold text-text-primary">
+            <h2
+              className="text-3xl font-bold"
+              style={{ color: "var(--text-primary)" }}
+            >
               Featured Products
             </h2>
-            <p className="mt-2 text-text-muted">
+            <p className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
               Discover our handpicked premium products
             </p>
           </div>
@@ -85,12 +88,28 @@ const FeaturedProducts = () => {
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="rounded-lg border border-border p-spacing-md animate-pulse"
+              className="rounded-2xl border p-4 animate-pulse"
+              style={{
+                borderColor: "var(--border)",
+                backgroundColor: "var(--bg-card)",
+              }}
             >
-              <div className="aspect-square rounded-md bg-bg-hover mb-4" />
-              <div className="h-4 bg-bg-hover rounded w-3/4 mb-2" />
-              <div className="h-4 bg-bg-hover rounded w-1/2 mb-4" />
-              <div className="h-9 bg-bg-hover rounded-md w-full" />
+              <div
+                className="aspect-square rounded-xl mb-4"
+                style={{ backgroundColor: "var(--bg-hover)" }}
+              />
+              <div
+                className="h-4 rounded w-3/4 mb-2"
+                style={{ backgroundColor: "var(--bg-hover)" }}
+              />
+              <div
+                className="h-4 rounded w-1/2 mb-4"
+                style={{ backgroundColor: "var(--bg-hover)" }}
+              />
+              <div
+                className="h-10 rounded-xl w-full"
+                style={{ backgroundColor: "var(--bg-hover)" }}
+              />
             </div>
           ))}
         </div>
@@ -101,7 +120,12 @@ const FeaturedProducts = () => {
   if (error) {
     return (
       <section className="container-noT py-16">
-        <h2 className="text-center text-danger">{error}</h2>
+        <h2
+          className="text-center font-semibold text-lg"
+          style={{ color: "var(--danger)" }}
+        >
+          {error}
+        </h2>
       </section>
     );
   }
@@ -110,20 +134,40 @@ const FeaturedProducts = () => {
     <section className="container-noT py-16">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <span className="inline-block text-xs font-semibold tracking-wide uppercase text-primary bg-primary-light px-3 py-1 rounded-full mb-3">
+          <span
+            className="inline-block text-xs font-bold tracking-wider uppercase px-3.5 py-1.5 rounded-full mb-3"
+            style={{
+              backgroundColor: "var(--primary-light)",
+              color: "var(--primary)",
+            }}
+          >
             Handpicked
           </span>
-          <h2 className="text-3xl font-bold text-text-primary">
+          <h2
+            className="text-3xl sm:text-4xl font-extrabold tracking-tight"
+            style={{ color: "var(--text-primary)" }}
+          >
             Featured Products
           </h2>
-          <p className="mt-2 text-text-muted">
+          <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
             Discover our handpicked premium products
           </p>
         </div>
 
         <Link
           to="/shop"
-          className="rounded-md bg-primary px-6 py-3 font-semibold text-text-white shadow-primary transition-colors duration-300 hover:bg-primary-hover"
+          className="px-6 py-3 rounded-xl font-bold transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+          style={{
+            backgroundColor: "var(--primary)",
+            color: "#ffffff",
+            boxShadow: "var(--shadow-primary-value)",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--primary-hover)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--primary)")
+          }
         >
           View All
         </Link>

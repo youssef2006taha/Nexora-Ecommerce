@@ -53,15 +53,45 @@ const OrderDetailsPage = () => {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto py-4">
-        <div className="animate-pulse space-y-5">
-          <div className="h-9 bg-white/80 dark:bg-slate-900 rounded-xl w-52" />
-          <div className="h-5 bg-white/80 dark:bg-slate-900 rounded-lg w-36" />
-          <div className="h-44 bg-white dark:bg-slate-900 rounded-2xl" />
-          <div className="h-52 bg-white dark:bg-slate-900 rounded-2xl" />
+      <div className="container-noT mx-auto py-8">
+        <div className="w-full animate-pulse space-y-5">
+          <div
+            className="h-9 rounded-xl w-52"
+            style={{ backgroundColor: "var(--border-light)" }}
+          />
+          <div
+            className="h-5 rounded-lg w-36"
+            style={{ backgroundColor: "var(--border-light)" }}
+          />
+          <div
+            className="h-44 rounded-2xl border"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
+            }}
+          />
+          <div
+            className="h-52 rounded-2xl border"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
+            }}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="h-40 bg-white dark:bg-slate-900 rounded-2xl" />
-            <div className="h-40 bg-white dark:bg-slate-900 rounded-2xl" />
+            <div
+              className="h-40 rounded-2xl border"
+              style={{
+                backgroundColor: "var(--bg-card)",
+                borderColor: "var(--border)",
+              }}
+            />
+            <div
+              className="h-40 rounded-2xl border"
+              style={{
+                backgroundColor: "var(--bg-card)",
+                borderColor: "var(--border)",
+              }}
+            />
           </div>
         </div>
       </div>
@@ -70,15 +100,34 @@ const OrderDetailsPage = () => {
 
   if (error || !order) {
     return (
-      <div className="max-w-4xl mx-auto py-4">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl text-center shadow-sm">
-          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+      <div className="max-w-4xl mx-auto py-8">
+        <div
+          className="border p-8 rounded-2xl text-center"
+          style={{
+            backgroundColor: "var(--bg-card)",
+            borderColor: "var(--border)",
+            boxShadow: "var(--shadow-xs-value)",
+          }}
+        >
+          <h2
+            className="text-xl font-bold mb-2"
+            style={{ color: "var(--text-primary)" }}
+          >
             Error Loading Order
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">{error || "Order not found"}</p>
+          <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
+            {error || "Order not found"}
+          </p>
           <Link
             to="/orders"
-            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-sm transition-colors"
+            className="inline-block px-5 py-2.5 text-white font-medium rounded-xl text-sm transition-all active:scale-95 shadow-sm"
+            style={{ backgroundColor: "var(--primary)" }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "var(--primary-hover)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "var(--primary)")
+            }
           >
             Back to Orders
           </Link>
@@ -91,15 +140,21 @@ const OrderDetailsPage = () => {
   const canCancel = ["pending", "confirmed"].includes((order.status || "").toLowerCase());
 
   return (
-    <div className="container-noT">
-      <div className="w-full mx-auto py-4">
-
+    <div className="container-noT min-h-[70vh]">
+      <div className="w-full mx-auto py-8">
+        {/* Header */}
         <div className="flex items-start justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight">
+            <h1
+              className="text-3xl font-extrabold leading-tight"
+              style={{ color: "var(--text-primary)" }}
+            >
               Order Details
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 font-medium">
+            <p
+              className="text-sm mt-1.5 font-medium"
+              style={{ color: "var(--text-muted)" }}
+            >
               Order {shortId}
             </p>
           </div>
@@ -111,19 +166,38 @@ const OrderDetailsPage = () => {
             {capitalize(order.status)}
           </span>
         </div>
-  
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 mb-5 shadow-xs transition-colors">
-          <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-7">
+
+        {/* Stepper Card */}
+        <div
+          className="border rounded-2xl p-6 mb-5 transition-colors"
+          style={{
+            backgroundColor: "var(--bg-card)",
+            borderColor: "var(--border)",
+            boxShadow: "var(--shadow-xs-value)",
+          }}
+        >
+          <h3
+            className="text-base font-bold mb-7"
+            style={{ color: "var(--text-primary)" }}
+          >
             Order Progress
           </h3>
           <OrderProgressStepper status={order.status} embedded />
         </div>
 
-        
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 mb-5 shadow-xs transition-colors">
+        {/* Items Card */}
+        <div
+          className="border rounded-2xl p-6 mb-5 transition-colors"
+          style={{
+            backgroundColor: "var(--bg-card)",
+            borderColor: "var(--border)",
+            boxShadow: "var(--shadow-xs-value)",
+          }}
+        >
           <div className="flex items-center gap-2 mb-5">
             <svg
-              className="w-5 h-5 text-indigo-600 dark:text-indigo-400"
+              className="w-5 h-5"
+              style={{ color: "var(--primary)" }}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -135,19 +209,31 @@ const OrderDetailsPage = () => {
                 d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
               />
             </svg>
-            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
+            <h2
+              className="text-lg font-bold"
+              style={{ color: "var(--text-primary)" }}
+            >
               Items
             </h2>
           </div>
 
-          <div className="divide-y divide-slate-100 dark:divide-slate-800">
+          <div
+            className="divide-y"
+            style={{ borderColor: "var(--border-light)" }}
+          >
             {order.items?.map((item, idx) => (
               <div
                 key={item.product || idx}
                 className="py-4 first:pt-0 last:pb-0 flex items-center justify-between gap-4"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-slate-200/80 dark:bg-slate-800 overflow-hidden shrink-0 flex items-center justify-center">
+                  <div
+                    className="w-14 h-14 rounded-xl overflow-hidden shrink-0 flex items-center justify-center border"
+                    style={{
+                      backgroundColor: "var(--bg-hover)",
+                      borderColor: "var(--border-light)",
+                    }}
+                  >
                     {item.image ? (
                       <img
                         src={item.image}
@@ -158,21 +244,33 @@ const OrderDetailsPage = () => {
                         }}
                       />
                     ) : (
-                      <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">
+                      <span
+                        className="text-xs font-semibold"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         Item
                       </span>
                     )}
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
+                    <p
+                      className="font-semibold text-sm"
+                      style={{ color: "var(--text-primary)" }}
+                    >
                       {item.name || "Item"}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    <p
+                      className="text-xs mt-0.5"
+                      style={{ color: "var(--text-muted)" }}
+                    >
                       Qty: {item.quantity} × EGP {Number(item.price || 0).toFixed(0)}
                     </p>
                   </div>
                 </div>
-                <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">
+                <span
+                  className="font-bold text-sm"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   EGP {Number((item.quantity || 1) * (item.price || 0)).toFixed(0)}
                 </span>
               </div>
@@ -180,14 +278,20 @@ const OrderDetailsPage = () => {
           </div>
         </div>
 
-    
+        {/* Shipping & Payment Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-          
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 shadow-xs transition-colors">
+          <div
+            className="border rounded-2xl p-6 transition-colors"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
+              boxShadow: "var(--shadow-xs-value)",
+            }}
+          >
             <div className="flex items-center gap-2 mb-4">
               <svg
-                className="w-5 h-5 text-indigo-600 dark:text-indigo-400"
+                className="w-5 h-5"
+                style={{ color: "var(--primary)" }}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -205,13 +309,22 @@ const OrderDetailsPage = () => {
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+              <h2
+                className="text-base font-bold"
+                style={{ color: "var(--text-primary)" }}
+              >
                 Shipping Address
               </h2>
             </div>
             {order.shippingAddress ? (
-              <div className="space-y-1 text-sm text-slate-600 dark:text-slate-300">
-                <p className="font-semibold text-slate-900 dark:text-slate-100">
+              <div
+                className="space-y-1 text-sm"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                <p
+                  className="font-semibold"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   {order.shippingAddress.fullName}
                 </p>
                 <p>{order.shippingAddress.address}</p>
@@ -219,24 +332,34 @@ const OrderDetailsPage = () => {
                   {order.shippingAddress.city}, {order.shippingAddress.country}
                 </p>
                 {order.shippingAddress.phone && (
-                  <p className="text-xs text-slate-400 dark:text-slate-500 pt-1">
+                  <p
+                    className="text-xs pt-1"
+                    style={{ color: "var(--text-muted)" }}
+                  >
                     Phone: {order.shippingAddress.phone}
                   </p>
                 )}
               </div>
             ) : (
-              <p className="text-sm text-slate-400 dark:text-slate-500">
+              <p className="text-sm" style={{ color: "var(--text-muted)" }}>
                 No address specified
               </p>
             )}
           </div>
 
-    
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between transition-colors">
+          <div
+            className="border rounded-2xl p-6 flex flex-col justify-between transition-colors"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
+              boxShadow: "var(--shadow-xs-value)",
+            }}
+          >
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <svg
-                  className="w-5 h-5 text-indigo-600 dark:text-indigo-400"
+                  className="w-5 h-5"
+                  style={{ color: "var(--primary)" }}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -248,15 +371,27 @@ const OrderDetailsPage = () => {
                     d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+                <h2
+                  className="text-base font-bold"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   Payment
                 </h2>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-300 capitalize">
+              <p
+                className="text-sm capitalize"
+                style={{ color: "var(--text-secondary)" }}
+              >
                 {order.paymentMethod || "Cash"}
               </p>
 
-              <div className="pt-3 mt-3 border-t border-slate-100 dark:border-slate-800 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
+              <div
+                className="pt-3 mt-3 border-t space-y-1.5 text-xs"
+                style={{
+                  borderColor: "var(--border-light)",
+                  color: "var(--text-muted)",
+                }}
+              >
                 {order.subtotal !== undefined && (
                   <div className="flex justify-between">
                     <span>Subtotal</span>
@@ -278,7 +413,10 @@ const OrderDetailsPage = () => {
                   </div>
                 )}
                 {order.discount > 0 && (
-                  <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                  <div
+                    className="flex justify-between"
+                    style={{ color: "var(--success)" }}
+                  >
                     <span>Discount</span>
                     <span>- EGP {Number(order.discount).toFixed(2)}</span>
                   </div>
@@ -286,23 +424,45 @@ const OrderDetailsPage = () => {
               </div>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
-              <span className="font-bold text-slate-800 dark:text-slate-100 text-sm">
+            <div
+              className="pt-4 mt-4 border-t flex justify-between items-center"
+              style={{ borderColor: "var(--border-light)" }}
+            >
+              <span
+                className="font-bold text-sm"
+                style={{ color: "var(--text-primary)" }}
+              >
                 Total
               </span>
-              <span className="text-lg font-extrabold text-indigo-600 dark:text-indigo-400">
+              <span
+                className="text-lg font-extrabold"
+                style={{ color: "var(--primary)" }}
+              >
                 EGP {Number(order.totalPrice || 0).toFixed(2)}
               </span>
             </div>
           </div>
         </div>
 
-      
         {canCancel && (
-          <div className="mt-6 pt-6 border-t border-slate-300/60 dark:border-slate-800 flex justify-center">
+          <div
+            className="mt-6 pt-6 border-t flex justify-center"
+            style={{ borderColor: "var(--border-light)" }}
+          >
             <button
               onClick={() => setShowCancelModal(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-sm font-semibold rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 border text-sm font-semibold rounded-xl transition-all active:scale-95 shadow-xs"
+              style={{
+                borderColor: "var(--danger)",
+                color: "var(--danger)",
+                backgroundColor: "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "var(--danger-light)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+              }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -312,20 +472,41 @@ const OrderDetailsPage = () => {
           </div>
         )}
 
-      
         {showCancelModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+          <div className="container-noT fixed inset-0 z-50 flex items-center justify-center ">
+            <div
+              className="border rounded-2xl p-6 w-full shadow-2xl transition-all"
+              style={{
+                backgroundColor: "var(--bg-surface)",
+                borderColor: "var(--border)",
+              }}
+            >
+              <h3
+                className="text-lg font-bold mb-2"
+                style={{ color: "var(--text-primary)" }}
+              >
                 Cancel Order
               </h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+              <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
                 Are you sure you want to cancel order{" "}
-                <span className="font-semibold text-slate-800 dark:text-slate-200">{shortId}</span>? This action cannot be undone.
+                <span
+                  className="font-semibold"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {shortId}
+                </span>
+                ? This action cannot be undone.
               </p>
 
               {cancelError && (
-                <div className="mb-4 text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 p-3 rounded-lg border border-red-200 dark:border-red-900">
+                <div
+                  className="mb-4 text-xs p-3 rounded-lg border"
+                  style={{
+                    backgroundColor: "var(--danger-light)",
+                    borderColor: "var(--danger)",
+                    color: "var(--danger)",
+                  }}
+                >
                   {cancelError}
                 </div>
               )}
@@ -334,14 +515,26 @@ const OrderDetailsPage = () => {
                 <button
                   onClick={() => setShowCancelModal(false)}
                   disabled={cancelling}
-                  className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                  className="px-4 py-2 text-sm font-medium rounded-xl transition-all border"
+                  style={{
+                    backgroundColor: "transparent",
+                    borderColor: "var(--border)",
+                    color: "var(--text-primary)",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = "var(--bg-hover)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "transparent")
+                  }
                 >
                   Keep Order
                 </button>
                 <button
                   onClick={handleCancel}
                   disabled={cancelling}
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors disabled:opacity-50"
+                  className="px-4 py-2 text-sm font-medium text-white rounded-xl transition-all active:scale-95 disabled:opacity-50 shadow-xs"
+                  style={{ backgroundColor: "var(--danger)" }}
                 >
                   {cancelling ? "Cancelling..." : "Yes, Cancel"}
                 </button>

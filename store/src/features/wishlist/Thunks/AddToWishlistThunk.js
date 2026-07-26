@@ -4,7 +4,8 @@ import axios from "axios";
 export const AddToWishlistThunk = createAsyncThunk(
   "wishlist/addWishlist",
   async (id, thunkAPI) => {
-    const { token } = thunkAPI.getState().auth;
+    // const { token } = thunkAPI.getState().auth;
+    const token = localStorage.getItem("token");
 
     try {
       const res = await axios.get(

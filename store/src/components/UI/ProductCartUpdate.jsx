@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { AddToCartThunk } from "../../features/cart/Thunks/AddToCartThunk";
 import { AddToWishlistThunk } from "../../features/wishlist/Thunks/AddToWishlistThunk";
 import { showToast } from "../../features/Toast/toastSlice";
-const ProductCard = ({
-  product,
-  isWishlisted = false,
-}) => {
+
+const ProductCard = ({ product, isWishlisted = false }) => {
   const {
     id,
     name,
@@ -30,76 +29,75 @@ const ProductCard = ({
       ? Math.round(price / (1 - discount / 100))
       : null;
 
-  
-const handleAddToCart = async () => {
-  if (!inStock || cartLoading) return;
+  const handleAddToCart = async (e) => {
+    e.preventDefault(); // stop the parent <Link> from navigating
+    e.stopPropagation();
+    if (!inStock || cartLoading) return;
 
-  try {
-    setCartLoading(true);
+    try {
+      setCartLoading(true);
 
-    await dispatch(
-      AddToCartThunk({
-        id,
-        quantity: 1,
-      })
-    ).unwrap();
+      await dispatch(AddToCartThunk({ id, quantity: 1 })).unwrap();
 
-    dispatch(
-      showToast({
-        open: true,
-        severity: "success",
-        message: "Product added to cart successfully!",
-      })
-    );
-  } catch (error) {
-    dispatch(
-      showToast({
-        open: true,
-        severity: "error",
-        message: error || "Failed to add product to cart.",
-      })
-    );
+      dispatch(
+        showToast({
+          open: true,
+          severity: "success",
+          message: "Product added to cart successfully!",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        showToast({
+          open: true,
+          severity: "error",
+          message: error || "Failed to add product to cart.",
+        })
+      );
+      console.error(error);
+    } finally {
+      setCartLoading(false);
+    }
+  };
 
-    console.error(error);
-  } finally {
-    setCartLoading(false);
-  }
-};
+  const handleToggleWishlist = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (wishLoading) return;
 
+    try {
+      setWishLoading(true);
 
-const handleToggleWishlist = async () => {
-  if (wishLoading) return;
+      await dispatch(AddToWishlistThunk(id)).unwrap();
 
-  try {
-    setWishLoading(true);
+      setWishlisted(true);
 
-    await dispatch(AddToWishlistThunk(id)).unwrap();
-
-    setWishlisted(true);
-
-    dispatch(
-      showToast({
-        open: true,
-        severity: "success",
-        message: "Product added to wishlist!",
-      })
-    );
-  } catch (error) {
-    dispatch(
-      showToast({
-        open: true,
-        severity: "error",
-        message: error || "Failed to add product to wishlist.",
-      })
-    );
-  } finally {
-    setWishLoading(false);
-  }
-};
+      dispatch(
+        showToast({
+          open: true,
+          severity: "success",
+          message: "Product added to wishlist!",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        showToast({
+          open: true,
+          severity: "error",
+          message: error || "Failed to add product to wishlist.",
+        })
+      );
+    } finally {
+      setWishLoading(false);
+    }
+  };
 
   return (
     <div className="group relative bg-bg-card border border-border rounded-lg p-spacing-md shadow-xs transition-all duration-300 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between h-full">
-      <div className="relative w-full aspect-square rounded-md overflow-hidden bg-bg-hover flex items-center justify-center mb-4">
+      <Link
+        to={`/product/${id}`}
+        className="relative w-full aspect-square rounded-md overflow-hidden bg-bg-hover flex items-center justify-center mb-4"
+      >
         <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
           {discount > 0 && (
             <span className="bg-danger text-text-white text-xs px-2 py-0.5 rounded-full font-bold">
@@ -123,17 +121,10 @@ const handleToggleWishlist = async () => {
             onClick={handleToggleWishlist}
             disabled={wishLoading}
             className={`opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 p-3 bg-bg-card rounded-full shadow-md ${
-              wishlisted
-                ? "text-danger"
-                : "text-text-secondary hover:text-danger"
+              wishlisted ? "text-danger" : "text-text-secondary hover:text-danger"
             }`}
           >
-            <svg
-              className="w-5 h-5"
-              fill={wishlisted ? "currentColor" : "none"}
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-5 h-5" fill={wishlisted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -151,15 +142,18 @@ const handleToggleWishlist = async () => {
             </span>
           </div>
         )}
-      </div>
+      </Link>
 
-      <div className="flex-grow flex flex-col justify-between ">
+      <div className="flex-grow flex flex-col justify-between">
         <div className="px-4">
-          <h3 className="  text-text-primary font-semibold text-base line-clamp-2 mb-1 group-hover:text-primary transition-colors">
-            {name}
-          </h3>
+          {/* Title also links to details */}
+          <Link to={`/product/${id}`}>
+            <h3 className="text-text-primary font-semibold text-base line-clamp-2 mb-1 group-hover:text-primary transition-colors">
+              {name}
+            </h3>
+          </Link>
 
-          <div className="flex items-center gap-1 mb-3   ">
+          <div className="flex items-center gap-1 mb-3">
             <div className="flex text-warning">
               {[...Array(5)].map((_, i) => (
                 <svg
@@ -176,19 +170,15 @@ const handleToggleWishlist = async () => {
                 </svg>
               ))}
             </div>
-            <span className="text-text-muted text-xs font-medium">
-              ({reviewsCount})
-            </span>
+            <span className="text-text-muted text-xs font-medium">({reviewsCount})</span>
           </div>
         </div>
 
-        <div className="mt-2  ">
+        <div className="mt-2">
           <div className="flex items-baseline gap-2 mb-3 px-4">
             <span className="text-primary font-bold text-lg">EGP {price}</span>
             {oldPrice && (
-              <span className="text-text-disabled text-sm line-through">
-                EGP {oldPrice}
-              </span>
+              <span className="text-text-disabled text-sm line-through">EGP {oldPrice}</span>
             )}
           </div>
 
@@ -202,12 +192,7 @@ const handleToggleWishlist = async () => {
                   : "bg-bg-active text-text-disabled cursor-not-allowed"
               }`}
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -215,11 +200,7 @@ const handleToggleWishlist = async () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"
                 />
               </svg>
-              {!inStock
-                ? "Out of Stock"
-                : cartLoading
-                  ? "Adding..."
-                  : "Add to Cart"}
+              {!inStock ? "Out of Stock" : cartLoading ? "Adding..." : "Add to Cart"}
             </button>
           </div>
         </div>
