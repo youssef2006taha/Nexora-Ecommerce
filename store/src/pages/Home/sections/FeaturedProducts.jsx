@@ -70,7 +70,7 @@ const FeaturedProducts = () => {
 
   if (loading) {
     return (
-      <section className="dashboard-container py-16">
+      <section className="container-noT py-16">
         <div className="mb-10 flex items-center justify-between">
           <div>
             <h2 className="text-3xl font-bold text-text-primary">
@@ -100,14 +100,14 @@ const FeaturedProducts = () => {
 
   if (error) {
     return (
-      <section className="dashboard-container py-16">
+      <section className="container-noT py-16">
         <h2 className="text-center text-danger">{error}</h2>
       </section>
     );
   }
 
   return (
-    <section className="dashboard-container py-16">
+    <section className="container-noT py-16">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
           <span className="inline-block text-xs font-semibold tracking-wide uppercase text-primary bg-primary-light px-3 py-1 rounded-full mb-3">

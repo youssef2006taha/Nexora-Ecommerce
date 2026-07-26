@@ -1,18 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const AddToCartThunk = createAsyncThunk(
-  "cart/addProduct",
-  async ({ id, quantity = 1 }, thunkAPI) => {
+export const UpdateQuantityThunk = createAsyncThunk(
+  "cart/updateQuantity",
+  async (cartItem, thunkAPI) => {
     const { token } = thunkAPI.getState().auth;
-
+    console.log(cartItem);
     try {
-      const res = await axios.post(
+      const res = await axios.patch(
         "https://e-commerce-api-3wara.vercel.app/carts/items",
-        {
-          productId: id,
-          quantity,
-        },
+        cartItem,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -22,8 +19,9 @@ export const AddToCartThunk = createAsyncThunk(
 
       return res.data;
     } catch (error) {
+      console.log(error.response.data);
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Failed to add product to cart.",
+        error.response?.data?.message || "Failed to update cart.",
       );
     }
   },

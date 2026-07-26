@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AddToCartThunk } from "../../features/cart/Thunks/AddToCartThunk";
-
+import { AddToWishlistThunk } from "../../features/wishlist/Thunks/AddToWishlistThunk";
+import { showToast } from "../../features/Toast/toastSlice";
 const ProductCard = ({
   product,
   isWishlisted = false,
-  onToggleWishlist,
 }) => {
   const {
     id,
@@ -19,39 +19,83 @@ const ProductCard = ({
     discount,
   } = product;
 
+  const dispatch = useDispatch();
+
   const [cartLoading, setCartLoading] = useState(false);
   const [wishLoading, setWishLoading] = useState(false);
   const [wishlisted, setWishlisted] = useState(isWishlisted);
-  const cartDispatch = useDispatch();
 
   const oldPrice =
-    discount && discount > 0 ? Math.round(price / (1 - discount / 100)) : null;
+    discount && discount > 0
+      ? Math.round(price / (1 - discount / 100))
+      : null;
 
-  const handleAddToCart = async () => {
-    if (!inStock || cartLoading) return;
-    console.log("dfbdfbd")
-    try {
-      setCartLoading(true);
-      await cartDispatch(AddToCartThunk({ id }));
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setCartLoading(false);
-    }
-  };
+  
+const handleAddToCart = async () => {
+  if (!inStock || cartLoading) return;
 
-  const handleToggleWishlist = async () => {
-    if (!onToggleWishlist || wishLoading) return;
-    try {
-      setWishLoading(true);
-      await onToggleWishlist(id);
-      setWishlisted(true);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setWishLoading(false);
-    }
-  };
+  try {
+    setCartLoading(true);
+
+    await dispatch(
+      AddToCartThunk({
+        id,
+        quantity: 1,
+      })
+    ).unwrap();
+
+    dispatch(
+      showToast({
+        open: true,
+        severity: "success",
+        message: "Product added to cart successfully!",
+      })
+    );
+  } catch (error) {
+    dispatch(
+      showToast({
+        open: true,
+        severity: "error",
+        message: error || "Failed to add product to cart.",
+      })
+    );
+
+    console.error(error);
+  } finally {
+    setCartLoading(false);
+  }
+};
+
+
+const handleToggleWishlist = async () => {
+  if (wishLoading) return;
+
+  try {
+    setWishLoading(true);
+
+    await dispatch(AddToWishlistThunk(id)).unwrap();
+
+    setWishlisted(true);
+
+    dispatch(
+      showToast({
+        open: true,
+        severity: "success",
+        message: "Product added to wishlist!",
+      })
+    );
+  } catch (error) {
+    dispatch(
+      showToast({
+        open: true,
+        severity: "error",
+        message: error || "Failed to add product to wishlist.",
+      })
+    );
+  } finally {
+    setWishLoading(false);
+  }
+};
 
   return (
     <div className="group relative bg-bg-card border border-border rounded-lg p-spacing-md shadow-xs transition-all duration-300 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between h-full">
@@ -148,34 +192,36 @@ const ProductCard = ({
             )}
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={!inStock || cartLoading}
-            className={`w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md font-medium transition-colors duration-300 ${
-              inStock
-                ? "bg-primary hover:bg-primary-hover text-text-white shadow-primary cursor-pointer"
-                : "bg-bg-active text-text-disabled cursor-not-allowed"
-            }`}
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div className="py-4 px-5">
+            <button
+              onClick={handleAddToCart}
+              disabled={!inStock || cartLoading}
+              className={`w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md font-medium transition-colors duration-300 ${
+                inStock
+                  ? "bg-primary hover:bg-primary-hover text-text-white shadow-primary cursor-pointer"
+                  : "bg-bg-active text-text-disabled cursor-not-allowed"
+              }`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"
-              />
-            </svg>
-            {!inStock
-              ? "Out of Stock"
-              : cartLoading
-                ? "Adding..."
-                : "Add to Cart"}
-          </button>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"
+                />
+              </svg>
+              {!inStock
+                ? "Out of Stock"
+                : cartLoading
+                  ? "Adding..."
+                  : "Add to Cart"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

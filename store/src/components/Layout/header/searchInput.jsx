@@ -13,12 +13,28 @@ const SearchInput = () => {
     if (openInput) setSearchTerm('');
   };
 
-  const handleSearchSubmit = (e) => {
-    if (e.key === 'Enter' && searchTerm.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchTerm.trim())}`);
-      setOpenInput(false);
+  const submitSearch = () => {
+    const trimmed = searchTerm.trim();
+    if (!trimmed) return;
+    navigate(`/shop?search=${encodeURIComponent(trimmed)}`);
+    setOpenInput(false);
+    setSearchTerm('');
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      submitSearch();
     } else if (e.key === 'Escape') {
       setOpenInput(false);
+      setSearchTerm('');
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (openInput && searchTerm.trim()) {
+      submitSearch();
+    } else {
+      toggleSearch();
     }
   };
 
@@ -36,7 +52,7 @@ const SearchInput = () => {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={handleSearchSubmit}
+          onKeyDown={handleKeyDown}
           placeholder="Search products..."
           className="w-full rounded-full border border-border shadow-lg bg-bg-surface text-text-primary text-sm py-2 pl-4 pr-9 outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300"
         />
@@ -44,11 +60,11 @@ const SearchInput = () => {
 
       <button
         type="button"
-        onClick={toggleSearch}
-        aria-label="Open search"
+        onClick={handleButtonClick}
+        aria-label={openInput ? 'Search' : 'Open search'}
         className="rounded-full p-2 text-text-primary border border-border shadow-sm bg-bg-surface hover:bg-bg-hover hover:text-primary transition-all duration-300 shrink-0"
       >
-        <IoSearch />
+        {openInput && searchTerm ? <IoSearch /> : openInput ? <PiXBold /> : <IoSearch />}
       </button>
     </div>
   );

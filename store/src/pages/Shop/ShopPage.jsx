@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import ProductCard from "../../components/UI/ProductCartUpdate";
 import FilterSidebar from "./sections/FilterSidebar";
+import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+// import { useState , useEffect } from "react";
+
 
 function ShopPage() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+  const [searchParams] = useSearchParams()
 
   // Price Filter
   const [minPrice, setMinPrice] = useState("");
@@ -15,9 +20,15 @@ function ShopPage() {
   // Sort
   const [sortBy, setSortBy] = useState("default");
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
+useEffect(() => {
+  loadProducts();
+}, []);
+
+useEffect(() => {
+  const categoryFromUrl = searchParams.get("category") || "";
+  setCategory(categoryFromUrl);
+}, [searchParams]);
+
 
   async function loadProducts() {
     try {
@@ -117,7 +128,7 @@ function ShopPage() {
 
         {/* Products */}
         <main className="flex-1">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between border border-border py-2 px-5 bg-primary/20 rounded-2xl items-center mb-6">
             <h1 className="text-2xl font-bold text-text-primary">Shop</h1>
             <span className="text-text-muted">
               {filteredProducts.length} Products
@@ -134,7 +145,7 @@ function ShopPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product._id}

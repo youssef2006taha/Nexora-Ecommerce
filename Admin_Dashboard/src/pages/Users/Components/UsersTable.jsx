@@ -11,15 +11,14 @@ import { editUserThunk } from "../../../features/users/Thunks/EditUserThunk";
 import { changeUserRoleThunk } from "../../../features/users/Thunks/ChangeUserRoleThunk";
 import { logout } from "../../../features/auth/authSlice.js";
 import { showToast } from "../../../features/Toast/toastSlice.js";
-
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.jsx";
 import EditUserDialog from "../dialogs/EditUserDialog";
+import Pagination from "./Pagination.jsx";
+import UsersTableSkeleton from "./UsersTableSkeleton.jsx";
 
-const UsersTable = ({ inputSearch }) => {
-  const toastDispatch = useDispatch();
-  const usersDispatch = useDispatch();
-  const logoutDispatch = useDispatch();
-  const { users } = useSelector((store) => store.users);
+const UsersTable = () => {
+  const dispatch = useDispatch();
+  const { paginationUsers, loading } = useSelector((store) => store.users);
   const { email } = useSelector((store) => store.auth);
 
   // Confirmation Dialog Data
@@ -47,6 +46,7 @@ const UsersTable = ({ inputSearch }) => {
   const calcTableHeight = () => {
     const rowHeight = 81;
     const headerHeight = 56;
+    const footerHeight = 52;
 
     const itemsCount =
       Math.floor(
@@ -55,7 +55,7 @@ const UsersTable = ({ inputSearch }) => {
           : screen.availHeight * 0.7) / rowHeight,
       ) - 1;
 
-    return itemsCount * rowHeight + headerHeight;
+    return itemsCount * rowHeight + headerHeight + footerHeight;
   };
 
   const editUserHandler = (id, values) => {
@@ -65,15 +65,15 @@ const UsersTable = ({ inputSearch }) => {
 
       onConfirm: async (formData) => {
         try {
-          await usersDispatch(editUserThunk({ id, formData })).unwrap();
-          toastDispatch(
+          await dispatch(editUserThunk({ id, formData })).unwrap();
+          dispatch(
             showToast({
               message: "User updated successfully!",
               severity: "success",
             }),
           );
         } catch (error) {
-          toastDispatch(
+          dispatch(
             showToast({
               message: error || "Failed to update user",
               severity: "error",
@@ -98,9 +98,9 @@ const UsersTable = ({ inputSearch }) => {
 
       action: async () => {
         try {
-          await usersDispatch(deleteUserThunk(id)).unwrap();
+          await dispatch(deleteUserThunk(id)).unwrap();
 
-          toastDispatch(
+          dispatch(
             showToast({
               message: "User deleted successfully!",
               severity: "success",
@@ -108,7 +108,7 @@ const UsersTable = ({ inputSearch }) => {
           );
 
           if (email === userEmail) {
-            toastDispatch(
+            dispatch(
               showToast({
                 message:
                   "Your account has been deleted. You have been signed out.",
@@ -116,13 +116,13 @@ const UsersTable = ({ inputSearch }) => {
               }),
             );
 
-            await logoutDispatch(logout());
+            await dispatch(logout());
             return;
           }
         } catch (error) {
           console.error(error);
 
-          toastDispatch(
+          dispatch(
             showToast({
               message:
                 typeof error === "string"
@@ -150,7 +150,7 @@ const UsersTable = ({ inputSearch }) => {
 
       action: async () => {
         try {
-          await usersDispatch(
+          await dispatch(
             changeUserRoleThunk({
               userId: id,
               role,
@@ -158,7 +158,7 @@ const UsersTable = ({ inputSearch }) => {
           ).unwrap();
 
           if (userEmail === email && role === "customer") {
-            toastDispatch(
+            dispatch(
               showToast({
                 message:
                   "Your role has been changed to Customer. You have been signed out.",
@@ -166,11 +166,11 @@ const UsersTable = ({ inputSearch }) => {
               }),
             );
 
-            await logoutDispatch(logout());
+            await dispatch(logout());
             return;
           }
 
-          toastDispatch(
+          dispatch(
             showToast({
               message: `User role updated to ${role} successfully!`,
               severity: "success",
@@ -178,7 +178,7 @@ const UsersTable = ({ inputSearch }) => {
           );
         } catch (error) {
           console.log(error);
-          toastDispatch(
+          dispatch(
             showToast({
               message: "Failed to change user role",
               severity: "error",
@@ -192,10 +192,6 @@ const UsersTable = ({ inputSearch }) => {
 
     setOpenConfirmationDialog(true);
   };
-
-  const filteredUsers = users?.filter((user) =>
-    user?.username?.toLowerCase().includes(inputSearch.toLowerCase()),
-  );
 
   return (
     <div
@@ -213,8 +209,10 @@ const UsersTable = ({ inputSearch }) => {
         </thead>
 
         <tbody className="bg-secondary/1 dark:bg-bg-card">
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user, index, array) => (
+          {loading ? (
+            <UsersTableSkeleton />
+          ) : paginationUsers.length > 0 ? (
+            paginationUsers.map((user, index, array) => (
               <tr
                 key={user._id}
                 className="bg-bg-card hover:bg-bg-hover transition !h-[81px]"
@@ -222,7 +220,7 @@ const UsersTable = ({ inputSearch }) => {
                 <td
                   className={`py-4 px-6 ${
                     index === array.length - 1 ? "" : "border-b"
-                  } border-secondary/15 dark:border-secondary/20`}
+                  } border-secondary/15 dark:border-secondary/20 w-[40%]`}
                 >
                   <div className="flex items-center gap-4">
                     <Avatar alt={user.username} src={user.avatar}>
@@ -238,7 +236,7 @@ const UsersTable = ({ inputSearch }) => {
                 <td
                   className={`py-4 px-6 text-center ${
                     index === array.length - 1 ? "" : "border-b"
-                  } border-secondary/15 dark:border-secondary/20`}
+                  } border-secondary/15 dark:border-secondary/20 w-[20%]`}
                 >
                   <span
                     className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide ring-1 transition-all duration-200 ${
@@ -260,7 +258,7 @@ const UsersTable = ({ inputSearch }) => {
                     user.isVerified ? "text-green-500" : "text-red-500"
                   } ${
                     index === array.length - 1 ? "" : "border-b"
-                  } border-secondary/15 dark:border-secondary/20`}
+                  } border-secondary/15 dark:border-secondary/20 w-[20%]`}
                 >
                   {user.isVerified ? "✅ Verified" : "❌ Not Verified"}
                 </td>
@@ -268,7 +266,7 @@ const UsersTable = ({ inputSearch }) => {
                 <td
                   className={`py-4 px-6 text-center ${
                     index === array.length - 1 ? "" : "border-b"
-                  } border-secondary/15 dark:border-secondary/20`}
+                  } border-secondary/15 dark:border-secondary/20 w-[20%]`}
                 >
                   <div className="flex justify-center items-center gap-3">
                     {/* Edit */}
@@ -374,13 +372,21 @@ const UsersTable = ({ inputSearch }) => {
             <tr>
               <td
                 colSpan={4}
-                className="text-slate-500/90 dark:text-slate-400/75 text-center p-8"
+                className="bg-bg-card/40 text-primary text-center p-8"
               >
                 No users found
               </td>
             </tr>
           )}
         </tbody>
+
+        <tfoot className="!h-[52px] sticky bottom-0 z-10 !bg-bg-main">
+          <tr className="bg-primary/25">
+            <td colSpan={6} className="py-2.5 px-6">
+              <Pagination />
+            </td>
+          </tr>
+        </tfoot>
       </table>
       <ConfirmationDialog
         key={`${confirmationDialogData.id}ConfirmationDialog`}

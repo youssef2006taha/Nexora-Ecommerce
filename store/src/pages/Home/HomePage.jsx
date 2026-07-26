@@ -8,7 +8,7 @@ import ShopByCategory from "./sections/ShopByCategory";
 
 const HomePage = () => {
     return (
-        <div>
+        <div className="-mt-5">
             <Hero />
             <ShopByCategory />
             <FeaturedProducts />

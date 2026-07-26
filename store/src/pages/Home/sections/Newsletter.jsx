@@ -17,8 +17,8 @@ export default function Newsletter() {
 
   return (
     <section className="w-full bg-bg-main px-4 py-20 transition-colors duration-300 sm:px-6 lg:px-10">
-      <div className="mx-auto w-[80%]">
-        <div className="relative flex min-h-[402px] flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-primary to-primary-active px-6 py-12 text-center shadow-lg transition-shadow duration-300">
+      <div className="mx-auto container-noT">
+        <div className="relative flex min-h-[402px] flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-primary/70 to-primary-active/60 px-6 py-12 text-center shadow-lg transition-shadow duration-300">
 
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -top-16 -left-16 h-56 w-56 rounded-full bg-text-white/10 blur-3xl" />
@@ -26,7 +26,7 @@ export default function Newsletter() {
           </div>
 
           <div className="relative mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-text-white/10 ring-1 ring-inset ring-text-white/20">
-            <Mail className="h-7 w-7 text-accent" strokeWidth={2} />
+            <Mail className="h-7 w-7 text-primary" strokeWidth={2} />
           </div>
 
           <h2 className="relative mb-4 text-3xl font-bold leading-none text-text-white md:text-[40px]">

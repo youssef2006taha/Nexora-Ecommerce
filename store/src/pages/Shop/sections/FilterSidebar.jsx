@@ -1,7 +1,10 @@
+import { useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 export default function FilterSidebar({
   categories,
-  category,
-  setCategory,
+  // category,
+  // setCategory,
   minPrice,
   setMinPrice,
   maxPrice,
@@ -10,6 +13,18 @@ export default function FilterSidebar({
   setSortBy,
   onClearFilters,
 }) {
+
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    setCategory(searchParams.get("category") || "");
+  }, [searchParams]);
+
+
   return (
     <aside className="hidden md:block w-72 rounded-lg bg-bg-card border border-border p-5 h-fit shadow-xs">
       <h2 className="text-lg font-semibold mb-6 text-text-primary">Filters</h2>
@@ -25,7 +40,12 @@ export default function FilterSidebar({
               name="category"
               value=""
               checked={category === ""}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+
+                navigate(`/shop`);
+
+                setCategory(e.target.value)
+              }}
               className="accent-primary"
             />
             All Categories
@@ -41,7 +61,13 @@ export default function FilterSidebar({
                 name="category"
                 value={cat}
                 checked={category === cat}
-                onChange={(e) => setCategory(e.target.value)}
+
+                onChange={(e) => {
+
+                  navigate(`/shop?category=${cat}`);
+
+                  setCategory(e.target.value)
+                }}
                 className="accent-primary"
               />
               {cat}

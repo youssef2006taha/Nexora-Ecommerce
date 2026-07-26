@@ -9,9 +9,29 @@ import { changeUserRoleThunk } from "./Thunks/ChangeUserRoleThunk";
 const initialState = {
   users: [],
   count: 0,
+  paginationUsers: [],
+  totalPages: 1,
+  currentPage: 1,
   loading: false,
   error: null,
   success: false,
+};
+
+const usersPaginationCalc = (users, page, limit = 10) => {
+  const paginationUsers = [];
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+
+  for (let i = startIndex; i < endIndex && i < users.length; i++) {
+    paginationUsers.push(users[i]);
+  }
+
+  return paginationUsers;
+};
+
+const pagesCount = (count, limit = 10) => {
+  return Math.ceil(count / limit);
 };
 
 // =================== SLICE ===================
@@ -24,6 +44,21 @@ const usersSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.success = false;
+    },
+
+    setPage(state, action) {
+      state.currentPage = action.payload;
+      state.paginationUsers = usersPaginationCalc(state.users, action.payload);
+    },
+
+    searchUser(state, action) {
+      const filteredUsers = state.users?.filter((user) =>
+        user?.username?.toLowerCase().includes(action.payload.toLowerCase()),
+      );
+
+      state.totalPages = pagesCount(filteredUsers.length);
+      state.currentPage = 1;
+      state.paginationUsers = filteredUsers;
     },
   },
 
@@ -42,6 +77,11 @@ const usersSlice = createSlice({
         state.error = null;
         state.count = action.payload?.count;
         state.users = action.payload?.users;
+        state.paginationUsers = usersPaginationCalc(
+          action.payload?.users,
+          state.currentPage,
+        );
+        state.totalPages = pagesCount(action.payload?.count);
       })
       .addCase(getAllUsersThunk.rejected, (state, action) => {
         state.success = false;
@@ -60,7 +100,10 @@ const usersSlice = createSlice({
         state.success = true;
         state.error = null;
         state.count = state.count + 1;
-        state.users.push(action.payload?.user);
+        state.users.unshift(action.payload?.user);
+        state.totalPages = pagesCount(state.count);
+        state.currentPage = 1;
+        state.paginationUsers = usersPaginationCalc(state.users, 1);
       })
       .addCase(addUserThunk.rejected, (state, action) => {
         state.success = false;
@@ -79,7 +122,21 @@ const usersSlice = createSlice({
         state.success = true;
         state.error = null;
         state.count = state.count - 1;
-        state.users = state.users.filter((user) => user._id !== action.payload?._id);
+        state.users = state.users.filter(
+          (user) => user._id !== action.payload?._id,
+        );
+
+        state.totalPages = pagesCount(state.count);
+
+        state.currentPage =
+          state.currentPage <= state.totalPages
+            ? state.currentPage
+            : state.totalPages;
+
+        state.paginationUsers = usersPaginationCalc(
+          state.users,
+          state.currentPage,
+        );
       })
       .addCase(deleteUserThunk.rejected, (state, action) => {
         state.success = false;
@@ -100,6 +157,10 @@ const usersSlice = createSlice({
         state.error = null;
         state.users = state.users.map((user) =>
           user._id === action.payload?.user._id ? action.payload?.user : user,
+        );
+        state.paginationUsers = usersPaginationCalc(
+          state.users,
+          state.currentPage,
         );
       })
 
@@ -126,6 +187,11 @@ const usersSlice = createSlice({
         if (index !== -1) {
           state.users[index] = action.payload.user;
         }
+
+        state.paginationUsers = usersPaginationCalc(
+          state.users,
+          state.currentPage,
+        );
       })
       .addCase(changeUserRoleThunk.rejected, (state, action) => {
         state.success = false;
@@ -135,6 +201,6 @@ const usersSlice = createSlice({
   },
 });
 
-export const { clearStatus } = usersSlice.actions;
+export const { clearStatus, setPage, searchUser } = usersSlice.actions;
 
 export default usersSlice.reducer;

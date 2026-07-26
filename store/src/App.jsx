@@ -9,6 +9,7 @@ import AuthInitializer from "./AuthInitializer";
 import HomePage from "./pages/Home/HomePage";
 import ShopPage from "./pages/Shop/ShopPage";
 import OrdersPage from "./pages/Orders/OrdersPage";
+import OrderDetailsPage from "./pages/Orders/OrderDetailsPage";
 import WishlistPage from "./pages/Wishlist/WishlistPage";
 import ProfilePage from "./pages/User/Profile/ProfilePage";
 import LoginPage from "./pages/User/Login/LoginPage";
@@ -40,6 +41,7 @@ function App() {
             <Route path="shop" element={<ShopPage />} />
             <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<OrdersPage />} />
+                    <Route path="orders/:id" element={<OrderDetailsPage />} />
             <Route path="wishlist" element={<WishlistPage />} />
             <Route path="profile" element={<ProfilePage />} />
           </Route>

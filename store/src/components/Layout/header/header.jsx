@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../../features/theme/themeSlice";
-import api from "../../../api/axios";
 
 import Sidebar from "./sidebar";
 import Logo from "../../../assets/logo1.png";
@@ -19,36 +18,17 @@ const linksList = [
 ];
 
 const Header = () => {
-  const [wishlistItemsCount, setWishlistItemsCount] = useState(0);
-  // const [cartItemsCount, setCartItemsCount] = useState(0);
   const { theme } = useSelector((store) => store.theme);
   const { totalQuantity } = useSelector((store) => store.cart);
+  const { totalItems } = useSelector((store) => store.wishlist);
   const themeDispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchCounts = async () => {
-      try {
-        // const cartRes = await api.get("carts");
-        // setCartItemsCount(cartRes.data?.itemCount || cartRes?.itemCount || 0);
-
-        const wishlistRes = await api.get("Wishlists/my");
-        setWishlistItemsCount(
-          wishlistRes.data?.totalProducts || wishlistRes?.totalProducts || 0,
-        );
-      } catch (e) {
-        console.error("Error fetching header data:", e);
-      }
-    };
-
-    fetchCounts();
-  }, []);
 
   const handleChangeTheme = () => {
     themeDispatch(toggleTheme());
   };
 
   return (
-    <header className="flex items-center h-20 px-5 lg:px-20 justify-between fixed top-0 right-0 left-0 border-b border-divider shadow-xs bg-bg-navbar z-30 transition-all duration-300">
+    <header className="flex items-center h-20 px-5 lg:px-20 justify-between fixed top-0 right-0 left-0 border-b border-divider shadow-xs bg-bg-navbar z-50 transition-all duration-300">
       <Link to={"/home"} className="w-32 sm:w-35 p-1">
         <img src={Logo} alt="Logo" className="w-full" />
       </Link>
@@ -87,9 +67,9 @@ const Header = () => {
           aria-label="Wishlist"
           className="relative rounded-full p-2 text-text-primary border border-border shadow bg-bg-surface hover:bg-bg-hover hover:text-primary transition"
         >
-          {wishlistItemsCount > 0 && (
+          {totalItems > 0 && (
             <span className="absolute -top-2 text-xs -right-1 text-white px-1.5 flex items-center justify-center rounded-full bg-indigo-500">
-              {wishlistItemsCount}
+              {totalItems}
             </span>
           )}
           <FaRegHeart />
