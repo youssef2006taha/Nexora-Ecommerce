@@ -77,7 +77,7 @@ const Header = () => {
           className="relative rounded-full p-2 text-text-primary border border-border shadow bg-bg-surface hover:bg-bg-hover hover:text-primary transition"
         >
           {totalItems > 0 && (
-            <span className="absolute -top-2 text-xs -right-1 text-white px-1.5 flex items-center justify-center rounded-full bg-indigo-500">
+            <span className="absolute -top-2 text-xs -right-1 text-white px-1.5 flex items-center justify-center rounded-full bg-primary">
               {totalItems}
             </span>
           )}
@@ -90,7 +90,7 @@ const Header = () => {
           className="relative rounded-full p-2 text-text-primary border border-border shadow bg-bg-surface hover:bg-bg-hover hover:text-primary transition"
         >
           {totalQuantity > 0 && (
-            <span className="absolute -top-2 text-xs -right-1 text-white px-1.5 flex items-center justify-center rounded-full bg-indigo-500">
+            <span className="absolute -top-2 text-xs -right-1 text-white px-1.5 flex items-center justify-center rounded-full bg-primary">
               {totalQuantity}
             </span>
           )}

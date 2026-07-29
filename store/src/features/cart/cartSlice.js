@@ -74,6 +74,10 @@ const cartSlice = createSlice({
         state.discountAmount = action.payload.discountAmount;
         state.subTotalPrice = action.payload.subtotal;
         state.totalPrice = action.payload.total;
+        state.shipping = action.payload.shipping ? action.payload.shipping : 0;
+        state.tax = action.payload.tax
+          ? action.payload.tax
+          : 0.14 * (state.subTotalPrice - state.discountAmount);
       })
       .addCase(AddToCartThunk.rejected, (state, action) => {
         state.loading = false;
