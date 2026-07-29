@@ -14,7 +14,7 @@ function BackgroundCircle({
   className = "absolute",
 }) {
   return (
-    <div
+    <div8
       className={`${className} rounded-full pointer-events-none
         ${animate ? "animate-background-circle" : ""}`}
       style={{

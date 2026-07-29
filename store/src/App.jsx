@@ -18,7 +18,10 @@ import VerifyResetOTPPage from "./pages/User/Login/VerifyResetOTPPage";
 import VerifyRegisterOTPPage from "./pages/User/Login/VerifyRegisterOTPPage";
 import RegisterPage from "./pages/User/Register/RegisterPage";
 import Cart from "./pages/Cart/CartPage";
+import CheckoutPage from "./pages/Checkout/CheckoutPage";
+import OrderSuccessPage from "./pages/Checkout/orderSuccessPage";
 import ProtectedRoute from "./components/Layout/ProtectedRoute";
+import ProductDetails from "./pages/productDetails/ProductDetails";
 
 // Toast
 import Toast from "../src/components/UI/toast/Toast";
@@ -41,11 +44,15 @@ function App() {
             <Route index element={<Navigate to="/home" replace />} />
             <Route path="home" element={<HomePage />} />
             <Route path="shop" element={<ShopPage />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="orders" element={<OrdersPage />} />
-            <Route path="orders/:id" element={<OrderDetailsPage />} />
-            <Route path="wishlist" element={<WishlistPage />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+
             <Route element={<ProtectedRoute />}>
+              <Route path="cart" element={<Cart />} />
+              <Route path="checkout" element={<CheckoutPage />} />
+              <Route path="order-success/:id" element={<OrderSuccessPage />} />
+              <Route path="orders" element={<OrdersPage />} />
+              <Route path="orders/:id" element={<OrderDetailsPage />} />
+              <Route path="wishlist" element={<WishlistPage />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
           </Route>

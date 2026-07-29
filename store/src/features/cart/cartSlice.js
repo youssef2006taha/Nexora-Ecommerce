@@ -6,6 +6,7 @@ import { DeleteFromCartThunk } from "./Thunks/DeleteFromCartThunk.js";
 import { ApplyCouponThunk } from "./Thunks/ApplyCouponThunk.js";
 import { RemoveCouponThunk } from "./Thunks/RemoveCouponThunk.js";
 import { ClearCartThunk } from "./Thunks/ClearCartThunk.js";
+import { makeOrderThunk } from "./Thunks/makeOrderThunk.js";
 
 // =================== INITIAL STATE ===================
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   coupon: null,
   shipping: 0,
   tax: 0,
+  orderId: null,
   loading: false,
   error: null,
   success: false,
@@ -201,6 +203,32 @@ const cartSlice = createSlice({
           : 0.14 * (state.subTotalPrice - state.discountAmount);
       })
       .addCase(ClearCartThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload.message;
+      })
+
+      // =================== Make Order ===================
+      .addCase(makeOrderThunk.pending, (state) => {
+        state.loading = true;
+        state.success = false;
+        state.error = null;
+      })
+      .addCase(makeOrderThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.orderId = action.payload.order._id;
+        state.cartItems = [];
+        state.totalQuantity = 0;
+        state.totalPrice = 0;
+        state.subTotalPrice = 0;
+        state.discountAmount = 0;
+        state.coupon = null;
+        state.shipping = 0;
+        state.tax = 0;
+      })
+      .addCase(makeOrderThunk.rejected, (state, action) => {
         state.loading = false;
         state.success = false;
         state.error = action.payload.message;

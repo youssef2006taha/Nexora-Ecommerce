@@ -23,14 +23,14 @@
   scrollbar-width: none;
 }
 
-/* IE & Edge القديم */
+/* IE & Edge old */
 .hide-scrollbar {
   -ms-overflow-style: none;
 }
 
 :root {
   /* ===========================================
-      BACKGROUNDS (Light Mode - درجات ثلجية مريحة جداً للعين)
+      BACKGROUNDS
   ========================================== */
   --bg-main: #f8fafc;
   --bg-sidebar: #ffffff;
@@ -50,16 +50,16 @@
   --Background-Circle-opacity-3: 0.2;
 
   /* ===========================================
-      PRIMARY & ACCENT COLORS (البنفسجي المات الساحر من التصميم)
+      PRIMARY & ACCENT COLORS
   ========================================== */
-  --primary: #8176af; /* الدرجة المريحة الظاهرة في التصميم */
-  --primary-hover: #6d6299; /* درجة أغمق قليلاً للهوفر */
-  --primary-active: #5a5084; /* درجة أنشط وأعمق عند الضغط */
+  --primary: #8176af;
+  --primary-hover: #6d6299;
+  --primary-active: #5a5084;
   --primary-light: rgba(129, 118, 175, 0.08);
 
   --secondary: #64748b;
 
-  --accent: #a399cc; /* الأكسنت مستوحى من درجات الإضاءة الفاتحة في الجريدينت */
+  --accent: #a399cc;
   --accent-hover: #8176af;
   --accent-active: #6d6299;
 
@@ -82,7 +82,7 @@
   --divider: #e2e8f0;
 
   /* ===========================================
-      STATUS (متناسقة مع البنفسجي المات)
+      STATUS
   ========================================== */
   --success: #10b981;
   --success-bg: rgba(16, 185, 129, 0.06);
@@ -93,7 +93,6 @@
   --info: #3b82f6;
   --info-bg: rgba(59, 130, 246, 0.06);
 
-  /* الأبعاد والـ Shadows ثابتة لتأمين الهيكل الفني الداخلي للتصميم كما هي */
   --shadow-xs-value: 0 1px 2px rgba(15, 23, 42, 0.02);
   --shadow-sm-value: 0 4px 10px rgba(15, 23, 42, 0.03);
   --shadow-md-value: 0 8px 24px rgba(15, 23, 42, 0.05);
@@ -132,9 +131,9 @@
 
 :root.dark {
   /* ===========================================
-      BACKGROUNDS (Dark Mode - الرمادي البركاني العميق المسحوب من يمين الصورة)
+      BACKGROUNDS
   ========================================== */
-  --bg-main: #0c0e17; /* اللون الغامق جداً المائل للبنفسجي اللطيف من خلفية الفورم */
+  --bg-main: #0c0e17;
   --bg-sidebar: #121522;
   --bg-navbar: #121522;
   --bg-surface: #171b2b;
@@ -143,19 +142,17 @@
   --bg-hover: #1f243a;
   --bg-active: #2a314f;
 
-  /* 🌌 كرات الخلفية - معادلة السطوع المتزن (واضحة ومش فاقعة) */
-  --Background-Circle-color-1: #8176af; /* البنفسجي المات الصريح من التصميم */
-  --Background-Circle-color-2: #f43f5e; /* الروز المضيء اللي بيكسر عتمة التصميم */
-  --Background-Circle-color-3: #9285c7; /* البنفسجي الفاتح المضيء */
+  --Background-Circle-color-1: #8176af;
+  --Background-Circle-color-2: #f43f5e;
+  --Background-Circle-color-3: #9285c7;
 
-  /* 💡 السر هنا: الشفافية دقيقة جداً (الألوان واضحة بس متدارية خلف الستار) */
   --Background-Circle-opacity-1: 0.15;
   --Background-Circle-opacity-2: 0.12;
   --Background-Circle-opacity-3: 0.12;
   /* ===========================================
       PRIMARY & ACCENT COLORS (Dark Mode)
   ========================================== */
-  --primary: #9d92cd; /* درجة البنفسجي المات المضيئة لتناسب الخلفيات الداكنة */
+  --primary: #9d92cd;
   --primary-hover: #b4aae0;
   --primary-active: #cbbff2;
   --primary-light: rgba(157, 146, 205, 0.08);

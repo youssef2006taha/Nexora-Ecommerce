@@ -82,7 +82,7 @@ const CartSummary = () => {
         <Button
           text="Proceed to Checkout"
           variant="primary"
-          className="!w-full"
+          className="!w-full !h-10.5"
           onClick={() => navigate("/checkout")}
         />
 

@@ -1,10 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import SignInForm from "./SignInForm";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isAuthenticated } = useSelector((store) => store.auth);
 
   return (
     <div className="min-h-screen lg:h-screen flex items-center justify-center px-6 py-10 lg:p-12 overflow-hidden">
@@ -14,7 +16,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() =>
-              location.state?.from
+              location.state?.from && isAuthenticated
                 ? navigate(location.state.from)
                 : navigate("/")
             }

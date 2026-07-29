@@ -10,6 +10,7 @@ import {
   FaShoppingBag,
 } from "react-icons/fa";
 import { TbArrowUpRight } from "react-icons/tb";
+import BackgroundCircle from "../../../components/UI/BackgroundCircle";
 
 const API_BASE = "https://e-commerce-api-3wara.vercel.app";
 
@@ -82,15 +83,19 @@ export default function ShopByCategory() {
   }
 
   return (
-    <section className="relative overflow-hidden py-10" id="CategorySec">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-full">
-        <div
-          className="mx-auto h-[420px] max-w-3xl blur-[120px] opacity-20"
-          style={{ backgroundColor: "var(--primary)" }}
-        />
-      </div>
+    <section className="relative overflow-hidden py-8 mb-10" id="CategorySec">
+      
+      <BackgroundCircle
+        size={350}
+        color="var(--Background-Circle-color-1)"
+        opacity="var(--Background-Circle-opacity-1)"
+        blur={130}
+        top="-5%"
+        left="50%"
+        className="absolute -translate-x-1/2"
+      />
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mb-12 flex flex-col items-center text-center">
           <span
             className="mb-3 h-1 w-10 rounded-full"

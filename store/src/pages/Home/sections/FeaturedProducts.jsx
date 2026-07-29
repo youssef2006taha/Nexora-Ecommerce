@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../../api/axios";
-import ProductCard from "../../../components/UI/ProductCartUpdate";
+import ProductCard from "../../../components/UI/ProductCart";
 import { useDispatch } from "react-redux";
-// import { addToCart } from "../../../features/cart/cartSlice";
+
 import { AddToCartThunk } from "../../../features/cart/Thunks/AddToCartThunk";
 
 const FeaturedProducts = () => {
@@ -70,7 +70,7 @@ const FeaturedProducts = () => {
 
   if (loading) {
     return (
-      <section className="container-noT py-16">
+      <section className="container-noT">
         <div className="mb-10 flex items-center justify-between">
           <div>
             <h2
@@ -149,7 +149,10 @@ const FeaturedProducts = () => {
           >
             Featured Products
           </h2>
-          <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
+          <p
+            className="mt-2 text-sm sm:text-base"
+            style={{ color: "var(--text-muted)" }}
+          >
             Discover our handpicked premium products
           </p>
         </div>

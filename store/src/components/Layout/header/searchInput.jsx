@@ -54,7 +54,7 @@ const SearchInput = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Search products..."
-          className="w-full rounded-full border border-border shadow-lg bg-bg-surface text-text-primary text-sm py-2 pl-4 pr-9 outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300"
+          className="w-full rounded-full border border-border shadow-lg bg-bg-surface text-text-primary text-sm py-2 pl-4 pr-9 outline-none transition-all duration-300"
         />
       </div>
 

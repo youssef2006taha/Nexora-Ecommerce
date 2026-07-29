@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { AddToCartThunk } from "../../features/cart/Thunks/AddToCartThunk";
 import { AddToWishlistThunk } from "../../features/wishlist/Thunks/AddToWishlistThunk";
+import { RemoveFromWishlistThunk } from "../../features/wishlist/Thunks/RemoveFromWishlistThunk";
 import { showToast } from "../../features/Toast/toastSlice";
 
 const ProductCard = ({ product, isWishlisted = false }) => {
@@ -68,23 +69,43 @@ const ProductCard = ({ product, isWishlisted = false }) => {
     try {
       setWishLoading(true);
 
-      await dispatch(AddToWishlistThunk(id)).unwrap();
+      if (wishlisted) {
+        // already in wishlist -> remove it
+        await dispatch(RemoveFromWishlistThunk(id)).unwrap();
 
-      setWishlisted(true);
+        setWishlisted(false);
 
-      dispatch(
-        showToast({
-          open: true,
-          severity: "success",
-          message: "Product added to wishlist!",
-        })
-      );
+        dispatch(
+          showToast({
+            open: true,
+            severity: "success",
+            message: "Product removed from wishlist.",
+          })
+        );
+      } else {
+        // not in wishlist -> add it
+        await dispatch(AddToWishlistThunk(id)).unwrap();
+
+        setWishlisted(true);
+
+        dispatch(
+          showToast({
+            open: true,
+            severity: "success",
+            message: "Product added to wishlist!",
+          })
+        );
+      }
     } catch (error) {
       dispatch(
         showToast({
           open: true,
           severity: "error",
-          message: error || "Failed to add product to wishlist.",
+          message:
+            error ||
+            `Failed to ${wishlisted ? "remove" : "add"} product ${
+              wishlisted ? "from" : "to"
+            } wishlist.`,
         })
       );
     } finally {
@@ -117,7 +138,7 @@ const ProductCard = ({ product, isWishlisted = false }) => {
 
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
           <button
-            aria-label="Add to wishlist"
+            aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
             onClick={handleToggleWishlist}
             disabled={wishLoading}
             className={`opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 p-3 bg-bg-card rounded-full shadow-md ${

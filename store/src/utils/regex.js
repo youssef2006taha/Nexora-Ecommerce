@@ -1,6 +1,8 @@
 export const regex = {
   username: /^(?=.{3,20}$)[a-zA-Z0-9]+(?:[._][a-zA-Z0-9]+)*$/,
 
+  fullName: /^[a-zA-Z]+(?:\s[a-zA-Z]+){1,4}$/,
+
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 
   password: /^\S{6,}$/,
@@ -10,6 +12,8 @@ export const regex = {
   country: /^[a-zA-Z\s]{2,30}$/,
 
   city: /^[a-zA-Z\s]{2,30}$/,
+
+  address: /^[a-zA-Z0-9\s,.-]{5,100}$/,
 
   street: /^[a-zA-Z0-9\s,.-]{3,100}$/,
 

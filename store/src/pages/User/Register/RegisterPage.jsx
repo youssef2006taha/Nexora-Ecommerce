@@ -1,10 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
 
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isAuthenticated } = useSelector((store) => store.auth);
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-10 lg:p-12 overflow-hidden">
       <div className="w-full lg:max-w-6xl rounded-2xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-[1fr_1.2fr] lg:grid-cols-2 max-sm:gap-6 shadow-[0_0_4px] shadow-primary-hover/20 border border-border">
@@ -13,7 +15,7 @@ const Register = () => {
           <button
             type="button"
             onClick={() =>
-              location.state?.from
+              location.state?.from && isAuthenticated
                 ? navigate(location.state.from)
                 : navigate("/")
             }
@@ -163,9 +165,9 @@ const Register = () => {
         </div>
 
         {/* Form Side */}
-       <div className="relative z-10">
-         <RegisterForm />
-       </div>
+        <div className="relative z-10">
+          <RegisterForm />
+        </div>
       </div>
     </div>
   );

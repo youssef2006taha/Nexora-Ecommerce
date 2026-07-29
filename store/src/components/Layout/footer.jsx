@@ -33,77 +33,89 @@ export default function LeftFooterHero() {
 
   return (
     <footer
-      className="relative left-1/2 -translate-x-1/2 w-full"
+      className="relative left-1/2 -translate-x-1/2 w-full overflow-hidden"
       style={{
         backgroundColor: "var(--bg-card)",
         borderTop: "1px solid var(--border)",
       }}
     >
-      <div className="flex justify-between items-stretch">
-        {/* Left Div */}
-        <div
-          className="relative overflow-hidden w-1/2 flex flex-col justify-center items-center px-8 py-12 text-center transition-colors duration-300"
-          style={{ backgroundColor: "var(--bg-surface)" }}
-        >
-          <div className="absolute inset-0 pointer-events-none z-0 opacity-40 dark:opacity-30">
-            {HERO_BACKGROUNDS.map((bgUrl, index) => {
-              const isCurrent = index === currentIdx;
-              const isPrev = index === prevIdx;
+      <div className="flex flex-col md:flex-row justify-between items-stretch">
+      {/* Left Div */}
+      <div
+        className="relative overflow-hidden w-full md:w-1/2 flex flex-col justify-center items-center px-8 py-12 text-center transition-colors duration-300"
+        style={{ backgroundColor: "var(--bg-surface)" }}
+      >
+        <div className="absolute inset-0 pointer-events-none z-0 opacity-30 dark:opacity-20">
+          {HERO_BACKGROUNDS.map((bgUrl, index) => {
+            const isCurrent = index === currentIdx;
+            const isPrev = index === prevIdx;
 
-              return (
-                <div
-                  key={bgUrl}
-                  className={`
-                    absolute inset-0 bg-cover bg-center 
-                    transition-all duration-1000 ease-in-out will-change-transform
-                    ${isCurrent ? "opacity-100 scale-105" : isPrev ? "opacity-0 scale-100" : "opacity-0"}
-                  `}
-                  style={{ backgroundImage: `url(${bgUrl})` }}
-                />
-              );
-            })}
-          </div>
-
-          <div
-            className="absolute inset-0 pointer-events-none z-10 
-                      bg-gradient-to-t from-[var(--bg-main)] via-black/10 to-[var(--bg-main)] 
-                      dark:from-[var(--bg-main)] dark:via-black/30 dark:to-[var(--bg-main)]"
-          />
-
-          <div className="absolute -top-20 -right-20 pointer-events-none z-10">
-            <BackgroundCircle
-              size={450}
-              color="var(--Background-Circle-color-1)"
-              blur={120}
-              animate={false}
-              className="relative"
-              style={{ opacity: "var(--Background-Circle-opacity-1)" }}
-            />
-          </div>
-
-          <div className="relative z-20 p-6 rounded-2xl backdrop-blur-md bg-white/40 dark:bg-black/30 border border-white/40 dark:border-white/10 shadow-md">
-            <div
-              className="flex justify-center items-center gap-2 text-2xl font-bold tracking-wide drop-shadow-sm"
-              style={{ color: "var(--primary)" }}
-            >
-              <Zap size={24} className="animate-pulse" />
-              <span>Koda Store</span>
-              <Zap size={24} className="animate-pulse" />
-            </div>
-
-            <p
-              className="mt-3 text-sm leading-relaxed font-semibold drop-shadow-sm"
-              style={{ color: "var(--text-primary)" }}
-            >
-              Shop the future, delivered today. Premium products at the best
-              prices with fast delivery across Egypt.
-            </p>
-          </div>
+            return (
+              <div
+                key={bgUrl}
+                className={`
+                  absolute inset-0 bg-cover bg-center 
+                  transition-all duration-1000 ease-in-out will-change-transform
+                  ${isCurrent ? "opacity-100 scale-105" : isPrev ? "opacity-0 scale-100" : "opacity-0"}
+                `}
+                style={{ backgroundImage: `url(${bgUrl})` }}
+              />
+            );
+          })}
         </div>
 
+        <div
+          className="absolute inset-0 pointer-events-none z-10 
+                    bg-gradient-to-t from-[var(--bg-surface)] via-transparent to-[var(--bg-surface)]"
+        />
+
+        <div className="absolute -top-20 -right-20 pointer-events-none z-10">
+          <BackgroundCircle
+            size={350}
+            color="var(--Background-Circle-color-2)"
+            opacity="var(--Background-Circle-opacity-2)"
+            blur={130}
+          />
+        </div>
+
+        <div 
+          className="relative z-20 p-6 rounded-2xl backdrop-blur-md shadow-lg border transition-all"
+          style={{
+            backgroundColor: "var(--bg-card)",
+            borderColor: "var(--border)",
+          }}
+        >
+          <div
+            className="flex justify-center items-center gap-2 text-2xl font-bold tracking-wide"
+            style={{ color: "var(--primary)" }}
+          >
+            <Zap size={24} className="animate-pulse" />
+            <span>Nexora Store</span>
+            <Zap size={24} className="animate-pulse" />
+          </div>
+
+          <p
+            className="mt-3 text-sm leading-relaxed font-medium"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Shop the future, delivered today. Premium products at the best
+            prices with fast delivery across Egypt.
+          </p>
+        </div>
+      </div>
+
         {/* Right Div */}
-        <div className="pt-10 pb-6 w-1/2 flex flex-col items-center text-center justify-between">
-          <div className="flex flex-col w-1/2 gap-8">
+        <div className="relative pt-10 pb-6 w-full md:w-1/2 flex flex-col items-center text-center justify-between overflow-hidden">
+          <BackgroundCircle
+            size={350}
+            color="var(--Background-Circle-color-1)"
+            opacity="var(--Background-Circle-opacity-1)"
+            blur={130}
+            bottom="-10%"
+            right="-10%"
+          />
+
+          <div className="relative z-10 flex flex-col w-1/2 gap-8">
             <div>
               <h3
                 className="font-semibold text-lg mb-2.5"
@@ -169,7 +181,7 @@ export default function LeftFooterHero() {
             </div>
           </div>
 
-          <div className="w-full px-8">
+          <div className="relative z-10 w-full px-8">
             <hr
               className="my-6 w-full"
               style={{

@@ -1,4 +1,5 @@
 import { ShoppingBag, ShoppingCart, Truck } from "lucide-react";
+import BackgroundCircle from "../../../components/UI/BackgroundCircle";
 
 const steps = [
   {
@@ -23,8 +24,27 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="w-full py-25 transition-colors duration-300 sm:px-6 lg:px-10">
-      <div className="mx-auto w-[95%] max-w-6xl">
+    <section className="relative overflow-hidden w-full py-25 transition-colors duration-300 sm:px-6 lg:px-10 mt-10">
+      
+      <BackgroundCircle
+        size={350}
+        color="var(--Background-Circle-color-1)"
+        opacity="var(--Background-Circle-opacity-1)"
+        blur={130}
+        top="-10%"
+        left="-5%"
+      />
+
+      <BackgroundCircle
+        size={350}
+        color="var(--Background-Circle-color-3)"
+        opacity="var(--Background-Circle-opacity-3)"
+        blur={130}
+        bottom="-10%"
+        right="-5%"
+      />
+
+      <div className="relative z-10 mx-auto w-[95%] max-w-6xl">
         <div className="mb-16 flex flex-col items-center text-center">
           <span
             className="mb-3 h-1 w-10 rounded-full"
@@ -39,7 +59,6 @@ export default function HowItWorks() {
         </div>
 
         <div className="relative grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
-
           {steps.map(({ id, title, description, icon: Icon }, index) => (
             <article
               key={id}

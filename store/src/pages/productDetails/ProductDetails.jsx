@@ -1,7 +1,9 @@
 import { useDispatch } from "react-redux";
 import { AddToCartThunk } from "../../features/cart/Thunks/AddToCartThunk";
 import { AddToWishlistThunk } from "../../features/wishlist/Thunks/AddToWishlistThunk";
+import { RemoveFromWishlistThunk } from "../../features/wishlist/Thunks/RemoveFromWishlistThunk";
 import { showToast } from "../../features/Toast/toastSlice";
+import SectionWithCircles from "../../components/UI/SectionWithCircles"
 
 import {
   ChevronLeft,
@@ -40,7 +42,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     let ignore = false;
-
+    window.scrollTo(0, 0);
     const fetchProduct = async () => {
       try {
         setLoading(true);
@@ -57,7 +59,7 @@ export default function ProductDetails() {
           setError(
             err.response?.status === 404
               ? "Product not found."
-              : "Failed to load product."
+              : "Failed to load product.",
           );
         }
       } finally {
@@ -66,6 +68,30 @@ export default function ProductDetails() {
     };
 
     if (id) fetchProduct();
+    return () => {
+      ignore = true;
+    };
+  }, [id]);
+
+  // Check whether this product is already in the user's wishlist,
+  // so the heart shows red on load instead of only after clicking.
+  useEffect(() => {
+    let ignore = false;
+    const checkWishlist = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/wishlists/my`, {
+          withCredentials: true,
+        });
+        const products = res.data?.wishlist?.products || [];
+        const isInWishlist = products.some((p) => p._id === id);
+        if (!ignore) setWishlisted(isInWishlist);
+      } catch (err) {
+        // not logged in / no wishlist yet — safe to ignore
+        if (!ignore) setWishlisted(false);
+      }
+    };
+
+    if (id) checkWishlist();
     return () => {
       ignore = true;
     };
@@ -87,7 +113,7 @@ export default function ProductDetails() {
           open: true,
           severity: "success",
           message: "Product added to cart successfully!",
-        })
+        }),
       );
     } catch (error) {
       dispatch(
@@ -95,7 +121,7 @@ export default function ProductDetails() {
           open: true,
           severity: "error",
           message: error || "Failed to add product to cart.",
-        })
+        }),
       );
       console.error(error);
     } finally {
@@ -109,24 +135,44 @@ export default function ProductDetails() {
     try {
       setWishLoading(true);
 
-      await dispatch(AddToWishlistThunk(id)).unwrap();
+      if (wishlisted) {
+        // already in wishlist -> remove it
+        await dispatch(RemoveFromWishlistThunk(id)).unwrap();
 
-      setWishlisted(true);
+        setWishlisted(false);
 
-      dispatch(
-        showToast({
-          open: true,
-          severity: "success",
-          message: "Product added to wishlist!",
-        })
-      );
+        dispatch(
+          showToast({
+            open: true,
+            severity: "success",
+            message: "Product removed from wishlist.",
+          }),
+        );
+      } else {
+        // not in wishlist -> add it
+        await dispatch(AddToWishlistThunk(id)).unwrap();
+
+        setWishlisted(true);
+
+        dispatch(
+          showToast({
+            open: true,
+            severity: "success",
+            message: "Product added to wishlist!",
+          }),
+        );
+      }
     } catch (error) {
       dispatch(
         showToast({
           open: true,
           severity: "error",
-          message: error || "Failed to add product to wishlist.",
-        })
+          message:
+            error ||
+            `Failed to ${wishlisted ? "remove" : "add"} product ${
+              wishlisted ? "from" : "to"
+            } wishlist.`,
+        }),
       );
     } finally {
       setWishLoading(false);
@@ -135,7 +181,7 @@ export default function ProductDetails() {
 
   if (loading) {
     return (
-      <section className="py-24">
+      <SectionWithCircles className="py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 animate-pulse">
             <div className="aspect-square rounded-2xl bg-bg-hover" />
@@ -148,22 +194,25 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-      </section>
+      </SectionWithCircles>
     );
   }
 
   if (error || !product) {
     return (
-      <section className="py-24">
+      <SectionWithCircles className="py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-text-primary text-lg font-semibold mb-2">
             {error || "Product not found."}
           </p>
-          <Link to="/" className="text-primary hover:text-primary-hover text-sm font-medium">
+          <Link
+            to="/"
+            className="text-primary hover:text-primary-hover text-sm font-medium"
+          >
             ← Back to shop
           </Link>
         </div>
-      </section>
+      </SectionWithCircles>
     );
   }
 
@@ -192,11 +241,13 @@ export default function ProductDetails() {
   const finalPrice = discountPercent ? discountPrice : price;
 
   return (
-    <section className="py-10 md:py-16">
+    <SectionWithCircles className="py-10 md:py-16">
       <div className="max-w-7xl mx-auto px-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-text-muted mb-6">
-          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+          <Link to="/" className="hover:text-primary transition-colors">
+            Home
+          </Link>
           <span>/</span>
           <span className="capitalize">{category}</span>
           <span>/</span>
@@ -225,7 +276,9 @@ export default function ProductDetails() {
                   <button
                     aria-label="Previous image"
                     onClick={() =>
-                      setCurrentImage((i) => (i === 0 ? imageUrls.length - 1 : i - 1))
+                      setCurrentImage((i) =>
+                        i === 0 ? imageUrls.length - 1 : i - 1,
+                      )
                     }
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-bg-card border border-border shadow-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-text-secondary hover:text-primary"
                   >
@@ -234,7 +287,9 @@ export default function ProductDetails() {
                   <button
                     aria-label="Next image"
                     onClick={() =>
-                      setCurrentImage((i) => (i === imageUrls.length - 1 ? 0 : i + 1))
+                      setCurrentImage((i) =>
+                        i === imageUrls.length - 1 ? 0 : i + 1,
+                      )
                     }
                     className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-bg-card border border-border shadow-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-text-secondary hover:text-primary"
                   >
@@ -256,7 +311,11 @@ export default function ProductDetails() {
                         : "border-border hover:border-text-disabled"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={img}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
                   </button>
                 ))}
               </div>
@@ -299,13 +358,18 @@ export default function ProductDetails() {
                   <Star
                     key={i}
                     size={16}
-                    fill={i < Math.round(averageRating) ? "currentColor" : "none"}
-                    className={i < Math.round(averageRating) ? "" : "text-border"}
+                    fill={
+                      i < Math.round(averageRating) ? "currentColor" : "none"
+                    }
+                    className={
+                      i < Math.round(averageRating) ? "" : "text-border"
+                    }
                   />
                 ))}
               </div>
               <span className="text-text-muted text-sm hover:text-primary transition-colors">
-                {averageRating.toFixed(1)} ({numReviews} review{numReviews === 1 ? "" : "s"})
+                {averageRating.toFixed(1)} ({numReviews} review
+                {numReviews === 1 ? "" : "s"})
               </span>
             </button>
 
@@ -333,7 +397,9 @@ export default function ProductDetails() {
               ) : (
                 <>
                   <span className="w-1.5 h-1.5 rounded-full bg-danger" />
-                  <span className="text-danger text-sm font-medium">Out of stock</span>
+                  <span className="text-danger text-sm font-medium">
+                    Out of stock
+                  </span>
                 </>
               )}
             </div>
@@ -359,7 +425,9 @@ export default function ProductDetails() {
                 <button
                   aria-label="Increase quantity"
                   className="w-10 h-11 flex items-center justify-center text-text-secondary hover:bg-bg-hover disabled:opacity-40 disabled:cursor-not-allowed"
-                  onClick={() => setQuantity((q) => Math.min(stock || 99, q + 1))}
+                  onClick={() =>
+                    setQuantity((q) => Math.min(stock || 99, q + 1))
+                  }
                   disabled={quantity >= (stock || 99)}
                 >
                   <Plus size={16} />
@@ -372,11 +440,15 @@ export default function ProductDetails() {
                 className="flex-1 h-11 flex items-center justify-center gap-2 rounded-lg font-medium text-sm transition-colors bg-primary hover:bg-primary-hover text-text-white shadow-primary disabled:bg-bg-active disabled:text-text-disabled disabled:shadow-none disabled:cursor-not-allowed"
               >
                 <ShoppingCart size={17} />
-                {!inStock ? "Out of stock" : cartLoading ? "Adding..." : "Add to cart"}
+                {!inStock
+                  ? "Out of stock"
+                  : cartLoading
+                    ? "Adding..."
+                    : "Add to cart"}
               </button>
 
               <button
-                aria-label="Add to wishlist"
+                aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
                 onClick={handleToggleWishlist}
                 disabled={wishLoading}
                 className={`w-11 h-11 shrink-0 rounded-lg border flex items-center justify-center transition-colors disabled:opacity-60 ${
@@ -414,7 +486,9 @@ export default function ProductDetails() {
 
           {activeTab === "description" && (
             <div className="mt-8">
-              <p className="text-text-secondary text-sm leading-7">{description}</p>
+              <p className="text-text-secondary text-sm leading-7">
+                {description}
+              </p>
             </div>
           )}
 
@@ -422,12 +496,17 @@ export default function ProductDetails() {
             <div className="mt-8">
               {/* Review form */}
               <div className="bg-bg-hover/60 border border-border-light rounded-xl p-6">
-                <h3 className="text-text-primary font-semibold mb-4">Write a review</h3>
+                <h3 className="text-text-primary font-semibold mb-4">
+                  Write a review
+                </h3>
 
                 <div className="flex gap-1 mb-4">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button key={star} aria-label={`Rate ${star} stars`}>
-                      <Star size={22} className="text-border hover:text-warning transition-colors cursor-pointer" />
+                      <Star
+                        size={22}
+                        className="text-border hover:text-warning transition-colors cursor-pointer"
+                      />
                     </button>
                   ))}
                 </div>
@@ -451,7 +530,10 @@ export default function ProductDetails() {
                   </p>
                 ) : (
                   reviews.map((review) => (
-                    <div key={review._id} className="flex gap-4 py-6 first:pt-0">
+                    <div
+                      key={review._id}
+                      className="flex gap-4 py-6 first:pt-0"
+                    >
                       <div className="w-11 h-11 shrink-0 rounded-full bg-primary-light flex items-center justify-center">
                         <User size={19} className="text-primary" />
                       </div>
@@ -477,7 +559,9 @@ export default function ProductDetails() {
                           ))}
                         </div>
 
-                        <p className="text-text-secondary text-sm leading-6">{review.comment}</p>
+                        <p className="text-text-secondary text-sm leading-6">
+                          {review.comment}
+                        </p>
                       </div>
                     </div>
                   ))
@@ -487,6 +571,6 @@ export default function ProductDetails() {
           )}
         </div>
       </div>
-    </section>
+    </SectionWithCircles>
   );
 }

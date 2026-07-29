@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import api from "../../api/axios";
 import OrderProgressStepper from "./sections/OrderProgressStepper";
 import { getStatusBadgeStyle, capitalize } from "./sections/OrderCard";
+import SectionWithCircles from "../../components/UI/SectionWithCircles";
 
 const OrderDetailsPage = () => {
   const { id } = useParams();
@@ -53,7 +54,8 @@ const OrderDetailsPage = () => {
 
   if (loading) {
     return (
-      <div className="container-noT mx-auto py-8">
+      <SectionWithCircles className="mx-auto py-8">
+        <div className="container-noT">
         <div className="w-full animate-pulse space-y-5">
           <div
             className="h-9 rounded-xl w-52"
@@ -94,13 +96,14 @@ const OrderDetailsPage = () => {
             />
           </div>
         </div>
-      </div>
+        </div>
+      </SectionWithCircles>
     );
   }
 
   if (error || !order) {
     return (
-      <div className="max-w-4xl mx-auto py-8">
+      <SectionWithCircles className="max-w-4xl mx-auto py-8">
         <div
           className="border p-8 rounded-2xl text-center"
           style={{
@@ -132,7 +135,7 @@ const OrderDetailsPage = () => {
             Back to Orders
           </Link>
         </div>
-      </div>
+      </SectionWithCircles>
     );
   }
 
@@ -140,7 +143,8 @@ const OrderDetailsPage = () => {
   const canCancel = ["pending", "confirmed"].includes((order.status || "").toLowerCase());
 
   return (
-    <div className="container-noT min-h-[70vh]">
+    <SectionWithCircles className="min-h-[70vh]">
+      <div className="container-noT">
       <div className="w-full mx-auto py-8">
         {/* Header */}
         <div className="flex items-start justify-between mb-8">
@@ -543,7 +547,8 @@ const OrderDetailsPage = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </SectionWithCircles>
   );
 };
 

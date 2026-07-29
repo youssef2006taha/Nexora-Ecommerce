@@ -29,7 +29,11 @@ const Input = ({
       startAdornment={
         (icon || startIcon) && (
           <InputAdornment position="start">
-            {<div className="!text-text-muted/45">{startIcon}</div> || <SearchIcon className="!text-text-muted !text-xl" />}
+            {startIcon ? (
+              <div className="!text-text-muted/45">{startIcon}</div>
+            ) : (
+              <SearchIcon className="!text-text-muted !text-xl" />
+            )}
           </InputAdornment>
         )
       }

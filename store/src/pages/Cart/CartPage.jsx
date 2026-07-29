@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import CartPageHeader from "./Components/CartPageHeader";
@@ -6,12 +7,17 @@ import CartItemCard from "./Components/CartItemCard";
 import CartSummary from "./components/CartSummary";
 import Coupon from "./Components/Coupon";
 import EmptyCart from "./Components/EmptyCart";
+import SectionWithCircles from "../../components/UI/SectionWithCircles";
 
 const CartPage = () => {
   const { cartItems } = useSelector((store) => store.cart);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="py-8 px-6 sm:px-16">
+    <SectionWithCircles className="py-8 px-6 sm:px-16">
       {cartItems?.length > 0 ? (
         <div>
           <CartPageHeader />
@@ -43,7 +49,7 @@ const CartPage = () => {
       ) : (
         <EmptyCart />
       )}
-    </div>
+    </SectionWithCircles>
   );
 };
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { loginValidation } from "../../../utils/validation/loginValidation";
 import { login } from "../../../features/auth/Thunks/authThunk.js";
@@ -17,6 +17,7 @@ const SignInForm = () => {
   const loginDispatch = useDispatch();
   const toastDispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { loading } = useSelector((store) => store.auth);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({
@@ -24,7 +25,7 @@ const SignInForm = () => {
     password: "",
     general: "",
   });
-
+  console.log(location.state);
   const loginHandler = async (e) => {
     e.preventDefault();
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import OrderCard from "./sections/OrderCard";
+import SectionWithCircles from "../../components/UI/SectionWithCircles";
 
 const OrdersPage = () => {
   const navigate = useNavigate();
@@ -28,7 +29,9 @@ const OrdersPage = () => {
       setError(null);
       setIsUnauthorized(false);
 
-      const res = await api.get("/orders/my", { params: { page: pageNum, limit: 10 } });
+      const res = await api.get("/orders/my", {
+        params: { page: pageNum, limit: 10 },
+      });
       if (res && res.orders) {
         setOrders((prev) => (append ? [...prev, ...res.orders] : res.orders));
         setTotalPages(res.totalPages || 1);
@@ -38,7 +41,12 @@ const OrdersPage = () => {
       }
     } catch (err) {
       if (err?.response?.status === 401) setIsUnauthorized(true);
-      else setError(err?.response?.data?.message || err?.message || "Failed to load orders");
+      else
+        setError(
+          err?.response?.data?.message ||
+            err?.message ||
+            "Failed to load orders",
+        );
     } finally {
       setLoading(false);
       setLoadingMore(false);
@@ -46,6 +54,7 @@ const OrdersPage = () => {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchOrders(1, false);
   }, [fetchOrders]);
 
@@ -54,7 +63,8 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="container-noT min-h-[70vh]">
+    <SectionWithCircles className=" min-h-[70vh]">
+      <div className="container-noT">
       <div className="w-full mx-auto py-8">
         <h1
           className="text-3xl font-extrabold mb-7 tracking-tight"
@@ -117,7 +127,12 @@ const OrdersPage = () => {
                 borderColor: "var(--border-light)",
               }}
             >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -194,7 +209,12 @@ const OrdersPage = () => {
                 borderColor: "var(--border-light)",
               }}
             >
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-7 h-7"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -249,10 +269,12 @@ const OrdersPage = () => {
                     boxShadow: "var(--shadow-xs-value)",
                   }}
                   onMouseEnter={(e) => {
-                    if (!loadingMore) e.currentTarget.style.backgroundColor = "var(--bg-hover)";
+                    if (!loadingMore)
+                      e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                   }}
                   onMouseLeave={(e) => {
-                    if (!loadingMore) e.currentTarget.style.backgroundColor = "var(--bg-card)";
+                    if (!loadingMore)
+                      e.currentTarget.style.backgroundColor = "var(--bg-card)";
                   }}
                 >
                   {loadingMore ? "Loading..." : "Load More Orders"}
@@ -262,7 +284,8 @@ const OrdersPage = () => {
           </>
         )}
       </div>
-    </div>
+      </div>
+    </SectionWithCircles>
   );
 };
 
