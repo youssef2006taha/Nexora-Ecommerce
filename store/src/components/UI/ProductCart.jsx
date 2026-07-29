@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { AddToCartThunk } from "../../features/cart/Thunks/AddToCartThunk";
 import { AddToWishlistThunk } from "../../features/wishlist/Thunks/AddToWishlistThunk";
@@ -20,19 +21,31 @@ const ProductCard = ({ product, isWishlisted = false }) => {
   } = product;
 
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((store) => store.auth);
 
   const [cartLoading, setCartLoading] = useState(false);
   const [wishLoading, setWishLoading] = useState(false);
   const [wishlisted, setWishlisted] = useState(isWishlisted);
 
   const oldPrice =
-    discount && discount > 0
-      ? Math.round(price / (1 - discount / 100))
-      : null;
+    discount && discount > 0 ? Math.round(price / (1 - discount / 100)) : null;
 
   const handleAddToCart = async (e) => {
     e.preventDefault(); // stop the parent <Link> from navigating
     e.stopPropagation();
+
+    if (!isAuthenticated) {
+      navigate("/login", {
+        state: {
+          from: location.pathname,
+        },
+      });
+
+      return;
+    }
+
     if (!inStock || cartLoading) return;
 
     try {
@@ -45,7 +58,7 @@ const ProductCard = ({ product, isWishlisted = false }) => {
           open: true,
           severity: "success",
           message: "Product added to cart successfully!",
-        })
+        }),
       );
     } catch (error) {
       dispatch(
@@ -53,7 +66,7 @@ const ProductCard = ({ product, isWishlisted = false }) => {
           open: true,
           severity: "error",
           message: error || "Failed to add product to cart.",
-        })
+        }),
       );
       console.error(error);
     } finally {
@@ -64,6 +77,17 @@ const ProductCard = ({ product, isWishlisted = false }) => {
   const handleToggleWishlist = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!isAuthenticated) {
+      navigate("/login", {
+        state: {
+          from: location.pathname,
+        },
+      });
+
+      return;
+    }
+
     if (wishLoading) return;
 
     try {
@@ -80,7 +104,7 @@ const ProductCard = ({ product, isWishlisted = false }) => {
             open: true,
             severity: "success",
             message: "Product removed from wishlist.",
-          })
+          }),
         );
       } else {
         // not in wishlist -> add it
@@ -93,7 +117,7 @@ const ProductCard = ({ product, isWishlisted = false }) => {
             open: true,
             severity: "success",
             message: "Product added to wishlist!",
-          })
+          }),
         );
       }
     } catch (error) {
@@ -106,7 +130,7 @@ const ProductCard = ({ product, isWishlisted = false }) => {
             `Failed to ${wishlisted ? "remove" : "add"} product ${
               wishlisted ? "from" : "to"
             } wishlist.`,
-        })
+        }),
       );
     } finally {
       setWishLoading(false);
@@ -142,10 +166,17 @@ const ProductCard = ({ product, isWishlisted = false }) => {
             onClick={handleToggleWishlist}
             disabled={wishLoading}
             className={`opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 p-3 bg-bg-card rounded-full shadow-md ${
-              wishlisted ? "text-danger" : "text-text-secondary hover:text-danger"
+              wishlisted
+                ? "text-danger"
+                : "text-text-secondary hover:text-danger"
             }`}
           >
-            <svg className="w-5 h-5" fill={wishlisted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5"
+              fill={wishlisted ? "currentColor" : "none"}
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -191,7 +222,9 @@ const ProductCard = ({ product, isWishlisted = false }) => {
                 </svg>
               ))}
             </div>
-            <span className="text-text-muted text-xs font-medium">({reviewsCount})</span>
+            <span className="text-text-muted text-xs font-medium">
+              ({reviewsCount})
+            </span>
           </div>
         </div>
 
@@ -199,7 +232,9 @@ const ProductCard = ({ product, isWishlisted = false }) => {
           <div className="flex items-baseline gap-2 mb-3 px-4">
             <span className="text-primary font-bold text-lg">EGP {price}</span>
             {oldPrice && (
-              <span className="text-text-disabled text-sm line-through">EGP {oldPrice}</span>
+              <span className="text-text-disabled text-sm line-through">
+                EGP {oldPrice}
+              </span>
             )}
           </div>
 
@@ -213,7 +248,12 @@ const ProductCard = ({ product, isWishlisted = false }) => {
                   : "bg-bg-active text-text-disabled cursor-not-allowed"
               }`}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -221,7 +261,11 @@ const ProductCard = ({ product, isWishlisted = false }) => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"
                 />
               </svg>
-              {!inStock ? "Out of Stock" : cartLoading ? "Adding..." : "Add to Cart"}
+              {!inStock
+                ? "Out of Stock"
+                : cartLoading
+                  ? "Adding..."
+                  : "Add to Cart"}
             </button>
           </div>
         </div>
