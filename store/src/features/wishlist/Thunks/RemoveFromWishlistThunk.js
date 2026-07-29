@@ -1,16 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../../api/axios";
+import axios from "axios";
 
 export const RemoveFromWishlistThunk = createAsyncThunk(
   "wishlist/removeFromWishlist",
-  async (productId, { rejectWithValue }) => {
+  async (productId, thunkAPI) => {
+    const { token } = thunkAPI.getState().auth;
+
     try {
-      const response = await api.delete(`/wishlists/remove/${productId}`);
-      return productId;
+      const res = await axios.delete(
+        `https://e-commerce-api-3wara.vercel.app/wishlists/remove/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      return res.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to remove item from wishlist"
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to remove from wishlist.",
       );
     }
-  }
+  },
 );

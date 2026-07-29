@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Heart , X } from "lucide-react";
+import { X } from "lucide-react";
 import { RemoveFromWishlistThunk } from "../../../features/wishlist/Thunks/RemoveFromWishlistThunk";
 import { AddToCartThunk } from "../../../features/cart/Thunks/AddToCartThunk";
 import { showToast } from "../../../features/Toast/toastSlice";
 
-const WishlistCard = ({ product, refreshWishlist }) => {
+const WishlistCard = ({ product }) => {
   const {
     _id: id,
     name,
@@ -44,16 +44,15 @@ const WishlistCard = ({ product, refreshWishlist }) => {
           open: true,
           severity: "success",
           message: "Removed from wishlist.",
-        })
+        }),
       );
-      refreshWishlist?.();
     } catch (error) {
       dispatch(
         showToast({
           open: true,
           severity: "error",
           message: error || "Failed to remove item.",
-        })
+        }),
       );
       setRemoving(false);
     }
@@ -72,7 +71,7 @@ const WishlistCard = ({ product, refreshWishlist }) => {
           open: true,
           severity: "success",
           message: "Added to cart!",
-        })
+        }),
       );
     } catch (error) {
       dispatch(
@@ -80,7 +79,7 @@ const WishlistCard = ({ product, refreshWishlist }) => {
           open: true,
           severity: "error",
           message: error || "Failed to add to cart.",
-        })
+        }),
       );
     } finally {
       setCartLoading(false);
@@ -162,7 +161,9 @@ const WishlistCard = ({ product, refreshWishlist }) => {
                 </svg>
               ))}
             </div>
-            <span className="text-text-muted text-xs font-medium">({numReviews})</span>
+            <span className="text-text-muted text-xs font-medium">
+              ({numReviews})
+            </span>
           </div>
         </div>
 
@@ -172,7 +173,9 @@ const WishlistCard = ({ product, refreshWishlist }) => {
               EGP {hasDiscount ? discountPrice : price}
             </span>
             {hasDiscount && (
-              <span className="text-text-disabled text-sm line-through">EGP {price}</span>
+              <span className="text-text-disabled text-sm line-through">
+                EGP {price}
+              </span>
             )}
           </div>
 
@@ -186,7 +189,12 @@ const WishlistCard = ({ product, refreshWishlist }) => {
                   : "bg-bg-active text-text-disabled cursor-not-allowed"
               }`}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -194,7 +202,11 @@ const WishlistCard = ({ product, refreshWishlist }) => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"
                 />
               </svg>
-              {!inStock ? "Out of Stock" : cartLoading ? "Adding..." : "Add to Cart"}
+              {!inStock
+                ? "Out of Stock"
+                : cartLoading
+                  ? "Adding..."
+                  : "Add to Cart"}
             </button>
           </div>
         </div>

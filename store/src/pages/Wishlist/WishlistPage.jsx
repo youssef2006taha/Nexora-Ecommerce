@@ -1,34 +1,34 @@
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api/axios";
+import { useDispatch, useSelector } from "react-redux";
 import WishlistCard from "./sections/WishlistCard";
 import SectionWithCircles from "../../components/UI/SectionWithCircles";
 
+import { GetWishlistThunk } from "../../features/wishlist/Thunks/GetWishlistThunk";
+
 const WishlistPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [wishlist, setWishlist] = useState([]);
+  const { items } = useSelector((store) => store.wishlist);
+
   const [loading, setLoading] = useState(true);
-
-  const getWishlist = async () => {
-    try {
-      setLoading(true);
-
-      const data = await api.get("/wishlists/my");
-
-      setWishlist(data?.wishlist?.products || []);
-    } catch (error) {
-      console.error(error);
-      setWishlist([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const getWishlist = async () => {
+      try {
+        setLoading(true);
+        await dispatch(GetWishlistThunk());
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     getWishlist();
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, []);
 
   if (loading) {
@@ -39,7 +39,7 @@ const WishlistPage = () => {
     );
   }
 
-  if (!wishlist.length) {
+  if (!items.length) {
     return (
       <SectionWithCircles className="w-full min-h-[70vh] flex items-center justify-center py-20">
         <div className="max-w-7xl mx-auto px-container text-center w-full">
@@ -70,14 +70,15 @@ const WishlistPage = () => {
   return (
     <SectionWithCircles className="w-full min-h-[70vh] py-15">
       <div className="max-w-7xl mx-auto px-container">
-        <h1 className="text-3xl font-bold text-text-primary mb-8">My Wishlist</h1>
+        <h1 className="text-3xl font-bold text-text-primary mb-8">
+          My Wishlist
+        </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {wishlist.map((product) => (
+          {items.map((product) => (
             <WishlistCard
               key={product._id}
               product={product}
-              refreshWishlist={getWishlist}
             />
           ))}
         </div>
