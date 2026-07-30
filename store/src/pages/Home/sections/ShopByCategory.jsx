@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -11,6 +12,8 @@ import {
 } from "react-icons/fa";
 import { TbArrowUpRight } from "react-icons/tb";
 import BackgroundCircle from "../../../components/UI/BackgroundCircle";
+
+import { setFiltersProducts } from "../../../features/products/productsSlice";
 
 const API_BASE = "https://e-commerce-api-3wara.vercel.app";
 
@@ -25,12 +28,15 @@ const categoryIcons = {
 
 export default function ShopByCategory() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const { filters } = useSelector((store) => store.products);
+
   const goToCategory = (category) => {
-    navigate(`/shop?category=${category}`);
+    dispatch(setFiltersProducts({ ...filters, category: category }));
+    navigate(`/shop`);
   };
 
   useEffect(() => {
@@ -84,7 +90,6 @@ export default function ShopByCategory() {
 
   return (
     <section className="relative overflow-hidden py-8 mb-10" id="CategorySec">
-      
       <BackgroundCircle
         size={350}
         color="var(--Background-Circle-color-1)"
@@ -109,7 +114,10 @@ export default function ShopByCategory() {
             Shop by Category
           </h2>
 
-          <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
+          <p
+            className="mt-2 text-sm sm:text-base"
+            style={{ color: "var(--text-muted)" }}
+          >
             Browse our wide range of categories
           </p>
         </div>

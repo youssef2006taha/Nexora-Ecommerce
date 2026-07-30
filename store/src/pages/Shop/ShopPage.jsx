@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../../components/UI/ProductCart";
 import FilterDrawer from "./sections/FilterDrawer";
+import ActiveFilters from "./sections/ActiveFilters";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getProductsThunk } from "../../features/products/Thunks/getAllProductsThunk";
@@ -21,23 +22,15 @@ function ShopPage() {
     paginationProducts,
     totalPages,
     currentPage,
+    filters,
   } = useSelector((store) => store.products);
 
   const [openFilterationDrawer, setOpenFilterationDrawer] = useState(false);
 
-  const initialFilters = {
-    inputSearch: "",
-    category: "All Categories",
-    minPrice: "",
-    maxPrice: "",
-    sortBy: "Default",
-  };
-
-  const [filters, setFilters] = useState(initialFilters);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     try {
       const productsPerPage = 4;
       dispatch(getProductsThunk(productsPerPage)).unwrap();
@@ -65,7 +58,6 @@ function ShopPage() {
           value={filters.inputSearch}
           onChange={(e) => {
             const newValue = { ...filters, inputSearch: e.target.value };
-            setFilters(newValue);
             dispatch(setFiltersProducts(newValue));
           }}
           icon={true}
@@ -82,13 +74,12 @@ function ShopPage() {
       </div>
 
       <div className="flex flex-col gap-4">
+        <ActiveFilters />
         <div className="flex gap-6">
           <FilterDrawer
             open={openFilterationDrawer}
             setOpen={setOpenFilterationDrawer}
-            initialFilters={initialFilters}
             filters={filters}
-            setFilters={setFilters}
           />
 
           {/* Products */}

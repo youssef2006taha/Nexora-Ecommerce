@@ -9,13 +9,7 @@ import {
   resetFilters,
 } from "../../../features/products/productsSlice";
 
-export default function MobileFilterDrawer({
-  open,
-  setOpen,
-  initialFilters,
-  filters,
-  setFilters,
-}) {
+export default function MobileFilterDrawer({ open, setOpen, filters }) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -61,7 +55,6 @@ export default function MobileFilterDrawer({
               checked={filters.category === "All Categories"}
               onChange={(e) => {
                 const newValue = { ...filters, category: e.target.value };
-                setFilters(newValue);
                 dispatch(setFiltersProducts(newValue));
               }}
               className="accent-primary"
@@ -81,7 +74,6 @@ export default function MobileFilterDrawer({
                 checked={filters.category === cat}
                 onChange={(e) => {
                   const newValue = { ...filters, category: e.target.value };
-                  setFilters(newValue);
                   dispatch(setFiltersProducts(newValue));
                 }}
                 className="accent-primary"
@@ -107,7 +99,7 @@ export default function MobileFilterDrawer({
                 ...filters,
                 minPrice: e.target.value >= 0 ? e.target.value : 0,
               };
-              setFilters(newValue);
+
               dispatch(setFiltersProducts(newValue));
             }}
             incrementHandler={() => {
@@ -115,7 +107,7 @@ export default function MobileFilterDrawer({
                 ...filters,
                 minPrice: Number(filters.minPrice || 0) + 1,
               };
-              setFilters(newValue);
+
               dispatch(setFiltersProducts(newValue));
             }}
             decrementHandler={() => {
@@ -123,7 +115,7 @@ export default function MobileFilterDrawer({
                 ...filters,
                 minPrice: Math.max(0, Number(filters.minPrice || 0) - 1),
               };
-              setFilters(newValue);
+
               dispatch(setFiltersProducts(newValue));
             }}
           />
@@ -138,7 +130,7 @@ export default function MobileFilterDrawer({
                 ...filters,
                 maxPrice: e.target.value >= 0 ? e.target.value : 0,
               };
-              setFilters(newValue);
+
               dispatch(setFiltersProducts(newValue));
             }}
             incrementHandler={() => {
@@ -146,7 +138,7 @@ export default function MobileFilterDrawer({
                 ...filters,
                 maxPrice: Number(filters.maxPrice || 0) + 1,
               };
-              setFilters(newValue);
+
               dispatch(setFiltersProducts(newValue));
             }}
             decrementHandler={() => {
@@ -154,7 +146,7 @@ export default function MobileFilterDrawer({
                 ...filters,
                 maxPrice: Math.max(0, Number(filters.maxPrice || 0) - 1),
               };
-              setFilters(newValue);
+
               dispatch(setFiltersProducts(newValue));
             }}
           />
@@ -165,10 +157,10 @@ export default function MobileFilterDrawer({
       <div className="mb-8">
         <h3 className="mb-3 font-semibold text-[15px]">Sort By</h3>
         <Select
-          value={filters.sortBy}
+          value={filters.sortedBy}
           onChange={(e) => {
-            const newValue = { ...filters, sortBy: e.target.value };
-            setFilters(newValue);
+            const newValue = { ...filters, sortedBy: e.target.value };
+
             dispatch(setFiltersProducts(newValue));
           }}
           menuItems={[
@@ -187,7 +179,6 @@ export default function MobileFilterDrawer({
         className="!h-9 sm:!h-10 max-sm:!text-[12px]"
         onClick={() => {
           dispatch(resetFilters());
-          setFilters(initialFilters);
         }}
       />
     </Drawer>

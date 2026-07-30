@@ -3,16 +3,11 @@ import { NavLink } from "react-router-dom";
 import { Zap, Globe, MessageCircle, Heart } from "lucide-react";
 import BackgroundCircle from "../UI/BackgroundCircle";
 
-import img1 from "../../assets/img1.avif";
-import img2 from "../../assets/img2.avif";
-import img3 from "../../assets/img3.jpg";
+import img1 from "../../assets/fImg1.jpg";
+import img2 from "../../assets/fImg2.jpg";
+import img3 from "../../assets/fImg3.jpg";
 
-// const HERO_BACKGROUNDS = [img1, img2, img3];
-const HERO_BACKGROUNDS = [
-  "https://img.freepik.com/free-vector/doodle-e-commerce-pattern-background_23-2147746811.jpg", 
-  "https://img.freepik.com/free-vector/hand-drawn-shopping-pattern-background_23-2148083898.jpg",
-  "https://img.freepik.com/free-vector/hand-drawn-e-commerce-pattern_23-2147761184.jpg"
-];
+const HERO_BACKGROUNDS = [img1, img2, img3];
 
 const AUTO_PLAY_SPEED = 3000;
 const linksList = [

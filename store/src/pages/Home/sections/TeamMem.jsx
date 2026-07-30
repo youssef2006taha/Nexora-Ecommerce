@@ -10,6 +10,7 @@ import Ahmed_Abdellah from "../../../assets/TeamImages/Ahmed_Abdellah.png";
 import Mahmoud_Ahmed from "../../../assets/TeamImages/Mahmoud_Ahmed.png";
 import Mohamed_Ali from "../../../assets/TeamImages/Mohamed_Ali.png";
 import Samar_Khaled from "../../../assets/TeamImages/Samar_Khaled.png";
+import Abdelrhman_Ahmed from "../../../assets/TeamImages/Abdelrhman_Ahmed.png";
 import mem from "../../../assets/TeamImages/mem.png";
 
 const teamMem = [
@@ -74,13 +75,38 @@ const teamMem = [
     image: Samar_Khaled,
     name: "Samar Khaled",
     linkedIn: "https://www.linkedin.com/in/samar-khaled-2a5a59364/",
-    gitHub: "https://github.com/",
+    gitHub: "https://github.com/samarabdu",
   },
-  { id: 10, image: mem, name: "", linkedIn: "", gitHub: "https://github.com/" },
-  { id: 11, image: mem, name: "", linkedIn: "", gitHub: "https://github.com/" },
-  { id: 12, image: mem, name: "", linkedIn: "", gitHub: "https://github.com/" },
-  { id: 13, image: mem, name: "", linkedIn: "", gitHub: "https://github.com/" },
-  { id: 14, image: mem, name: "", linkedIn: "", gitHub: "https://github.com/" },
+  {
+    id: 10,
+    image: Abdelrhman_Ahmed,
+    name: "Abdelrhman Ahmed",
+    linkedIn: "https://www.linkedin.com/in/abdelrhman-ahmed-abdulrahim-17a45237b/",
+    gitHub: "https://github.com/AbdelrhmanAb" },
+  {
+    id: 11,
+    image: mem,
+    name: "",
+    linkedIn: "",
+    gitHub: "https://github.com/" },
+  {
+    id: 12,
+    image: mem,
+    name: "",
+    linkedIn: "",
+    gitHub: "https://github.com/" },
+  {
+    id: 13,
+    image: mem,
+    name: "",
+    linkedIn: "",
+    gitHub: "https://github.com/" },
+  {
+    id: 14,
+    image: mem,
+    name: "",
+    linkedIn: "",
+    gitHub: "https://github.com/" },
 ];
 
 function TeamMem() {

@@ -10,7 +10,7 @@ const initialState = {
     category: "All Categories",
     minPrice: "",
     maxPrice: "",
-    sortedBy: null,
+    sortedBy: "Default",
   },
   loading: false,
   error: null,
@@ -22,12 +22,12 @@ const initialState = {
 };
 
 const filterProducts = (products = [], filters) => {
-  const { inputSearch, category, minPrice, maxPrice, sortBy } = filters;
+  const { inputSearch, category, minPrice, maxPrice, sortedBy } = filters;
 
   const filteredProducts = products.filter((product) => {
     const categoryMatch =
       category === "All Categories" ||
-      product.category?.toLowerCase() === category.toLowerCase();
+      product.category?.toLowerCase() === category?.toLowerCase();
 
     const minPriceMatch = minPrice ? product.price >= minPrice : true;
 
@@ -35,13 +35,13 @@ const filterProducts = (products = [], filters) => {
 
     const inputSearchMatch =
       !inputSearch ||
-      product.name?.toLowerCase().includes(inputSearch.trim().toLowerCase());
+      product.name?.toLowerCase().includes(inputSearch?.trim().toLowerCase());
 
     return categoryMatch && minPriceMatch && maxPriceMatch && inputSearchMatch;
   });
 
   return [...filteredProducts].sort((a, b) => {
-    switch (sortBy) {
+    switch (sortedBy) {
       case "Price Low → High":
         return a.price - b.price;
 

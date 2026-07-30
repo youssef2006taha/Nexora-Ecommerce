@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import BackgroundCircle from "../../../components/UI/BackgroundCircle";
 import TeamMem from "./TeamMem";
 
-import img1 from "../../../assets/img1.avif";
+import img1 from "../../../assets/img1.jpg";
 import img2 from "../../../assets/img2.avif";
 import img3 from "../../../assets/img3.jpg";
 
