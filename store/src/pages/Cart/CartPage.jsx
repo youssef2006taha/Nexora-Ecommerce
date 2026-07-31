@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import CartPageHeader from "./Components/CartPageHeader";
 import CartItemCard from "./Components/CartItemCard";
-import CartSummary from "./components/CartSummary";
+import CartSummary from "./Components/CartSummary";
 import Coupon from "./Components/Coupon";
 import EmptyCart from "./Components/EmptyCart";
 import SectionWithCircles from "../../components/UI/SectionWithCircles";
