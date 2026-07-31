@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiInstance = axios.create({
-  baseURL: 'http://e-commerce-api-3wara.vercel.app', 
+  baseURL: 'https://e-commerce-api-3wara.vercel.app', 
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
