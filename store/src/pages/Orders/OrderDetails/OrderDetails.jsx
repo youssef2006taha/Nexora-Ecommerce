@@ -4,7 +4,8 @@ import axios from "axios";
 import OrderProgressStepper from "./sections/OrderProgressStepper";
 import { getStatusBadgeStyle, capitalize } from "./sections/OrderCard";
 
-const API_BASE = "https://e-commerce-api-3wara.vercel.app";
+// https://e-commerce-api-3wara.vercel.app
+const API_BASE = "https://ecommerce-backend-eight-gilt.vercel.app";
 
 function authHeaders(extra = {}) {
   const token = localStorage.getItem("koda-token");
