@@ -5,7 +5,7 @@ import OrderProgressStepper from "./sections/OrderProgressStepper";
 import { getStatusBadgeStyle, capitalize } from "./sections/OrderCard";
 
 // https://e-commerce-api-3wara.vercel.app
-const API_BASE = "https://ecommerce-backend-eight-gilt.vercel.app";
+const API_BASE = "https://ecommerce-backend-eight-gilt.vercel.app/api";
 
 function authHeaders(extra = {}) {
   const token = localStorage.getItem("koda-token");

@@ -23,7 +23,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 // https://e-commerce-api-3wara.vercel.app
-const API_BASE = "https://ecommerce-backend-eight-gilt.vercel.app";
+const API_BASE = "https://ecommerce-backend-eight-gilt.vercel.app/api";
 
 export default function ProductDetails() {
   const { id } = useParams();

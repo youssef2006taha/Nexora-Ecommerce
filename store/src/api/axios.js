@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 'https://e-commerce-api-3wara.vercel.app'
 const apiInstance = axios.create({
-  baseURL: 'https://ecommerce-backend-eight-gilt.vercel.app', 
+  baseURL: 'https://ecommerce-backend-eight-gilt.vercel.app/api', 
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
