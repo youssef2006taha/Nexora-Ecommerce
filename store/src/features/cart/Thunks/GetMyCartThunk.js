@@ -1,22 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getMyCartApi } from "../../../api/cart/cartApi";
 
 export const GetMyCartThunk = createAsyncThunk(
   "cart/getMyCart",
   async (_, thunkAPI) => {
-    const { token } = thunkAPI.getState().auth;
-
     try {
-      const res = await axios.get(
-        "https://e-commerce-api-3wara.vercel.app/carts",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      return res.data;
+      return await getMyCartApi();
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to get cart.",

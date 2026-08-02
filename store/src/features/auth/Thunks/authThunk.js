@@ -1,16 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { loginApi } from "../../../api/auth/authApi";
 
 export const login = createAsyncThunk(
   "auth/login",
   async (loginData, thunkAPI) => {
     try {
-      const res = await axios.post(
-        "https://e-commerce-api-3wara.vercel.app/auth/login",
-        loginData,
-      );
-
-      const { user, token } = res.data;
+      const { user, token } = await loginApi(loginData);
 
       if (user.role !== "admin") {
         return thunkAPI.rejectWithValue(

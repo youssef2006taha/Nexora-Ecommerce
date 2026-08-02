@@ -1,26 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getProductByIdApi } from "../../../api/products/productsApi";
 
 export const getProductByIdThunk = createAsyncThunk(
   "products/getProductById",
   async (id, thunkAPI) => {
     try {
-      const { token } = thunkAPI.getState().auth;
-
-      const response = await axios.get(
-        `https://e-commerce-api-3wara.vercel.app/products/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      return response.data;
+      return await getProductByIdApi(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
+        error.response?.data?.message || error.message,
       );
     }
-  }
+  },
 );

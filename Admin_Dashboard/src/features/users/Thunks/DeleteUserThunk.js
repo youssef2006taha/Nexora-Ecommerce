@@ -1,22 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { deleteUserApi } from "../../../api/users/usersApi";
 
 export const deleteUserThunk = createAsyncThunk(
   "users/deleteUser",
   async (id, thunkAPI) => {
     try {
-      const { token } = thunkAPI.getState().auth;
+      const data = await deleteUserApi(id);
 
-      const response = await axios.delete(
-        `https://e-commerce-api-3wara.vercel.app/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      return { date: response.data, _id: id };
+      return {
+        data,
+        _id: id,
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || error.message,

@@ -1,17 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { updateProductApi } from "../../../api/products/productsApi";
 
 export const updateProductThunk = createAsyncThunk(
   "products/updateProduct",
   async ({ productData, id }, thunkAPI) => {
-    console.log(productData);
     try {
-      const { token } = thunkAPI.getState().auth;
-
       const formData = new FormData();
 
       formData.append("name", productData?.name?.trim());
-      formData.append("shortDescription", productData?.shortDescription?.trim());
+      formData.append(
+        "shortDescription",
+        productData?.shortDescription?.trim(),
+      );
       formData.append("description", productData?.description?.trim());
       formData.append("price", String(productData?.price));
       formData.append("discountPrice", String(productData?.discountPrice || 0));
@@ -23,9 +23,11 @@ export const updateProductThunk = createAsyncThunk(
 
       formData.append("featured", String(productData?.featured));
       formData.append("isActive", String(productData?.isActive));
+
       productData.tags.forEach((tag) => {
         formData.append("tags", tag);
       });
+
       productData.images
         .filter((image) => image?.isNew)
         .forEach((image) => {
@@ -37,19 +39,8 @@ export const updateProductThunk = createAsyncThunk(
         JSON.stringify(productData?.deletedImages || []),
       );
 
-      const response = await axios.patch(
-        `https://e-commerce-api-3wara.vercel.app/products/update/${id}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      return response.data;
+      return await updateProductApi(id, formData);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   },

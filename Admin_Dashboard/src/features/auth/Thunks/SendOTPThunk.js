@@ -1,20 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { sendOTPApi } from "../../../api/auth/authApi";
 
 export const sendOTPThunk = createAsyncThunk(
   "auth/forgot-password/send-otp",
   async (email, thunkAPI) => {
-    console.log();
     try {
-      const res = await axios.post(
-        "https://e-commerce-api-3wara.vercel.app/auth/forgot-password/send-otp",
-        email,
-      );
+      const result = await sendOTPApi(email);
 
-      return { result: res.data, email: email.email };
+      return {
+        result,
+        email: email.email,
+      };
     } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue(error.response.data.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to send OTP.",
+      );
     }
   },
 );
