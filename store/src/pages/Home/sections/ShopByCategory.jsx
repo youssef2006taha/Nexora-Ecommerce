@@ -15,8 +15,8 @@ import BackgroundCircle from "../../../components/UI/BackgroundCircle";
 
 import { setFiltersProducts } from "../../../features/products/productsSlice";
 
-// https://e-commerce-api-3wara.vercel.app
-const API_BASE = "https://ecommerce-backend-eight-gilt.vercel.app/api";
+
+const API_BASE = "https://e-commerce-api-3wara.vercel.app";
 
 const categoryIcons = {
   electronics: FaLaptop,
