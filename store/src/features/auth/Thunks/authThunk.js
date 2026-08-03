@@ -7,12 +7,6 @@ export const login = createAsyncThunk(
     try {
       const { user, token } = await loginApi(loginData);
 
-      if (user.role !== "admin") {
-        return thunkAPI.rejectWithValue(
-          "Access denied. This dashboard is available for administrators only.",
-        );
-      }
-
       localStorage.setItem("token", token);
 
       return {

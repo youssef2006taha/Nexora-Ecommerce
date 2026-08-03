@@ -11,7 +11,9 @@ import Mahmoud_Ahmed from "../../../assets/TeamImages/Mahmoud_Ahmed.png";
 import Mohamed_Ali from "../../../assets/TeamImages/Mohamed_Ali.png";
 import Samar_Khaled from "../../../assets/TeamImages/Samar_Khaled.png";
 import Abdelrhman_Ahmed from "../../../assets/TeamImages/Abdelrhman_Ahmed.png";
+import Abdallah_Ahmed from "../../../assets/TeamImages/Abdallah_Ahmed.png";
 import mem from "../../../assets/TeamImages/mem.png";
+import khaled_Helaly from "../../../assets/TeamImages/khaled_Helaly.png";
 
 const teamMem = [
   {
@@ -82,31 +84,29 @@ const teamMem = [
     image: Abdelrhman_Ahmed,
     name: "Abdelrhman Ahmed",
     linkedIn: "https://www.linkedin.com/in/abdelrhman-ahmed-abdulrahim-17a45237b/",
-    gitHub: "https://github.com/AbdelrhmanAb" },
+    gitHub: "https://github.com/AbdelrhmanAb"
+  },
   {
     id: 11,
-    image: mem,
-    name: "",
-    linkedIn: "",
-    gitHub: "https://github.com/" },
+    image: Abdallah_Ahmed,
+    name: "Abdallah Ahmed",
+    linkedIn: "https://www.linkedin.com/in/eng-abdallahahmed/",
+    gitHub: "https://github.com/AIGC-EG"
+  },
   {
     id: 12,
     image: mem,
-    name: "",
-    linkedIn: "",
-    gitHub: "https://github.com/" },
+    name: "Arwa Alsharif",
+    linkedIn: "https://www.linkedin.com/in/arwa-alsharif-020a54342/",
+    gitHub: "https://github.com/Ar-alsharif"
+  },
   {
     id: 13,
-    image: mem,
-    name: "",
-    linkedIn: "",
-    gitHub: "https://github.com/" },
-  {
-    id: 14,
-    image: mem,
-    name: "",
-    linkedIn: "",
-    gitHub: "https://github.com/" },
+    image: khaled_Helaly,
+    name: "khaled Helaly",
+    linkedIn: "https://www.linkedin.com/in/khaledhelaly7/",
+    gitHub: "https://github.com/khaled7helaly"
+  },
 ];
 
 function TeamMem() {

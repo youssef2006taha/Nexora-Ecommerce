@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { getCurrentUser } from "./features/auth/Thunks/getCurrentUserThunk";
 import { GetMyCartThunk } from "./features/cart/Thunks/GetMyCartThunk";
+import { logout } from "./features/auth/authSlice";
 import AuthLoader from "./components/UI/AuthLoader";
 
 export default function AuthInitializer() {
@@ -23,6 +24,7 @@ export default function AuthInitializer() {
         await cartDispatch(GetMyCartThunk()).unwrap();
       } catch (error) {
         console.error(error);
+        dispatch(logout());
       } finally {
         setLoading(false);
       }

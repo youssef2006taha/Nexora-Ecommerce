@@ -103,6 +103,7 @@ const authSlice = createSlice({
       })
       .addCase(sendRegisterOTP.fulfilled, (state, action) => {
         state.loading = false;
+        console.log("action.payload.data", action.payload.data);
         state.newUserData = action.payload.data;
       })
       .addCase(sendRegisterOTP.rejected, (state, action) => {

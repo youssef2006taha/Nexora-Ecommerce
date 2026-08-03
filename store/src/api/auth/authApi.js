@@ -22,3 +22,6 @@ export const updateUserProfileApi = (id, data) => {
 
 export const verifyResetOTPApi = (data) =>
   api.post("/auth/forgot-password/verify-otp", data);
+
+export const verifyRegisterOTPApi = (data) =>
+  api.post("/auth/register/verify-otp", data);
