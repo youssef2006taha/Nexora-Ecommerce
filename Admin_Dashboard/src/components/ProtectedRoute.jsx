@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUser } from "../features/auth/getCurrentUser";
 import { useEffect } from "react";
 import AuthLoader from "../components/UI/AuthLoader";
+import { logout } from "../features/auth/authSlice";
 
 export default function ProtectedRoute() {
   const dispatch = useDispatch();
@@ -10,9 +11,18 @@ export default function ProtectedRoute() {
   const { token, user, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (token && !user) {
-      dispatch(getCurrentUser());
-    }
+    const fetchUser = async () => {
+      if (token && !user) {
+        try {
+          await dispatch(getCurrentUser()).unwrap();
+        } catch (error) {
+          console.log(error);
+          dispatch(logout());
+        }
+      }
+    };
+
+    fetchUser();
   }, [token, user, dispatch]);
 
   if (loading) {
